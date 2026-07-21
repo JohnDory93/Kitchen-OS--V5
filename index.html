@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d1824" />
+  <title>KitchenOS v5</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">K</div>
+        <div>
+          <div class="brand-name">KitchenOS</div>
+          <div class="brand-subtitle">Restaurant operations</div>
+        </div>
+      </div>
+      <div class="topbar-meta">
+        <span id="todayLabel"></span>
+        <span class="status-dot"></span>
+        <span>Local mode</span>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section class="page active" data-page="dashboard">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">Overview</p>
+            <h1>Dashboard</h1>
+            <p>Everything that needs attention today.</p>
+          </div>
+          <button class="primary-button" data-open-work>Open work</button>
+        </div>
+
+        <div class="summary-grid">
+          <article class="summary-card">
+            <span class="summary-label">Today</span>
+            <strong>0</strong>
+            <small>tasks due</small>
+          </article>
+          <article class="summary-card warning">
+            <span class="summary-label">Needs attention</span>
+            <strong>0</strong>
+            <small>late or incomplete</small>
+          </article>
+          <article class="summary-card">
+            <span class="summary-label">Completed</span>
+            <strong>0%</strong>
+            <small>today</small>
+          </article>
+          <article class="summary-card">
+            <span class="summary-label">Last activity</span>
+            <strong>—</strong>
+            <small>nothing recorded yet</small>
+          </article>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Today</p>
+                <h2>Operational priorities</h2>
+              </div>
+              <span class="badge">Foundation</span>
+            </div>
+            <div class="empty-state">
+              <div class="empty-icon">✓</div>
+              <h3>No tasks configured yet</h3>
+              <p>We will connect this area to temperatures, cleaning, deliveries and prep as we build each module.</p>
+            </div>
+          </article>
+
+          <article class="panel compact-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">System</p>
+                <h2>Foundation status</h2>
+              </div>
+            </div>
+            <div class="status-list">
+              <div><span>Navigation</span><strong>Ready</strong></div>
+              <div><span>Local storage</span><strong>Ready</strong></div>
+              <div><span>Login</span><strong>Not installed</strong></div>
+              <div><span>Cloud</span><strong>Not installed</strong></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="page" data-page="work">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">Daily operations</p>
+            <h1>Work</h1>
+            <p>Choose a workflow. These modules are placeholders for the clean rebuild.</p>
+          </div>
+        </div>
+
+        <div class="module-grid">
+          <button class="module-card" data-module="Temperatures"><span class="module-icon">°</span><span><strong>Temperatures</strong><small>Opening, closing and checks</small></span></button>
+          <button class="module-card" data-module="Cleaning"><span class="module-icon">✦</span><span><strong>Cleaning</strong><small>Daily and scheduled tasks</small></span></button>
+          <button class="module-card" data-module="Deliveries"><span class="module-icon">↓</span><span><strong>Deliveries</strong><small>Receive and verify goods</small></span></button>
+          <button class="module-card" data-module="Cooking & Cooling"><span class="module-icon">◒</span><span><strong>Cooking & Cooling</strong><small>Food safety records</small></span></button>
+          <button class="module-card" data-module="Prep List"><span class="module-icon">≡</span><span><strong>Prep List</strong><small>Plan tomorrow's preparation</small></span></button>
+          <button class="module-card" data-module="Maintenance"><span class="module-icon">◇</span><span><strong>Maintenance</strong><small>Report operational issues</small></span></button>
+          <button class="module-card" data-module="Handover"><span class="module-icon">↗</span><span><strong>Handover</strong><small>Only relevant shift information</small></span></button>
+        </div>
+      </section>
+
+      <section class="page" data-page="reports">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">History</p>
+            <h1>Reports</h1>
+            <p>Reports will show completed work and exceptions. No operational input will happen here.</p>
+          </div>
+        </div>
+        <article class="panel full-panel">
+          <div class="empty-state">
+            <div class="empty-icon">▤</div>
+            <h3>No reports yet</h3>
+            <p>Daily, weekly and exportable reports will be added after the core work modules are stable.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="page" data-page="setup">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">Configuration</p>
+            <h1>Setup</h1>
+            <p>All future modules will be editable here instead of being hardcoded.</p>
+          </div>
+          <button class="secondary-button" id="resetDemo">Reset foundation</button>
+        </div>
+
+        <div class="setup-grid">
+          <article class="setup-card"><span>01</span><h3>Business</h3><p>Restaurant name, locations and general settings.</p></article>
+          <article class="setup-card"><span>02</span><h3>Departments</h3><p>Kitchen and Service first; more can be added later.</p></article>
+          <article class="setup-card"><span>03</span><h3>Workflows</h3><p>Configure modules, order and visibility.</p></article>
+          <article class="setup-card"><span>04</span><h3>Tasks</h3><p>Create cleaning, temperature and daily operational tasks.</p></article>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Primary navigation">
+      <button class="nav-item active" data-target="dashboard"><span>⌂</span><strong>Dashboard</strong></button>
+      <button class="nav-item" data-target="work"><span>□</span><strong>Work</strong></button>
+      <button class="nav-item" data-target="reports"><span>▤</span><strong>Reports</strong></button>
+      <button class="nav-item" data-target="setup"><span>⚙</span><strong>Setup</strong></button>
+    </nav>
+  </div>
+
+  <div class="modal" id="moduleModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card">
+      <button class="modal-close" data-close-modal aria-label="Close">×</button>
+      <p class="eyebrow">Next module</p>
+      <h2 id="modalTitle">Module</h2>
+      <p>This clean foundation is working. We will build this workflow next without bringing back the old code.</p>
+      <button class="primary-button" data-close-modal>Close</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
