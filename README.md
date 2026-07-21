@@ -1,16 +1,15 @@
-# KitchenOS v5 — Clean Foundation
+# KitchenOS v5.1 — Workspace Architecture
 
-This is a clean static rebuild with:
+Clean static prototype implementing the agreed product architecture:
 
-- No login
-- No Supabase
-- No service worker
-- No old bootstrap files
-- Dashboard, Work, Reports and Setup navigation
-- Local storage only for the last opened page
+- Manager mode: Dashboard, Kitchen, Service, Setup
+- Kitchen mode: Kitchen work only
+- Service mode: Service work only
+- Reports visible only from Manager Dashboard
+- Editable module visibility in Setup
+- No PIN/login yet; the top-right preview switch simulates the three access profiles
+- No Supabase, service worker, build tools or legacy files
 
 ## Deploy
 
-Upload all files in this folder to the root of the new GitHub repository and import that repository into Vercel using the **Other** framework preset.
-
-Leave Build Command and Output Directory empty.
+Upload these files to the root of the `KitchenOS-v5` GitHub repository. Vercel framework preset: **Other**. Leave build and output settings empty.
