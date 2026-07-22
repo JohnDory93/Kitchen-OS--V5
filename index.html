@@ -96,7 +96,7 @@
           <div class="cleaning-detail-grid">
             <section class="cleaning-instruction-card"><span class="cleaning-symbol">✦</span><div><p class="eyebrow">Task instructions</p><h2 id="cleaningDetailArea">Kitchen · Hot line</h2><p id="cleaningDetailInstructions"></p></div><div class="audit-chip"><span>Audit trail</span><strong>Required evidence</strong></div></section>
             <section class="cleaning-form-card">
-              <label class="field-label">Completed by <strong>Required</strong><select id="cleaningStaff"><option value="">Select staff member</option></select></label>
+              <label class="field-label">Responsible staff <strong>Required</strong><select id="cleaningStaff"><option value="">Select staff member</option></select></label>
               <div class="cleaning-evidence-row"><label class="evidence-button">▣<span><strong>Add photo</strong><small id="cleaningPhotoLabel">Optional</small></span><input type="file" accept="image/*" id="cleaningPhoto"></label><label class="evidence-button">✎<span><strong>Add note</strong><small>Optional</small></span><textarea id="cleaningNote" maxlength="220" placeholder="Add a short note"></textarea></label></div>
               <div class="signature-block"><div><span>Signature</span><strong>Required</strong></div><canvas id="signaturePad" width="720" height="150"></canvas><button class="signature-clear" id="clearSignature">Clear signature</button></div>
               <button class="primary-button cleaning-confirm" id="confirmCleaning" disabled>Confirm Cleaning</button>
@@ -152,6 +152,9 @@
         <button class="danger-button" id="saveAction" disabled>Save action</button>
       </div>
     </div>
+  </div>
+  <div class="cleaning-success" id="cleaningSuccess" aria-live="polite" hidden>
+    <div class="cleaning-success-card"><span>✓</span><p>Cleaning confirmed</p><h2 id="cleaningSuccessTitle">Task completed</h2><small id="cleaningSuccessMeta"></small></div>
   </div>
   <div class="toast" id="toast"></div>
   <script src="app.js"></script>
