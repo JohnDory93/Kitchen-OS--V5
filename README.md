@@ -1,25 +1,10 @@
-# KitchenOS v5.2.1 — Temperature Refinement
+# KitchenOS v5.2.2 — Temperature Final Refinement
 
-Clean static HTML/CSS/JS foundation.
+Final Temperature sprint changes:
 
-## Included
-- Manager, Kitchen and Service workspace previews
-- Complete Kitchen temperature workflow
-- Opening and closing sessions
-- Same configurable equipment list every day
-- Tap or swipe to move between equipment
-- Automatic OK / High / Low status from configured limits
-- Optional note and photo marker
-- Local daily records
-- Setup editor for equipment names, type and temperature limits
-
-No login, Supabase, build tools or service worker yet.
-
-
-## v5.2.1 changes
-- Clear pending/completed progress circles
-- Wheel-style temperature input
-- One-tap temperature presets
-- Compact note and photo actions
-- Softer primary action styling
-- Progress dots and swipe navigation
+- Inertial wheel: one fast swipe can move across a large temperature range.
+- Out-of-range readings trigger a guided corrective-action flow.
+- Recheck in 15 minutes creates a visible follow-up time.
+- Kitchen and Manager views show unresolved temperature actions.
+- A valid recheck automatically resolves the issue.
+- Local-first foundation; no login, cloud, or service worker yet.

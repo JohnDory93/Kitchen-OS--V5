@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#07111b" />
-  <title>KitchenOS v5.2.1</title>
+  <title>KitchenOS v5.2.2</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -105,6 +105,8 @@
 
   <div class="modal" id="moduleModal"><div class="modal-backdrop" data-close-modal></div><div class="modal-card"><button class="modal-close" data-close-modal>×</button><div class="modal-symbol" id="modalSymbol">°</div><p class="eyebrow" id="modalEyebrow">Kitchen workflow</p><h2 id="modalTitle">Module</h2><p id="modalDescription">This workflow will be built in the next sprint.</p><div class="modal-action-row"><button class="secondary-button" data-close-modal>Back</button></div></div></div>
   <div class="modal" id="noteModal"><div class="modal-backdrop" data-close-note></div><div class="modal-card note-modal-card"><button class="modal-close" data-close-note>×</button><p class="eyebrow">Optional note</p><h2>Add relevant information</h2><textarea id="temperatureNote" maxlength="250" placeholder="Only write something if action or context is needed."></textarea><div class="modal-action-row"><button class="secondary-button" data-close-note>Cancel</button><button class="primary-button" id="saveNote">Save note</button></div></div></div>
+
+  <div class="modal" id="correctiveModal"><div class="modal-backdrop"></div><div class="modal-card corrective-modal-card"><div class="modal-symbol danger-symbol">!</div><p class="eyebrow danger-text">Action required</p><h2>Temperature out of range</h2><p class="corrective-summary" id="correctiveSummary">Fridge 1 · 9.6°C</p><p class="corrective-help">Choose what was done. The issue stays visible until a valid recheck is saved.</p><div class="corrective-options" id="correctiveOptions"><button data-corrective="Recheck in 15 minutes">↻ <span><strong>Recheck in 15 minutes</strong><small>Create a timed follow-up</small></span></button><button data-corrective="Move products to another unit">▣ <span><strong>Move products</strong><small>Transfer food to another unit</small></span></button><button data-corrective="Adjust equipment">⚙ <span><strong>Adjust equipment</strong><small>Change thermostat or settings</small></span></button><button data-corrective="Call maintenance">◇ <span><strong>Call maintenance</strong><small>Escalate an equipment fault</small></span></button><button data-corrective="Reject or discard product">× <span><strong>Reject / discard</strong><small>Remove unsafe product</small></span></button><button data-corrective="Other">✎ <span><strong>Other</strong><small>Add a short explanation</small></span></button></div><textarea id="correctiveNote" maxlength="250" placeholder="Optional note"></textarea><div class="modal-action-row"><button class="secondary-button" id="cancelCorrective">Back</button><button class="primary-button danger-button" id="saveCorrective" disabled>Save action</button></div></div></div>
   <div class="toast" id="toast"></div>
   <script src="app.js"></script>
 </body>
