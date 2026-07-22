@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#07111b" />
-  <title>KitchenOS v5.1</title>
+  <title>KitchenOS v5.2</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -12,156 +12,91 @@
     <header class="topbar">
       <div class="brand">
         <div class="brand-mark">K</div>
-        <div>
-          <div class="brand-name">KitchenOS</div>
-          <div class="brand-subtitle" id="workspaceSubtitle">Manager control centre</div>
-        </div>
+        <div><div class="brand-name">KitchenOS</div><div class="brand-subtitle" id="workspaceSubtitle">Manager control centre</div></div>
       </div>
-
       <div class="topbar-actions">
         <span id="todayLabel" class="today-label"></span>
-        <button class="mode-chip" id="modeChip" aria-haspopup="true" aria-expanded="false">
-          <span class="status-dot"></span>
-          <span id="modeChipLabel">Manager preview</span>
-          <span class="chevron">⌄</span>
-        </button>
-        <div class="mode-menu" id="modeMenu" aria-hidden="true">
+        <button class="mode-chip" id="modeChip"><span class="status-dot"></span><span id="modeChipLabel">Manager preview</span><span>⌄</span></button>
+        <div class="mode-menu" id="modeMenu">
           <p>Preview access</p>
-          <button data-switch-mode="manager"><span>◆</span><strong>Manager</strong><small>Dashboard, departments and Setup</small></button>
-          <button data-switch-mode="kitchen"><span>●</span><strong>Kitchen</strong><small>Kitchen work only</small></button>
-          <button data-switch-mode="service"><span>○</span><strong>Service</strong><small>Service work only</small></button>
+          <button data-switch-mode="manager"><strong>Manager</strong><small>Dashboard, departments and Setup</small></button>
+          <button data-switch-mode="kitchen"><strong>Kitchen</strong><small>Kitchen work only</small></button>
+          <button data-switch-mode="service"><strong>Service</strong><small>Service work only</small></button>
         </div>
       </div>
     </header>
 
     <main class="main-content">
       <section class="page active" data-page="dashboard">
-        <div class="page-heading compact-heading">
-          <div>
-            <p class="eyebrow">Manager overview</p>
-            <h1>Good morning</h1>
-            <p>See what matters, open a department, or review the day.</p>
-          </div>
-          <div class="heading-actions">
-            <button class="secondary-button" data-open-report>Daily report</button>
-            <button class="primary-button" data-go-page="kitchen">Open Kitchen</button>
-          </div>
-        </div>
-
+        <div class="page-heading"><div><p class="eyebrow">Manager overview</p><h1>Good morning</h1><p>See what matters and open a department.</p></div><button class="primary-button" data-go-page="kitchen">Open Kitchen</button></div>
         <div class="summary-grid">
-          <article class="summary-card attention"><span class="summary-label">Needs attention</span><strong>3</strong><small>late or incomplete</small></article>
-          <article class="summary-card"><span class="summary-label">Today</span><strong>18</strong><small>tasks scheduled</small></article>
-          <article class="summary-card"><span class="summary-label">Completed</span><strong>61%</strong><small>across departments</small></article>
-          <article class="summary-card"><span class="summary-label">Last activity</span><strong class="activity-time">09:42</strong><small>Kitchen · Fridge 2</small></article>
+          <article class="summary-card attention"><span>Needs attention</span><strong id="attentionCount">1</strong><small>late or incomplete</small></article>
+          <article class="summary-card"><span>Temperature</span><strong id="temperatureSummary">0 / 5</strong><small>opening completed</small></article>
+          <article class="summary-card"><span>Kitchen</span><strong>11 / 16</strong><small>tasks completed</small></article>
+          <article class="summary-card"><span>Last activity</span><strong id="lastActivityTime">—</strong><small id="lastActivityText">No activity yet</small></article>
         </div>
-
         <div class="dashboard-grid">
-          <article class="panel priority-panel">
-            <div class="panel-header">
-              <div><p class="eyebrow">Action now</p><h2>Needs attention</h2></div>
-              <span class="badge danger">3 open</span>
-            </div>
-            <div class="attention-list">
-              <button><span class="alert-mark">!</span><span><strong>Opening temperatures</strong><small>Kitchen · 2 checks still missing</small></span><em>Open</em></button>
-              <button><span class="alert-mark">!</span><span><strong>Monday deep clean</strong><small>Kitchen · Hood filters overdue</small></span><em>Open</em></button>
-              <button><span class="alert-mark muted">•</span><span><strong>Service opening</strong><small>Service · 1 item incomplete</small></span><em>Open</em></button>
-            </div>
-          </article>
-
-          <article class="panel department-panel">
-            <div class="panel-header">
-              <div><p class="eyebrow">Workspaces</p><h2>Departments</h2></div>
-            </div>
-            <div class="department-buttons">
-              <button data-go-page="kitchen"><span class="department-icon">K</span><span><strong>Kitchen</strong><small>8 work modules</small></span><em>→</em></button>
-              <button data-go-page="service"><span class="department-icon">S</span><span><strong>Service</strong><small>6 work modules</small></span><em>→</em></button>
-            </div>
-            <button class="report-link" data-open-report><span>▤</span><span><strong>Reports & history</strong><small>Daily summary, HACCP and exports</small></span><em>→</em></button>
-          </article>
+          <article class="panel"><div class="panel-header"><div><p class="eyebrow">Action now</p><h2>Needs attention</h2></div><span class="badge danger">Live</span></div><div class="attention-list" id="managerAttention"></div></article>
+          <article class="panel"><div class="panel-header"><div><p class="eyebrow">Workspaces</p><h2>Departments</h2></div></div><div class="department-buttons"><button data-go-page="kitchen"><span class="department-icon">K</span><span><strong>Kitchen</strong><small>Operational workspace</small></span><em>→</em></button><button data-go-page="service"><span class="department-icon">S</span><span><strong>Service</strong><small>Operational workspace</small></span><em>→</em></button></div></article>
         </div>
       </section>
 
-      <section class="page workspace-page" data-page="kitchen" data-workspace="kitchen">
-        <div class="workspace-heading">
-          <div><p class="eyebrow">Department workspace</p><h1>Kitchen</h1><p>Only today's work. No reports, no history, no setup.</p></div>
-          <div class="workspace-progress"><span>Today</span><strong>11 / 16</strong><small>completed</small></div>
-        </div>
+      <section class="page workspace-page" data-page="kitchen">
+        <div class="workspace-heading"><div><p class="eyebrow">Department workspace</p><h1>Kitchen</h1><p>Only today's work. No reports, no history, no setup.</p></div><div class="workspace-progress"><span>Today</span><strong>11 / 16</strong><small>completed</small></div></div>
         <div class="module-grid" id="kitchenModules"></div>
       </section>
 
-      <section class="page workspace-page" data-page="service" data-workspace="service">
-        <div class="workspace-heading">
-          <div><p class="eyebrow">Department workspace</p><h1>Service</h1><p>Only today's work. No reports, no history, no setup.</p></div>
-          <div class="workspace-progress"><span>Today</span><strong>7 / 10</strong><small>completed</small></div>
-        </div>
+      <section class="page workspace-page" data-page="service">
+        <div class="workspace-heading"><div><p class="eyebrow">Department workspace</p><h1>Service</h1><p>Only today's work. No reports, no history, no setup.</p></div><div class="workspace-progress"><span>Today</span><strong>7 / 10</strong><small>completed</small></div></div>
         <div class="module-grid" id="serviceModules"></div>
       </section>
 
-      <section class="page" data-page="setup">
-        <div class="page-heading compact-heading">
-          <div><p class="eyebrow">Manager only</p><h1>Setup</h1><p>Edit what Kitchen and Service see. No code changes required.</p></div>
-          <button class="secondary-button" id="resetSetup">Restore defaults</button>
-        </div>
+      <section class="page workflow-page" data-page="temperature-list">
+        <div class="workflow-header"><button class="icon-button" data-temp-back>←</button><div><p class="eyebrow">Kitchen workflow</p><h1>Temperature</h1><p>Same equipment every day. Select a check and move through the list.</p></div><span class="badge" id="temperatureOpenBadge">5 open</span></div>
+        <div class="segmented"><button class="active" data-session="opening">Opening</button><button data-session="closing">Closing</button></div>
+        <div class="temperature-list" id="temperatureAssetList"></div>
+        <button class="completion-bar" id="temperatureCompleteBar" disabled>Complete all checks first</button>
+      </section>
 
+      <section class="page workflow-page" data-page="temperature-entry">
+        <div class="workflow-header compact"><button class="icon-button" data-temp-list>←</button><div><p class="eyebrow" id="entrySessionLabel">Opening check</p><h1 id="entryAssetName">Fridge 1</h1></div><span class="badge" id="entryProgress">1 / 5</span></div>
+        <div class="entry-layout" id="temperatureSwipeArea">
+          <div class="temperature-entry-card">
+            <div class="asset-icon" id="entryAssetIcon">▣</div>
+            <p class="muted">Set the temperature</p>
+            <div class="temperature-stepper"><button data-temp-adjust="-1">−</button><strong id="temperatureValue">4.0°C</strong><button data-temp-adjust="1">+</button></div>
+            <div class="quick-values" id="quickValues"></div>
+            <div class="status-row"><span>Status</span><strong class="status-pill ok" id="temperatureStatus">OK</strong></div>
+            <div class="entry-tools"><button id="addNoteButton">✎ Add note</button><label class="file-button">▣ Add photo<input type="file" accept="image/*" id="temperaturePhoto"></label></div>
+            <div class="note-preview" id="notePreview" hidden></div>
+          </div>
+          <div class="entry-footer"><button class="secondary-button" id="previousTemperature">← Previous</button><button class="primary-button" id="saveNextTemperature">Save & Next →</button></div>
+          <p class="swipe-hint">Swipe left for next · swipe right for previous</p>
+        </div>
+      </section>
+
+      <section class="page" data-page="setup">
+        <div class="page-heading"><div><p class="eyebrow">Manager only</p><h1>Setup</h1><p>Edit modules and temperature equipment without changing code.</p></div><button class="secondary-button" id="resetSetup">Restore defaults</button></div>
         <div class="setup-layout">
           <aside class="setup-sidebar">
-            <button class="setup-tab active" data-setup-tab="workspaces"><span>▦</span><span><strong>Workspaces</strong><small>Modules and order</small></span></button>
-            <button class="setup-tab" data-setup-tab="business"><span>◇</span><span><strong>Business</strong><small>Name and locations</small></span></button>
-            <button class="setup-tab" data-setup-tab="tasks"><span>✓</span><span><strong>Task builders</strong><small>Cleaning and checks</small></span></button>
-            <button class="setup-tab" data-setup-tab="access"><span>⌁</span><span><strong>Access</strong><small>PINs added later</small></span></button>
+            <button class="setup-tab active" data-setup-tab="workspaces">▦ <span><strong>Workspaces</strong><small>Modules shown</small></span></button>
+            <button class="setup-tab" data-setup-tab="temperature">° <span><strong>Temperature</strong><small>Equipment and limits</small></span></button>
+            <button class="setup-tab" data-setup-tab="business">◇ <span><strong>Business</strong><small>General settings</small></span></button>
           </aside>
-
-          <section class="setup-content active" data-setup-content="workspaces">
-            <div class="setup-content-head"><div><p class="eyebrow">Workspace editor</p><h2>Visible modules</h2><p>Switch modules on or off for each department. Changes appear immediately.</p></div><button class="primary-button" id="addCustomModule">+ Add module</button></div>
-            <div class="workspace-editor-grid">
-              <article class="editor-card"><div class="editor-title"><span class="department-icon">K</span><div><h3>Kitchen</h3><p>Operational screen</p></div></div><div class="module-toggle-list" id="kitchenEditor"></div></article>
-              <article class="editor-card"><div class="editor-title"><span class="department-icon">S</span><div><h3>Service</h3><p>Operational screen</p></div></div><div class="module-toggle-list" id="serviceEditor"></div></article>
-            </div>
-          </section>
-
+          <section class="setup-content active" data-setup-content="workspaces"><div class="setup-content-head"><div><p class="eyebrow">Workspace editor</p><h2>Visible modules</h2></div><button class="primary-button" id="addCustomModule">+ Add module</button></div><div class="workspace-editor-grid"><article class="editor-card"><div class="editor-title"><span class="department-icon">K</span><div><h3>Kitchen</h3><p>Operational screen</p></div></div><div class="module-toggle-list" id="kitchenEditor"></div></article><article class="editor-card"><div class="editor-title"><span class="department-icon">S</span><div><h3>Service</h3><p>Operational screen</p></div></div><div class="module-toggle-list" id="serviceEditor"></div></article></div></section>
+          <section class="setup-content" data-setup-content="temperature"><div class="setup-content-head"><div><p class="eyebrow">Temperature builder</p><h2>Equipment and limits</h2><p>These checks appear every day in the same order.</p></div><button class="primary-button" id="addTemperatureAsset">+ Add equipment</button></div><div class="asset-editor-list" id="temperatureEditor"></div></section>
           <section class="setup-content" data-setup-content="business"><div class="placeholder-card"><span>◇</span><h2>Business settings</h2><p>Restaurant name, location and general settings will live here.</p></div></section>
-          <section class="setup-content" data-setup-content="tasks"><div class="placeholder-card"><span>✓</span><h2>Task builders</h2><p>Temperature assets, cleaning schedules, suppliers and handover options will be configured here.</p></div></section>
-          <section class="setup-content" data-setup-content="access"><div class="placeholder-card"><span>⌁</span><h2>Access profiles</h2><p>Kitchen, Service and hidden Manager PIN access will be added after the workspaces are stable.</p></div></section>
         </div>
       </section>
     </main>
 
-    <nav class="bottom-nav manager-nav" aria-label="Manager navigation">
-      <button class="nav-item active" data-target="dashboard"><span>⌂</span><strong>Dashboard</strong></button>
-      <button class="nav-item" data-target="kitchen"><span>K</span><strong>Kitchen</strong></button>
-      <button class="nav-item" data-target="service"><span>S</span><strong>Service</strong></button>
-      <button class="nav-item" data-target="setup"><span>⚙</span><strong>Setup</strong></button>
-    </nav>
-
-    <nav class="bottom-nav department-nav" aria-label="Department navigation">
-      <button class="nav-item department-home active" data-department-home><span>▦</span><strong>Work</strong></button>
-    </nav>
+    <nav class="bottom-nav manager-nav"><button class="nav-item active" data-target="dashboard">⌂<strong>Dashboard</strong></button><button class="nav-item" data-target="kitchen">K<strong>Kitchen</strong></button><button class="nav-item" data-target="service">S<strong>Service</strong></button><button class="nav-item" data-target="setup">⚙<strong>Setup</strong></button></nav>
+    <nav class="bottom-nav department-nav"><button class="nav-item active" data-department-home>▦<strong>Work</strong></button></nav>
   </div>
 
-  <div class="modal" id="moduleModal" aria-hidden="true">
-    <div class="modal-backdrop" data-close-modal></div>
-    <div class="modal-card workflow-modal">
-      <button class="modal-close" data-close-modal aria-label="Close">×</button>
-      <div class="modal-symbol" id="modalSymbol">°</div>
-      <p class="eyebrow" id="modalEyebrow">Kitchen workflow</p>
-      <h2 id="modalTitle">Temperature</h2>
-      <p id="modalDescription">This module is ready to be built as the next complete workflow.</p>
-      <div class="modal-action-row"><button class="secondary-button" data-close-modal>Back</button><button class="primary-button" id="markDemoComplete">Mark demo complete</button></div>
-    </div>
-  </div>
-
-  <div class="modal" id="reportModal" aria-hidden="true">
-    <div class="modal-backdrop" data-close-report></div>
-    <div class="modal-card report-modal-card">
-      <button class="modal-close" data-close-report aria-label="Close">×</button>
-      <p class="eyebrow">Manager only</p><h2>Daily report</h2>
-      <div class="report-summary"><div><span>Kitchen</span><strong>69%</strong></div><div><span>Service</span><strong>70%</strong></div><div><span>Exceptions</span><strong class="danger-text">3</strong></div></div>
-      <div class="report-lines"><p><span>Temperatures</span><strong>2 missing</strong></p><p><span>Cleaning</span><strong>1 late</strong></p><p><span>Deliveries</span><strong>Complete</strong></p><p><span>Handovers</span><strong>1 new</strong></p></div>
-      <div class="modal-action-row"><button class="secondary-button" data-close-report>Close</button><button class="primary-button">Export later</button></div>
-    </div>
-  </div>
-
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="modal" id="moduleModal"><div class="modal-backdrop" data-close-modal></div><div class="modal-card"><button class="modal-close" data-close-modal>×</button><div class="modal-symbol" id="modalSymbol">°</div><p class="eyebrow" id="modalEyebrow">Kitchen workflow</p><h2 id="modalTitle">Module</h2><p id="modalDescription">This workflow will be built in the next sprint.</p><div class="modal-action-row"><button class="secondary-button" data-close-modal>Back</button></div></div></div>
+  <div class="modal" id="noteModal"><div class="modal-backdrop" data-close-note></div><div class="modal-card note-modal-card"><button class="modal-close" data-close-note>×</button><p class="eyebrow">Optional note</p><h2>Add relevant information</h2><textarea id="temperatureNote" maxlength="250" placeholder="Only write something if action or context is needed."></textarea><div class="modal-action-row"><button class="secondary-button" data-close-note>Cancel</button><button class="primary-button" id="saveNote">Save note</button></div></div></div>
+  <div class="toast" id="toast"></div>
   <script src="app.js"></script>
 </body>
 </html>

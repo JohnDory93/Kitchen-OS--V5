@@ -1,155 +1,57 @@
 (() => {
   'use strict';
-
-  const STORAGE_KEY = 'kitchenos-v5.1-workspaces';
-  const MODE_KEY = 'kitchenos-v5.1-mode';
-
-  const defaults = {
-    kitchen: [
-      { id:'temperature', name:'Temperature', symbol:'°', description:'Opening, closing and checks', enabled:true, status:'2 open' },
-      { id:'cleaning', name:'Cleaning', symbol:'✦', description:'Daily and scheduled cleaning', enabled:true, status:'1 late', late:true },
-      { id:'deliveries', name:'Deliveries', symbol:'↓', description:'Receive and verify goods', enabled:true, status:'Today' },
-      { id:'cooking', name:'Cooking', symbol:'◒', description:'Cooking temperature records', enabled:true, status:'Ready' },
-      { id:'cooling', name:'Cooling', symbol:'❄', description:'Cooling and blast-chill records', enabled:true, status:'Ready' },
-      { id:'prep', name:'Prep List', symbol:'≡', description:'What needs preparing today', enabled:true, status:'6 items' },
-      { id:'maintenance', name:'Maintenance', symbol:'◇', description:'Report an operational issue', enabled:true, status:'1 open' },
-      { id:'handover', name:'Handover', symbol:'↗', description:'Only relevant shift information', enabled:true, status:'New' }
-    ],
-    service: [
-      { id:'opening', name:'Opening', symbol:'↗', description:'Opening checklist', enabled:true, status:'1 open' },
-      { id:'cleaning', name:'Cleaning', symbol:'✦', description:'Daily and scheduled cleaning', enabled:true, status:'Ready' },
-      { id:'temperature', name:'Temperature', symbol:'°', description:'Display and service fridges', enabled:true, status:'Ready' },
-      { id:'closing', name:'Closing', symbol:'↘', description:'Closing checklist', enabled:true, status:'Later' },
-      { id:'handover', name:'Handover', symbol:'↗', description:'Relevant shift information', enabled:true, status:'New' },
-      { id:'maintenance', name:'Maintenance', symbol:'◇', description:'Report an operational issue', enabled:true, status:'Ready' }
-    ]
+  const STORAGE_KEY='kitchenos-v5.2-state'; const MODE_KEY='kitchenos-v5.2-mode';
+  const todayKey=()=>new Date().toISOString().slice(0,10);
+  const defaults={
+    modules:{kitchen:[
+      {id:'temperature',name:'Temperature',symbol:'°',description:'Opening, closing and checks',enabled:true},
+      {id:'cleaning',name:'Cleaning',symbol:'✦',description:'Daily and scheduled cleaning',enabled:true,status:'1 late',late:true},
+      {id:'deliveries',name:'Deliveries',symbol:'↓',description:'Receive and verify goods',enabled:true,status:'Create report'},
+      {id:'cooking',name:'Cooking',symbol:'◒',description:'Cooking temperature records',enabled:true,status:'Ready'},
+      {id:'cooling',name:'Cooling',symbol:'❄',description:'Cooling and blast-chill records',enabled:true,status:'Ready'},
+      {id:'prep',name:'Prep List',symbol:'≡',description:'What needs preparing today',enabled:true,status:'6 items'},
+      {id:'maintenance',name:'Maintenance',symbol:'◇',description:'Report an operational issue',enabled:true,status:'1 open'},
+      {id:'handover',name:'Handover',symbol:'↗',description:'Only relevant shift information',enabled:true,status:'New'}],
+      service:[{id:'opening',name:'Opening',symbol:'↗',description:'Opening checklist',enabled:true,status:'1 open'},{id:'cleaning',name:'Cleaning',symbol:'✦',description:'Daily and scheduled cleaning',enabled:true,status:'Ready'},{id:'temperature',name:'Temperature',symbol:'°',description:'Display and service fridges',enabled:true,status:'Ready'},{id:'closing',name:'Closing',symbol:'↘',description:'Closing checklist',enabled:true,status:'Later'},{id:'handover',name:'Handover',symbol:'↗',description:'Relevant shift information',enabled:true,status:'New'},{id:'maintenance',name:'Maintenance',symbol:'◇',description:'Report an operational issue',enabled:true,status:'Ready'}]},
+    assets:[
+      {id:'fridge-1',name:'Fridge 1',type:'fridge',min:0,max:5,step:.1,default:4},
+      {id:'fridge-2',name:'Fridge 2',type:'fridge',min:0,max:5,step:.1,default:4},
+      {id:'freezer-1',name:'Freezer 1',type:'freezer',min:-24,max:-18,step:.1,default:-18},
+      {id:'blast-chiller',name:'Blast Chiller',type:'fridge',min:0,max:5,step:.1,default:3},
+      {id:'hot-holding',name:'Hot Holding',type:'hot',min:63,max:90,step:.5,default:65}
+    ], records:{}
   };
+  const clone=x=>JSON.parse(JSON.stringify(x));
+  function load(){try{const s=JSON.parse(localStorage.getItem(STORAGE_KEY));if(s?.modules?.kitchen&&s?.assets)return s}catch{}return clone(defaults)}
+  let state=load(); let mode=localStorage.getItem(MODE_KEY)||'manager'; let session='opening'; let currentIndex=0; let draftValue=0; let draftNote=''; let touchStartX=0;
+  const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+  const save=()=>localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
+  const escapeHtml=v=>String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
+  const recordBucket=()=>{const d=todayKey(); state.records[d]??={opening:{},closing:{}}; return state.records[d][session]};
+  const assetIcon=t=>t==='freezer'?'❄':t==='hot'?'♨':'▣';
+  function statusFor(asset,value){if(value<asset.min)return{label:'Low',className:'low'};if(value>asset.max)return{label:'High',className:'high'};return{label:'OK',className:'ok'}}
+  function showPage(name){$$('[data-page]').forEach(p=>p.classList.toggle('active',p.dataset.page===name));$$('[data-target]').forEach(b=>b.classList.toggle('active',b.dataset.target===name));}
+  function setMode(next){mode=next;localStorage.setItem(MODE_KEY,mode);$('#appShell').dataset.mode=mode;$('#modeChipLabel').textContent=`${mode[0].toUpperCase()+mode.slice(1)} preview`;$('#workspaceSubtitle').textContent=mode==='manager'?'Manager control centre':`${mode[0].toUpperCase()+mode.slice(1)} workspace`;$('#modeMenu').classList.remove('open');showPage(mode==='manager'?'dashboard':mode)}
+  function temperatureStatusText(){const total=state.assets.length;const done=Object.keys(state.records[todayKey()]?.opening||{}).length;return done===total?'Complete':`${total-done} open`}
+  function renderModules(dep){const c=$(`#${dep}Modules`);c.innerHTML=state.modules[dep].filter(x=>x.enabled).map(x=>{let status=x.status||'Ready';if(x.id==='temperature'&&dep==='kitchen')status=temperatureStatusText();return`<button class="module-card" data-open-module="${dep}" data-module-id="${escapeHtml(x.id)}"><span class="module-status ${x.late?'late':''}">${escapeHtml(status)}</span><span class="module-symbol">${escapeHtml(x.symbol)}</span><strong>${escapeHtml(x.name)}</strong><small>${escapeHtml(x.description)}</small></button>`}).join('');c.querySelectorAll('[data-open-module]').forEach(b=>b.onclick=()=>openModule(dep,b.dataset.moduleId))}
+  function openModule(dep,id){if(id==='temperature'&&dep==='kitchen'){session='opening';renderTemperatureList();showPage('temperature-list');return}const item=state.modules[dep].find(x=>x.id===id);$('#modalSymbol').textContent=item?.symbol||'+';$('#modalEyebrow').textContent=`${dep} workflow`;$('#modalTitle').textContent=item?.name||'Module';$('#modalDescription').textContent='This workflow will be built in the next sprint.';openModal($('#moduleModal'))}
+  function renderEditors(){['kitchen','service'].forEach(dep=>{const c=$(`#${dep}Editor`);c.innerHTML=state.modules[dep].map((x,i)=>`<div class="module-toggle-row"><span class="mini-symbol">${escapeHtml(x.symbol)}</span><span><strong>${escapeHtml(x.name)}</strong><small>Position ${i+1}</small></span><label class="switch"><input type="checkbox" data-toggle="${dep}" data-id="${escapeHtml(x.id)}" ${x.enabled?'checked':''}></label></div>`).join('');c.querySelectorAll('[data-toggle]').forEach(i=>i.onchange=()=>{const x=state.modules[i.dataset.toggle].find(v=>v.id===i.dataset.id);x.enabled=i.checked;save();renderModules(i.dataset.toggle);toast(`${x.name} ${i.checked?'shown':'hidden'}`)})})}
+  function renderTemperatureEditor(){const c=$('#temperatureEditor');c.innerHTML=state.assets.map((a,i)=>`<div class="asset-editor-row" data-asset-row="${a.id}"><input data-field="name" value="${escapeHtml(a.name)}" aria-label="Equipment name"><select data-field="type"><option value="fridge" ${a.type==='fridge'?'selected':''}>Fridge</option><option value="freezer" ${a.type==='freezer'?'selected':''}>Freezer</option><option value="hot" ${a.type==='hot'?'selected':''}>Hot holding</option></select><input type="number" step="0.1" data-field="min" value="${a.min}" aria-label="Minimum"><input type="number" step="0.1" data-field="max" value="${a.max}" aria-label="Maximum"><button data-delete-asset="${a.id}">Delete</button></div>`).join('');c.querySelectorAll('[data-asset-row]').forEach(row=>row.querySelectorAll('[data-field]').forEach(input=>input.onchange=()=>{const a=state.assets.find(x=>x.id===row.dataset.assetRow);const f=input.dataset.field;a[f]=['min','max'].includes(f)?Number(input.value):input.value;save();renderTemperatureList();toast('Temperature setup saved')}));c.querySelectorAll('[data-delete-asset]').forEach(b=>b.onclick=()=>{if(state.assets.length<=1)return toast('Keep at least one equipment item');state.assets=state.assets.filter(a=>a.id!==b.dataset.deleteAsset);save();renderTemperatureEditor();renderTemperatureList();renderModules('kitchen')})}
+  function renderTemperatureList(){const rec=recordBucket();const total=state.assets.length;const done=Object.keys(rec).length;$('#temperatureOpenBadge').textContent=done===total?'Complete':`${total-done} open`;$('#temperatureAssetList').innerHTML=state.assets.map((a,i)=>{const r=rec[a.id];const s=r?statusFor(a,r.value):{label:'Pending',className:'pending'};return`<button class="temperature-row" data-temp-asset="${i}"><span class="row-icon">${assetIcon(a.type)}</span><span><strong>${escapeHtml(a.name)}</strong><small>${escapeHtml(a.type==='hot'?'Hot holding':a.type[0].toUpperCase()+a.type.slice(1))} · target ${a.min} to ${a.max}°C</small></span><span class="reading">${r?`${Number(r.value).toFixed(1)}°C`:'—'}</span><span class="status-pill ${s.className}">${s.label}</span></button>`}).join('');$$('[data-temp-asset]').forEach(b=>b.onclick=()=>openTemperatureEntry(Number(b.dataset.tempAsset)));const bar=$('#temperatureCompleteBar');bar.disabled=done!==total;bar.textContent=done===total?'✓ All checks completed':'Complete all checks first';bar.classList.toggle('ready',done===total);updateManager()}
+  function openTemperatureEntry(index){currentIndex=Math.max(0,Math.min(index,state.assets.length-1));const a=state.assets[currentIndex];const r=recordBucket()[a.id];draftValue=r?.value??a.default;draftNote=r?.note||'';renderEntry();showPage('temperature-entry')}
+  function renderEntry(){const a=state.assets[currentIndex];const st=statusFor(a,draftValue);$('#entrySessionLabel').textContent=`${session[0].toUpperCase()+session.slice(1)} check`;$('#entryAssetName').textContent=a.name;$('#entryProgress').textContent=`${currentIndex+1} / ${state.assets.length}`;$('#entryAssetIcon').textContent=assetIcon(a.type);$('#temperatureValue').textContent=`${Number(draftValue).toFixed(1)}°C`;const pill=$('#temperatureStatus');pill.textContent=st.label;pill.className=`status-pill ${st.className}`;const values=[draftValue-a.step*2,draftValue-a.step,draftValue,draftValue+a.step,draftValue+a.step*2];$('#quickValues').innerHTML=values.map(v=>`<button class="${Math.abs(v-draftValue)<.001?'active':''}" data-quick="${v}">${Number(v).toFixed(1)}</button>`).join('');$$('[data-quick]').forEach(b=>b.onclick=()=>{draftValue=Number(b.dataset.quick);renderEntry()});$('#notePreview').hidden=!draftNote;$('#notePreview').textContent=draftNote?`Note: ${draftNote}`:'';$('#previousTemperature').disabled=currentIndex===0}
+  function adjustTemperature(direction){const a=state.assets[currentIndex];draftValue=Math.round((draftValue+(direction*a.step))*10)/10;renderEntry()}
+  function saveCurrent(andNext=true){const a=state.assets[currentIndex];recordBucket()[a.id]={value:draftValue,note:draftNote,photo:$('#temperaturePhoto').files.length>0,time:new Date().toISOString()};save();renderTemperatureList();renderModules('kitchen');toast(`${a.name} saved`);if(andNext&&currentIndex<state.assets.length-1)openTemperatureEntry(currentIndex+1);else if(andNext){showPage('temperature-list');toast('Temperature checks completed')}}
+  function updateManager(){const rec=state.records[todayKey()]?.opening||{};const done=Object.keys(rec).length;const total=state.assets.length;$('#temperatureSummary').textContent=`${done} / ${total}`;const missing=total-done;$('#attentionCount').textContent=missing?1:0;$('#managerAttention').innerHTML=missing?`<button data-open-temp-manager><span class="alert-mark">!</span><span><strong>Opening temperatures</strong><small>Kitchen · ${missing} check${missing===1?'':'s'} missing</small></span><em>Open</em></button>`:`<button><span class="alert-mark" style="color:var(--green);background:rgba(169,237,121,.12)">✓</span><span><strong>Opening temperatures complete</strong><small>Kitchen · all ${total} checks saved</small></span><em>Done</em></button>`;const latest=Object.entries(rec).sort((a,b)=>new Date(b[1].time)-new Date(a[1].time))[0];if(latest){const a=state.assets.find(x=>x.id===latest[0]);$('#lastActivityTime').textContent=new Date(latest[1].time).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});$('#lastActivityText').textContent=`Kitchen · ${a?.name||'Temperature'}`}$('[data-open-temp-manager]')?.addEventListener('click',()=>{session='opening';renderTemperatureList();showPage('temperature-list')})}
+  function openModal(m){m.classList.add('open')} function closeModal(m){m.classList.remove('open')} function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),1600)}
 
-  let state = loadState();
-  let mode = localStorage.getItem(MODE_KEY) || 'manager';
-  if (!['manager','kitchen','service'].includes(mode)) mode = 'manager';
-
-  const appShell = document.getElementById('appShell');
-  const pages = [...document.querySelectorAll('[data-page]')];
-  const navItems = [...document.querySelectorAll('[data-target]')];
-  const modeChip = document.getElementById('modeChip');
-  const modeMenu = document.getElementById('modeMenu');
-  const modeChipLabel = document.getElementById('modeChipLabel');
-  const workspaceSubtitle = document.getElementById('workspaceSubtitle');
-  const moduleModal = document.getElementById('moduleModal');
-  const reportModal = document.getElementById('reportModal');
-  const toast = document.getElementById('toast');
-  let currentModule = null;
-
-  function cloneDefaults() { return JSON.parse(JSON.stringify(defaults)); }
-  function loadState() {
-    try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (saved?.kitchen && saved?.service) return saved;
-    } catch (_) {}
-    return cloneDefaults();
-  }
-  function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-
-  function showPage(name) {
-    pages.forEach(page => page.classList.toggle('active', page.dataset.page === name));
-    navItems.forEach(item => item.classList.toggle('active', item.dataset.target === name));
-  }
-
-  function setMode(nextMode) {
-    mode = nextMode;
-    localStorage.setItem(MODE_KEY, mode);
-    appShell.dataset.mode = mode;
-    modeChipLabel.textContent = `${mode[0].toUpperCase()}${mode.slice(1)} preview`;
-    workspaceSubtitle.textContent = mode === 'manager' ? 'Manager control centre' : `${mode[0].toUpperCase()}${mode.slice(1)} workspace`;
-    closeModeMenu();
-    showPage(mode === 'manager' ? 'dashboard' : mode);
-  }
-
-  function renderModules(department) {
-    const container = document.getElementById(`${department}Modules`);
-    const modules = state[department].filter(item => item.enabled);
-    container.innerHTML = modules.map(item => `
-      <button class="module-card" data-open-module="${department}" data-module-id="${escapeHtml(item.id)}">
-        <span class="module-status ${item.late ? 'late' : ''}">${escapeHtml(item.status || 'Ready')}</span>
-        <span class="module-symbol">${escapeHtml(item.symbol)}</span>
-        <strong>${escapeHtml(item.name)}</strong>
-        <small>${escapeHtml(item.description)}</small>
-      </button>`).join('');
-    container.querySelectorAll('[data-open-module]').forEach(button => button.addEventListener('click', () => openModule(department, button.dataset.moduleId)));
-  }
-
-  function renderEditors() {
-    ['kitchen','service'].forEach(department => {
-      const editor = document.getElementById(`${department}Editor`);
-      editor.innerHTML = state[department].map((item, index) => `
-        <div class="module-toggle-row">
-          <span class="mini-symbol">${escapeHtml(item.symbol)}</span>
-          <span><strong>${escapeHtml(item.name)}</strong><small>Position ${index + 1}</small></span>
-          <label class="switch"><input type="checkbox" data-toggle-module="${department}" data-module-id="${escapeHtml(item.id)}" ${item.enabled ? 'checked' : ''}><span class="slider"></span></label>
-        </div>`).join('');
-      editor.querySelectorAll('[data-toggle-module]').forEach(input => input.addEventListener('change', () => {
-        const item = state[department].find(module => module.id === input.dataset.moduleId);
-        if (item) item.enabled = input.checked;
-        saveState(); renderModules(department); showToast(`${item?.name || 'Module'} ${input.checked ? 'shown' : 'hidden'} in ${department}`);
-      }));
-    });
-  }
-
-  function openModule(department, id) {
-    const item = state[department].find(module => module.id === id);
-    if (!item) return;
-    currentModule = item;
-    document.getElementById('modalSymbol').textContent = item.symbol;
-    document.getElementById('modalEyebrow').textContent = `${department} workflow`;
-    document.getElementById('modalTitle').textContent = item.name;
-    document.getElementById('modalDescription').textContent = `${item.description}. This is the workspace architecture; the complete ${item.name.toLowerCase()} flow will be built next.`;
-    openModal(moduleModal);
-  }
-
-  function openModal(modal) { modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); }
-  function closeModal(modal) { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
-  function openModeMenu() { modeMenu.classList.add('open'); modeMenu.setAttribute('aria-hidden','false'); modeChip.setAttribute('aria-expanded','true'); }
-  function closeModeMenu() { modeMenu.classList.remove('open'); modeMenu.setAttribute('aria-hidden','true'); modeChip.setAttribute('aria-expanded','false'); }
-  function showToast(message) { toast.textContent = message; toast.classList.add('show'); clearTimeout(showToast.timer); showToast.timer = setTimeout(() => toast.classList.remove('show'), 1800); }
-  function escapeHtml(value) { return String(value).replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[char])); }
-
-  navItems.forEach(item => item.addEventListener('click', () => showPage(item.dataset.target)));
-  document.querySelectorAll('[data-go-page]').forEach(button => button.addEventListener('click', () => showPage(button.dataset.goPage)));
-  document.querySelector('[data-department-home]').addEventListener('click', () => showPage(mode));
-  modeChip.addEventListener('click', event => { event.stopPropagation(); modeMenu.classList.contains('open') ? closeModeMenu() : openModeMenu(); });
-  document.querySelectorAll('[data-switch-mode]').forEach(button => button.addEventListener('click', () => setMode(button.dataset.switchMode)));
-  document.addEventListener('click', event => { if (!modeMenu.contains(event.target) && event.target !== modeChip) closeModeMenu(); });
-
-  document.querySelectorAll('[data-close-modal]').forEach(button => button.addEventListener('click', () => closeModal(moduleModal)));
-  document.querySelectorAll('[data-open-report]').forEach(button => button.addEventListener('click', () => openModal(reportModal)));
-  document.querySelectorAll('[data-close-report]').forEach(button => button.addEventListener('click', () => closeModal(reportModal)));
-  document.getElementById('markDemoComplete').addEventListener('click', () => { closeModal(moduleModal); showToast(`${currentModule?.name || 'Task'} saved`); });
-
-  document.querySelectorAll('[data-setup-tab]').forEach(button => button.addEventListener('click', () => {
-    document.querySelectorAll('[data-setup-tab]').forEach(item => item.classList.toggle('active', item === button));
-    document.querySelectorAll('[data-setup-content]').forEach(content => content.classList.toggle('active', content.dataset.setupContent === button.dataset.setupTab));
-  }));
-
-  document.getElementById('resetSetup').addEventListener('click', () => {
-    state = cloneDefaults(); saveState(); renderModules('kitchen'); renderModules('service'); renderEditors(); showToast('Workspace defaults restored');
-  });
-
-  document.getElementById('addCustomModule').addEventListener('click', () => {
-    const name = window.prompt('Module name');
-    if (!name?.trim()) return;
-    const department = window.prompt('Add to Kitchen or Service?', 'Kitchen')?.trim().toLowerCase();
-    if (!['kitchen','service'].includes(department)) { showToast('Choose Kitchen or Service'); return; }
-    const id = `custom-${Date.now()}`;
-    state[department].push({ id, name:name.trim(), symbol:'+', description:'Custom operational module', enabled:true, status:'Ready' });
-    saveState(); renderModules(department); renderEditors(); showToast(`${name.trim()} added to ${department}`);
-  });
-
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') { closeModeMenu(); closeModal(moduleModal); closeModal(reportModal); }
-  });
-
-  const today = new Intl.DateTimeFormat(undefined,{weekday:'long',day:'numeric',month:'long'}).format(new Date());
-  document.getElementById('todayLabel').textContent = today;
-  renderModules('kitchen'); renderModules('service'); renderEditors(); setMode(mode);
+  $$('[data-target]').forEach(b=>b.onclick=()=>showPage(b.dataset.target));$$('[data-go-page]').forEach(b=>b.onclick=()=>showPage(b.dataset.goPage));$('[data-department-home]').onclick=()=>showPage(mode);$('#modeChip').onclick=e=>{e.stopPropagation();$('#modeMenu').classList.toggle('open')};$$('[data-switch-mode]').forEach(b=>b.onclick=()=>setMode(b.dataset.switchMode));document.onclick=e=>{if(!$('#modeMenu').contains(e.target)&&e.target!==$('#modeChip'))$('#modeMenu').classList.remove('open')};
+  $$('[data-close-modal]').forEach(b=>b.onclick=()=>closeModal($('#moduleModal')));$$('[data-session]').forEach(b=>b.onclick=()=>{session=b.dataset.session;$$('[data-session]').forEach(x=>x.classList.toggle('active',x===b));renderTemperatureList()});$$('[data-temp-back]').forEach(b=>b.onclick=()=>showPage(mode==='manager'?'kitchen':mode));$('[data-temp-list]').onclick=()=>{saveCurrent(false);showPage('temperature-list')};$$('[data-temp-adjust]').forEach(b=>b.onclick=()=>adjustTemperature(Number(b.dataset.tempAdjust)));$('#previousTemperature').onclick=()=>{saveCurrent(false);openTemperatureEntry(currentIndex-1)};$('#saveNextTemperature').onclick=()=>saveCurrent(true);
+  $('#addNoteButton').onclick=()=>{$('#temperatureNote').value=draftNote;openModal($('#noteModal'))};$$('[data-close-note]').forEach(b=>b.onclick=()=>closeModal($('#noteModal')));$('#saveNote').onclick=()=>{draftNote=$('#temperatureNote').value.trim();closeModal($('#noteModal'));renderEntry();toast('Note saved')};
+  const swipe=$('#temperatureSwipeArea');swipe.addEventListener('touchstart',e=>touchStartX=e.changedTouches[0].screenX,{passive:true});swipe.addEventListener('touchend',e=>{const dx=e.changedTouches[0].screenX-touchStartX;if(Math.abs(dx)<60)return;if(dx<0)saveCurrent(true);else if(currentIndex>0){saveCurrent(false);openTemperatureEntry(currentIndex-1)}},{passive:true});
+  $$('[data-setup-tab]').forEach(b=>b.onclick=()=>{$$('[data-setup-tab]').forEach(x=>x.classList.toggle('active',x===b));$$('[data-setup-content]').forEach(x=>x.classList.toggle('active',x.dataset.setupContent===b.dataset.setupTab))});
+  $('#addTemperatureAsset').onclick=()=>{const id=`asset-${Date.now()}`;state.assets.push({id,name:'New Fridge',type:'fridge',min:0,max:5,step:.1,default:4});save();renderTemperatureEditor();renderTemperatureList();renderModules('kitchen');toast('Equipment added')};
+  $('#resetSetup').onclick=()=>{state=clone(defaults);save();renderAll();toast('Defaults restored')};$('#addCustomModule').onclick=()=>{const name=prompt('Module name');if(!name?.trim())return;const dep=(prompt('Kitchen or Service?','Kitchen')||'').toLowerCase();if(!['kitchen','service'].includes(dep))return toast('Choose Kitchen or Service');state.modules[dep].push({id:`custom-${Date.now()}`,name:name.trim(),symbol:'+',description:'Custom operational module',enabled:true,status:'Ready'});save();renderAll();toast('Module added')};
+  function renderAll(){renderModules('kitchen');renderModules('service');renderEditors();renderTemperatureEditor();renderTemperatureList();updateManager()}
+  $('#todayLabel').textContent=new Intl.DateTimeFormat(undefined,{weekday:'long',day:'numeric',month:'long'}).format(new Date());renderAll();setMode(mode);
 })();

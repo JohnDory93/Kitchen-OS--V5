@@ -1,15 +1,16 @@
-# KitchenOS v5.1 — Workspace Architecture
+# KitchenOS v5.2.0 — Temperature Sprint
 
-Clean static prototype implementing the agreed product architecture:
+Clean static HTML/CSS/JS foundation.
 
-- Manager mode: Dashboard, Kitchen, Service, Setup
-- Kitchen mode: Kitchen work only
-- Service mode: Service work only
-- Reports visible only from Manager Dashboard
-- Editable module visibility in Setup
-- No PIN/login yet; the top-right preview switch simulates the three access profiles
-- No Supabase, service worker, build tools or legacy files
+## Included
+- Manager, Kitchen and Service workspace previews
+- Complete Kitchen temperature workflow
+- Opening and closing sessions
+- Same configurable equipment list every day
+- Tap or swipe to move between equipment
+- Automatic OK / High / Low status from configured limits
+- Optional note and photo marker
+- Local daily records
+- Setup editor for equipment names, type and temperature limits
 
-## Deploy
-
-Upload these files to the root of the `KitchenOS-v5` GitHub repository. Vercel framework preset: **Other**. Leave build and output settings empty.
+No login, Supabase, build tools or service worker yet.
