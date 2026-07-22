@@ -1,18 +1,13 @@
-# KitchenOS v5.4.0 — Management Foundation
+# KitchenOS v5.4.1 — Management Foundation Fix
 
-Adds the first Management/Setup sprint without changing Temperature or Cleaning workflows.
+Fixes:
+- Logout and optional handover note now complete reliably.
+- Management cards open their editors correctly on iPad/Safari.
+- Existing Cleaning tasks are preserved and visible.
+- Cleaning Management now lists and edits current tasks.
+- Hidden panels no longer intercept taps.
+- Temperature and Cleaning operational workflows remain unchanged.
 
-Included:
-- Business and locations
-- Departments
-- Shared devices assigned to locations/departments
-- Personal manager user accounts
-- Staff profiles without required login
-- Login and logout flow
-- Optional logout handover note
-- Automatic handover summary shown to the next person who logs in
-- Existing workspace and temperature configuration accessible from Management
-
-Demo PINs:
+Test PINs:
 - Francesco Pirone: 1234
 - Restaurant Manager: 2222
