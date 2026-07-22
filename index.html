@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#07111b" />
-  <title>KitchenOS v5.2.4</title>
+  <title>KitchenOS v5.3.0</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -77,6 +77,31 @@
           </div>
           <div class="entry-footer"><button class="secondary-button" id="previousTemperature">← Previous</button><div class="entry-progress-dots" id="entryProgressDots"></div><button class="primary-button soft-primary" id="saveNextTemperature">Save & Next →</button></div>
           <p class="swipe-hint">Swipe left for next · swipe right for previous</p>
+        </div>
+      </section>
+
+
+      <section class="page workflow-page cleaning-page" data-page="cleaning-list">
+        <div class="workflow-header cleaning-header"><button class="icon-button" data-cleaning-back>←</button><div><p class="eyebrow">Kitchen workflow</p><h1>Cleaning</h1><p>Today first, overdue second. Completed tasks disappear.</p></div><div class="cleaning-progress"><strong id="cleaningProgressText">0 / 5</strong><small>completed</small><span><i id="cleaningProgressFill"></i></span></div></div>
+        <div class="cleaning-board">
+          <section class="cleaning-group"><div class="cleaning-group-head"><div><p class="eyebrow">Priority 1</p><h2>To Do Today</h2></div><span class="badge" id="todayCleaningCount">3 open</span></div><div class="cleaning-task-grid" id="todayCleaningTasks"></div></section>
+          <section class="cleaning-group overdue-group"><div class="cleaning-group-head"><div><p class="eyebrow danger-text">Priority 2</p><h2>Overdue</h2></div><span class="badge danger" id="overdueCleaningCount">2 overdue</span></div><div class="cleaning-task-grid" id="overdueCleaningTasks"></div></section>
+          <div class="cleaning-empty" id="cleaningEmpty" hidden><span>✓</span><h2>Cleaning complete</h2><p>All scheduled tasks are confirmed.</p></div>
+        </div>
+      </section>
+
+      <section class="page workflow-page cleaning-detail-page" data-page="cleaning-detail">
+        <div class="cleaning-detail-shell">
+          <div class="workflow-header compact"><button class="icon-button" data-cleaning-list>←</button><div><p class="eyebrow" id="cleaningDetailPriority">To Do Today</p><h1 id="cleaningDetailTitle">Clean extraction hood</h1></div><span class="badge" id="cleaningDetailDue">Due 14:00</span></div>
+          <div class="cleaning-detail-grid">
+            <section class="cleaning-instruction-card"><span class="cleaning-symbol">✦</span><div><p class="eyebrow">Task instructions</p><h2 id="cleaningDetailArea">Kitchen · Hot line</h2><p id="cleaningDetailInstructions"></p></div><div class="audit-chip"><span>Audit trail</span><strong>Required evidence</strong></div></section>
+            <section class="cleaning-form-card">
+              <label class="field-label">Completed by <strong>Required</strong><select id="cleaningStaff"><option value="">Select staff member</option></select></label>
+              <div class="cleaning-evidence-row"><label class="evidence-button">▣<span><strong>Add photo</strong><small id="cleaningPhotoLabel">Optional</small></span><input type="file" accept="image/*" id="cleaningPhoto"></label><label class="evidence-button">✎<span><strong>Add note</strong><small>Optional</small></span><textarea id="cleaningNote" maxlength="220" placeholder="Add a short note"></textarea></label></div>
+              <div class="signature-block"><div><span>Signature</span><strong>Required</strong></div><canvas id="signaturePad" width="720" height="150"></canvas><button class="signature-clear" id="clearSignature">Clear signature</button></div>
+              <button class="primary-button cleaning-confirm" id="confirmCleaning" disabled>Confirm Cleaning</button>
+            </section>
+          </div>
         </div>
       </section>
 
