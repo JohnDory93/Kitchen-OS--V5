@@ -1,4 +1,4 @@
-# KitchenOS v5.2.0 — Temperature Sprint
+# KitchenOS v5.2.1 — Temperature Refinement
 
 Clean static HTML/CSS/JS foundation.
 
@@ -14,3 +14,12 @@ Clean static HTML/CSS/JS foundation.
 - Setup editor for equipment names, type and temperature limits
 
 No login, Supabase, build tools or service worker yet.
+
+
+## v5.2.1 changes
+- Clear pending/completed progress circles
+- Wheel-style temperature input
+- One-tap temperature presets
+- Compact note and photo actions
+- Softer primary action styling
+- Progress dots and swipe navigation
