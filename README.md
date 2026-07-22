@@ -1,22 +1,12 @@
-# KitchenOS v5.4.0 — Management Foundation (No Login)
+# KitchenOS v5.4.2 — Unified Management Setup
 
-Built from the clean v5.3.1 Cleaning iPad Fix base.
+Built from v5.3.1 without login/session features.
 
-Included:
-- Management home with working cards
-- Business settings
-- Locations
-- Departments
-- Shared devices assigned to a location and department
-- Staff master list for task dropdowns and signatures
-- Cleaning task master list
-- Temperature equipment editor
-- Kitchen and Service workspace visibility editor
-
-Intentionally excluded for now:
-- Login / logout
-- PINs or personal accounts
-- Sessions
-- Shift handover
-
-Temperature and Cleaning operational workflows remain based on v5.3.1.
+Changes:
+- Consistent top-right + Add button in Management sections
+- Full-screen add/edit sheets instead of browser prompts
+- Cleaning Quick Setup with multi-select templates
+- Temperature Quick Setup with multi-select equipment and automatic ranges
+- Food & Production master list with quick setup and standard cooking/cooling limits
+- Legacy cleaning task names normalized so `undefined` no longer appears
+- Existing Temperature and Cleaning operational workflows preserved
