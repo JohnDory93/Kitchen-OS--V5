@@ -43,9 +43,6 @@
     const wheel=[draftValue+a.step*2,draftValue+a.step,draftValue,draftValue-a.step,draftValue-a.step*2];
     $('#wheelValues').innerHTML=wheel.map((v,i)=>`<button class="wheel-value ${i===2?'active':''}" data-wheel="${v}">${Number(v).toFixed(1)}</button>`).join('');
     $$('[data-wheel]').forEach(b=>b.onclick=()=>{draftValue=Number(b.dataset.wheel);renderEntry()});
-    const presets=a.type==='freezer'?[-18,-20,-22,-24]:a.type==='hot'?[63,65,70,75]:[2,3,4,5,6];
-    $('#temperaturePresets').innerHTML=presets.map(v=>`<button class="${Math.abs(v-draftValue)<.001?'active':''}" data-preset="${v}">${v}°C</button>`).join('');
-    $$('[data-preset]').forEach(b=>b.onclick=()=>{draftValue=Number(b.dataset.preset);renderEntry()});
     $('#entryProgressDots').innerHTML=state.assets.map((_,i)=>`<span class="${i===currentIndex?'active':''} ${recordBucket()[state.assets[i].id]?'done':''}"></span>`).join('');
     $('#notePreview').hidden=!draftNote;$('#notePreview').textContent=draftNote?`Note: ${draftNote}`:'';$('#previousTemperature').disabled=currentIndex===0}
   function adjustTemperature(direction){const a=state.assets[currentIndex];draftValue=Math.round((draftValue+(direction*a.step))*10)/10;renderEntry()}

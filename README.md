@@ -1,4 +1,4 @@
-# KitchenOS v5.2.3 — Temperature Refinement
+# KitchenOS v5.2.4 — Temperature Refinement
 
 Clean static HTML/CSS/JS foundation.
 
@@ -29,3 +29,8 @@ No login, Supabase, build tools or service worker yet.
 - Continuous drag temperature wheel: values change while your finger moves and stop when you stop.
 - Out-of-range corrective action fits on one iPad screen with no scrolling.
 - Six single-tap actions, optional note, and manager attention state.
+
+## v5.2.4
+- Removed the quick temperature preset buttons.
+- Temperature is now entered only with the continuous swipe wheel.
+- Rebalanced the iPad layout so the wheel stays centered.
