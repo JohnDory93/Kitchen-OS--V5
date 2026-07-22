@@ -1,36 +1,18 @@
-# KitchenOS v5.2.4 — Temperature Refinement
+# KitchenOS v5.4.0 — Management Foundation
 
-Clean static HTML/CSS/JS foundation.
+Adds the first Management/Setup sprint without changing Temperature or Cleaning workflows.
 
-## Included
-- Manager, Kitchen and Service workspace previews
-- Complete Kitchen temperature workflow
-- Opening and closing sessions
-- Same configurable equipment list every day
-- Tap or swipe to move between equipment
-- Automatic OK / High / Low status from configured limits
-- Optional note and photo marker
-- Local daily records
-- Setup editor for equipment names, type and temperature limits
+Included:
+- Business and locations
+- Departments
+- Shared devices assigned to locations/departments
+- Personal manager user accounts
+- Staff profiles without required login
+- Login and logout flow
+- Optional logout handover note
+- Automatic handover summary shown to the next person who logs in
+- Existing workspace and temperature configuration accessible from Management
 
-No login, Supabase, build tools or service worker yet.
-
-
-## v5.2.3 changes
-- Clear pending/completed progress circles
-- Wheel-style temperature input
-- One-tap temperature presets
-- Compact note and photo actions
-- Softer primary action styling
-- Progress dots and swipe navigation
-
-
-## v5.2.3
-- Continuous drag temperature wheel: values change while your finger moves and stop when you stop.
-- Out-of-range corrective action fits on one iPad screen with no scrolling.
-- Six single-tap actions, optional note, and manager attention state.
-
-## v5.2.4
-- Removed the quick temperature preset buttons.
-- Temperature is now entered only with the continuous swipe wheel.
-- Rebalanced the iPad layout so the wheel stays centered.
+Demo PINs:
+- Francesco Pirone: 1234
+- Restaurant Manager: 2222
