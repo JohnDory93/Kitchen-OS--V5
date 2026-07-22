@@ -1,13 +1,22 @@
-# KitchenOS v5.4.1 — Management Foundation Fix
+# KitchenOS v5.4.0 — Management Foundation (No Login)
 
-Fixes:
-- Logout and optional handover note now complete reliably.
-- Management cards open their editors correctly on iPad/Safari.
-- Existing Cleaning tasks are preserved and visible.
-- Cleaning Management now lists and edits current tasks.
-- Hidden panels no longer intercept taps.
-- Temperature and Cleaning operational workflows remain unchanged.
+Built from the clean v5.3.1 Cleaning iPad Fix base.
 
-Test PINs:
-- Francesco Pirone: 1234
-- Restaurant Manager: 2222
+Included:
+- Management home with working cards
+- Business settings
+- Locations
+- Departments
+- Shared devices assigned to a location and department
+- Staff master list for task dropdowns and signatures
+- Cleaning task master list
+- Temperature equipment editor
+- Kitchen and Service workspace visibility editor
+
+Intentionally excluded for now:
+- Login / logout
+- PINs or personal accounts
+- Sessions
+- Shift handover
+
+Temperature and Cleaning operational workflows remain based on v5.3.1.

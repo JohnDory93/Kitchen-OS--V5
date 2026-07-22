@@ -106,19 +106,20 @@
       </section>
 
       <section class="page management-page" data-page="setup">
-        <div class="page-heading management-heading"><div><p class="eyebrow">Manager control centre</p><h1>Management</h1><p>Configure the business once. KitchenOS uses it everywhere.</p></div><button class="secondary-button" id="resetSetup">Restore defaults</button></div>
-        <div class="management-grid" id="managementGrid">
-          <button class="management-card" data-manage="business"><span>◇</span><div><strong>Business</strong><small>Company and locations</small></div><em>→</em></button>
-          <button class="management-card" data-manage="departments"><span>▦</span><div><strong>Departments</strong><small>Kitchen, Service and more</small></div><em>→</em></button>
-          <button class="management-card" data-manage="devices"><span>▣</span><div><strong>Devices</strong><small>Assign each iPad</small></div><em>→</em></button>
-          <button class="management-card" data-manage="users"><span>♙</span><div><strong>Users</strong><small>Accounts, PIN and access</small></div><em>→</em></button>
-          <button class="management-card" data-manage="staff"><span>♟</span><div><strong>Staff</strong><small>Task assignment and signatures</small></div><em>→</em></button>
-          <button class="management-card" data-manage="workspaces"><span>⊞</span><div><strong>Workspaces</strong><small>Modules shown by department</small></div><em>→</em></button>
-          <button class="management-card" data-manage="temperature"><span>°</span><div><strong>Temperature</strong><small>Equipment and limits</small></div><em>→</em></button>
-          <button class="management-card" data-manage="cleaning"><span>✦</span><div><strong>Cleaning</strong><small>Tasks and schedules</small></div><em>→</em></button>
+        <div class="page-heading management-heading"><div><p class="eyebrow">Manager control centre</p><h1>Management</h1><p>Configure the business, departments and operational master lists. Login and handover will be added later.</p></div><button class="secondary-button" id="resetSetup">Restore defaults</button></div>
+        <div class="management-card-grid" id="managementCards">
+          <button class="management-card" data-management-section="business"><span>◇</span><strong>Business</strong><small>Restaurant name and general information</small></button>
+          <button class="management-card" data-management-section="locations"><span>⌖</span><strong>Locations</strong><small>Create and manage restaurant locations</small></button>
+          <button class="management-card" data-management-section="departments"><span>▦</span><strong>Departments</strong><small>Kitchen, Service, Bar and more</small></button>
+          <button class="management-card" data-management-section="devices"><span>▣</span><strong>Devices</strong><small>Assign shared iPads to departments</small></button>
+          <button class="management-card" data-management-section="staff"><span>●</span><strong>Staff</strong><small>People available for tasks and signatures</small></button>
+          <button class="management-card" data-management-section="cleaning"><span>✦</span><strong>Cleaning</strong><small>Tasks, departments, timing and evidence</small></button>
+          <button class="management-card" data-management-section="temperature"><span>°</span><strong>Temperature</strong><small>Equipment and safe operating ranges</small></button>
+          <button class="management-card" data-management-section="workspaces"><span>≡</span><strong>Workspaces</strong><small>Choose modules shown in Kitchen and Service</small></button>
         </div>
+
         <section class="management-editor" id="managementEditor" hidden>
-          <div class="management-editor-head"><button class="icon-button" id="closeManagementEditor">←</button><div><p class="eyebrow" id="managementEyebrow">Management</p><h2 id="managementTitle">Business</h2><p id="managementDescription"></p></div><button class="primary-button" id="managementAdd">+ Add</button></div>
+          <div class="management-editor-head"><button class="icon-button" id="closeManagementEditor">←</button><div><p class="eyebrow" id="managementEditorEyebrow">Management</p><h2 id="managementEditorTitle">Section</h2><p id="managementEditorDescription"></p></div><button class="primary-button" id="managementAddButton">+ Add</button></div>
           <div id="managementEditorBody"></div>
         </section>
       </section>
@@ -160,10 +161,6 @@
   <div class="cleaning-success" id="cleaningSuccess" aria-live="polite" hidden>
     <div class="cleaning-success-card"><span>✓</span><p>Cleaning confirmed</p><h2 id="cleaningSuccessTitle">Task completed</h2><small id="cleaningSuccessMeta"></small></div>
   </div>
-
-  <div class="modal" id="loginModal"><div class="modal-backdrop"></div><div class="modal-card login-card"><p class="eyebrow">Department login</p><h2>Who is using KitchenOS?</h2><p>Select your account. The previous handover appears automatically.</p><div class="login-user-list" id="loginUserList"></div><button class="secondary-button" id="closeLoginModal">Cancel</button></div></div>
-  <div class="modal" id="handoverModal"><div class="modal-backdrop"></div><div class="modal-card handover-card"><p class="eyebrow">Previous session</p><h2 id="handoverWelcome">Welcome</h2><div class="handover-summary" id="handoverSummary"></div><div class="handover-note-view" id="handoverNoteView" hidden><span>Handover note</span><p id="handoverNoteText"></p></div><button class="primary-button" id="acceptHandover">Start Working</button></div></div>
-  <div class="modal" id="logoutModal"><div class="modal-backdrop"></div><div class="modal-card handover-card"><p class="eyebrow">Shift handover</p><h2>Leave a note for the next person?</h2><p>This is optional. Open issues and incomplete work are included automatically.</p><textarea id="logoutNote" maxlength="400" placeholder="Supplier delayed, maintenance booked, important information…"></textarea><div class="modal-action-row"><button class="secondary-button" id="skipLogout">Skip & Log Out</button><button class="primary-button" id="saveLogout">Save & Log Out</button></div></div></div>
   <div class="toast" id="toast"></div>
   <script src="app.js"></script>
 </body>
