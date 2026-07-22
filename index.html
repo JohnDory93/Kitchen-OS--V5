@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#07111b" />
-  <title>KitchenOS v5.2.2</title>
+  <title>KitchenOS v5.2.3</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -106,7 +106,32 @@
   <div class="modal" id="moduleModal"><div class="modal-backdrop" data-close-modal></div><div class="modal-card"><button class="modal-close" data-close-modal>×</button><div class="modal-symbol" id="modalSymbol">°</div><p class="eyebrow" id="modalEyebrow">Kitchen workflow</p><h2 id="modalTitle">Module</h2><p id="modalDescription">This workflow will be built in the next sprint.</p><div class="modal-action-row"><button class="secondary-button" data-close-modal>Back</button></div></div></div>
   <div class="modal" id="noteModal"><div class="modal-backdrop" data-close-note></div><div class="modal-card note-modal-card"><button class="modal-close" data-close-note>×</button><p class="eyebrow">Optional note</p><h2>Add relevant information</h2><textarea id="temperatureNote" maxlength="250" placeholder="Only write something if action or context is needed."></textarea><div class="modal-action-row"><button class="secondary-button" data-close-note>Cancel</button><button class="primary-button" id="saveNote">Save note</button></div></div></div>
 
-  <div class="modal" id="correctiveModal"><div class="modal-backdrop"></div><div class="modal-card corrective-modal-card"><div class="modal-symbol danger-symbol">!</div><p class="eyebrow danger-text">Action required</p><h2>Temperature out of range</h2><p class="corrective-summary" id="correctiveSummary">Fridge 1 · 9.6°C</p><p class="corrective-help">Choose what was done. The issue stays visible until a valid recheck is saved.</p><div class="corrective-options" id="correctiveOptions"><button data-corrective="Recheck in 15 minutes">↻ <span><strong>Recheck in 15 minutes</strong><small>Create a timed follow-up</small></span></button><button data-corrective="Move products to another unit">▣ <span><strong>Move products</strong><small>Transfer food to another unit</small></span></button><button data-corrective="Adjust equipment">⚙ <span><strong>Adjust equipment</strong><small>Change thermostat or settings</small></span></button><button data-corrective="Call maintenance">◇ <span><strong>Call maintenance</strong><small>Escalate an equipment fault</small></span></button><button data-corrective="Reject or discard product">× <span><strong>Reject / discard</strong><small>Remove unsafe product</small></span></button><button data-corrective="Other">✎ <span><strong>Other</strong><small>Add a short explanation</small></span></button></div><textarea id="correctiveNote" maxlength="250" placeholder="Optional note"></textarea><div class="modal-action-row"><button class="secondary-button" id="cancelCorrective">Back</button><button class="primary-button danger-button" id="saveCorrective" disabled>Save action</button></div></div></div>
+  <div class="modal action-modal" id="actionModal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card action-modal-card">
+      <div class="action-modal-head">
+        <span class="action-alert-icon">!</span>
+        <div>
+          <p class="eyebrow danger-text">Action required</p>
+          <h2>Temperature out of range</h2>
+          <p id="actionTemperatureSummary">Fridge 1 · 9.6°C · target 0 to 5°C</p>
+        </div>
+      </div>
+      <div class="action-grid" id="actionGrid">
+        <button data-action-choice="recheck"><span>↻</span><strong>Recheck in 15 min</strong><small>Create a timed follow-up</small></button>
+        <button data-action-choice="move"><span>▣</span><strong>Move products</strong><small>Transfer food to another unit</small></button>
+        <button data-action-choice="adjust"><span>⚙</span><strong>Adjust equipment</strong><small>Change thermostat or settings</small></button>
+        <button data-action-choice="maintenance"><span>◇</span><strong>Call maintenance</strong><small>Escalate an equipment fault</small></button>
+        <button data-action-choice="discard"><span>×</span><strong>Reject / discard</strong><small>Remove unsafe product</small></button>
+        <button data-action-choice="other"><span>✎</span><strong>Other</strong><small>Add a short explanation</small></button>
+      </div>
+      <textarea id="actionNote" maxlength="180" placeholder="Optional note"></textarea>
+      <div class="action-modal-footer">
+        <button class="secondary-button" id="cancelAction">Back</button>
+        <button class="danger-button" id="saveAction" disabled>Save action</button>
+      </div>
+    </div>
+  </div>
   <div class="toast" id="toast"></div>
   <script src="app.js"></script>
 </body>
