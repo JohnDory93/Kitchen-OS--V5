@@ -1,12 +1,10 @@
-# KitchenOS v5.4.2 — Unified Management Setup
+# KitchenOS v5.4.3 — Smart Management Setup
 
-Built from v5.3.1 without login/session features.
+No-login management build based on v5.3.1 operational modules.
 
-Changes:
-- Consistent top-right + Add button in Management sections
-- Full-screen add/edit sheets instead of browser prompts
-- Cleaning Quick Setup with multi-select templates
-- Temperature Quick Setup with multi-select equipment and automatic ranges
-- Food & Production master list with quick setup and standard cooking/cooling limits
-- Legacy cleaning task names normalized so `undefined` no longer appears
-- Existing Temperature and Cleaning operational workflows preserved
+- Quantity-based temperature quick setup
+- Individual and bulk temperature editing
+- Recurring cleaning schedules (daily, weekdays, weekly, monthly, yearly, custom, one-time)
+- Expanded kitchen/service cleaning templates
+- Category-based food product templates with shared cooking/cooling rules
+- Fixed setup-sheet header/footer with independently scrolling content
