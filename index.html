@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#07111b" />
-  <title>KitchenOS v5.5.1</title>
+  <title>KitchenOS v5.6.0</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -135,24 +135,26 @@
         <div class="delivery-report-card" id="deliveryReportCard"></div>
       </section>
 
-      <section class="page workflow-page production-page" data-page="production-list">
-        <div class="workflow-header"><button class="icon-button" data-production-back>←</button><div><p class="eyebrow">Kitchen workflow</p><h1 id="productionPageTitle">Cooking</h1><p>Select a recent product, measure with the probe, then confirm.</p></div><span class="badge" id="productionRecordCount">0 today</span></div>
-        <div class="segmented"><button class="active" data-production-mode="cooking">Cooking</button><button data-production-mode="cooling">Cooling</button></div>
-        <div class="production-search"><input id="productionSearch" placeholder="Search products"><button class="secondary-button" id="clearProductionSearch">Clear</button></div>
+      <section class="page workflow-page production-page cooking-list-page" data-page="production-list">
+        <div class="workflow-header cooking-header"><button class="icon-button" data-production-back>←</button><div><p class="eyebrow">Kitchen workflow</p><h1 id="productionPageTitle">Cooking</h1><p>Choose a recent product or search by name.</p></div><span class="badge" id="productionRecordCount">0 today</span></div>
+        <div class="production-search"><input id="productionSearch" inputmode="search" autocomplete="off" placeholder="Search cooking products"><button class="secondary-button" id="clearProductionSearch">Clear</button></div>
+        <div class="production-list-label"><span id="productionListLabel">Recent & products</span><small id="productionListHint">Up to six results · search to find more</small></div>
         <div class="production-products" id="productionProducts"></div>
       </section>
 
-      <section class="page workflow-page production-page" data-page="production-entry">
-        <div class="workflow-header compact"><button class="icon-button" data-production-list>←</button><div><p class="eyebrow" id="productionEntryMode">Cooking check</p><h1 id="productionEntryProduct">Lasagna</h1></div><span class="badge" id="productionRuleBadge">Minimum 75°C</span></div>
-        <div class="production-entry-card">
-          <div class="temperature-wheel-wrap production-wheel">
-            <button class="wheel-step" id="productionTempUp">⌃</button>
-            <div class="wheel-values"><span id="productionPrevValue">74.5°C</span><strong id="productionTempValue">75.0°C</strong><span id="productionNextValue">75.5°C</span></div>
-            <button class="wheel-step" id="productionTempDown">⌄</button>
+      <section class="page workflow-page production-page cooking-entry-page" data-page="production-entry">
+        <div class="workflow-header compact cooking-entry-header"><button class="icon-button" data-production-list>←</button><div><p class="eyebrow" id="productionEntryMode">Cooking check</p><h1 id="productionEntryProduct">Lasagna</h1></div><span class="badge" id="productionRuleBadge">Minimum 75°C</span></div>
+        <div class="production-entry-card cooking-no-scroll-card">
+          <div class="temperature-wheel-wrap production-wheel" id="productionWheel">
+            <button class="wheel-step wheel-up" id="productionTempUp" aria-label="Increase temperature">⌃</button>
+            <div class="wheel-values"><span id="productionPrevValue">75.5°C</span><strong id="productionTempValue">75.0°C</strong><span id="productionNextValue">74.5°C</span></div>
+            <button class="wheel-step wheel-down" id="productionTempDown" aria-label="Decrease temperature">⌄</button>
           </div>
-          <div class="production-rule-card" id="productionRuleCard"></div>
-          <label class="sheet-field production-note">Optional note<textarea id="productionNote" placeholder="Only when something needs explaining"></textarea></label>
-          <button class="primary-button production-confirm" id="confirmProduction">Confirm record</button>
+          <div class="production-side-panel">
+            <div class="production-rule-card" id="productionRuleCard"></div>
+            <label class="production-note-compact"><span>Optional note</span><input id="productionNote" maxlength="120" placeholder="Only when needed"></label>
+          </div>
+          <button class="primary-button production-confirm" id="confirmProduction">Confirm Cooking</button>
         </div>
       </section>
 
@@ -209,6 +211,21 @@
         <button class="secondary-button" id="cancelAction">Back</button>
         <button class="danger-button" id="saveAction" disabled>Save action</button>
       </div>
+    </div>
+  </div>
+
+  <div class="modal cooking-action-modal" id="cookingActionModal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card cooking-action-card">
+      <div class="action-modal-head"><span class="action-alert-icon">!</span><div><p class="eyebrow danger-text">Cooking action required</p><h2 id="cookingActionTitle">Temperature too low</h2><p id="cookingActionSummary"></p></div></div>
+      <div class="cooking-action-grid">
+        <button data-cooking-action="continue-cooking"><span>↻</span><strong>Continue cooking</strong><small>Heat again, then take a new reading</small></button>
+        <button data-cooking-action="discard"><span>×</span><strong>Discard batch</strong><small>Remove the unsafe food</small></button>
+        <button data-cooking-action="manager-informed"><span>!</span><strong>Manager informed</strong><small>Escalate for a decision</small></button>
+        <button data-cooking-action="other"><span>✎</span><strong>Other</strong><small>Add a short explanation</small></button>
+      </div>
+      <input id="cookingActionNote" maxlength="140" placeholder="Optional note">
+      <div class="action-modal-footer"><button class="secondary-button" id="cancelCookingAction">Back</button><button class="danger-button" id="saveCookingAction" disabled>Confirm action</button></div>
     </div>
   </div>
   <div class="cleaning-success" id="cleaningSuccess" aria-live="polite" hidden>
