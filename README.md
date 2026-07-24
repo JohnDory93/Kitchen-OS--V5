@@ -1,1 +1,3 @@
-KitchenOS v5.4.4 — Food & Production redesign. No login. Product-specific HACCP limits, fast probe temperature recording for Cooking and Cooling, recent products first, and defaults that affect only newly created products.
+# KitchenOS v5.5.0 — Deliveries
+
+Adds a no-scroll goods receiving workflow. Deliveries are recorded only when they actually arrive; there is no expected-delivery count or schedule. Includes suppliers management, accept/reject decisions, delivery reports, optional evidence, and shared issue creation for rejected deliveries.
