@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#07111b" />
-  <title>KitchenOS v5.6.0</title>
+  <title>KitchenOS v5.6.1</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -136,7 +136,7 @@
       </section>
 
       <section class="page workflow-page production-page cooking-list-page" data-page="production-list">
-        <div class="workflow-header cooking-header"><button class="icon-button" data-production-back>←</button><div><p class="eyebrow">Kitchen workflow</p><h1 id="productionPageTitle">Cooking</h1><p>Choose a recent product or search by name.</p></div><span class="badge" id="productionRecordCount">0 today</span></div>
+        <div class="workflow-header cooking-header"><button class="icon-button" data-production-back>←</button><div><p class="eyebrow">Kitchen workflow</p><h1 id="productionPageTitle">Cooking</h1><p>Choose a recent product or search by name.</p></div><button class="badge badge-button" id="productionRecordCount" type="button" aria-label="Open today's cooking records">0 today</button></div>
         <div class="production-search"><input id="productionSearch" inputmode="search" autocomplete="off" placeholder="Search cooking products"><button class="secondary-button" id="clearProductionSearch">Clear</button></div>
         <div class="production-list-label"><span id="productionListLabel">Recent & products</span><small id="productionListHint">Up to six results · search to find more</small></div>
         <div class="production-products" id="productionProducts"></div>
@@ -155,6 +155,27 @@
             <label class="production-note-compact"><span>Optional note</span><input id="productionNote" maxlength="120" placeholder="Only when needed"></label>
           </div>
           <button class="primary-button production-confirm" id="confirmProduction">Confirm Cooking</button>
+        </div>
+      </section>
+
+
+
+      <section class="page workflow-page production-page cooking-records-page" data-page="production-records">
+        <div class="workflow-header compact cooking-records-header"><button class="icon-button" id="productionRecordsBack">←</button><div><p class="eyebrow">Today's records</p><h1 id="productionRecordsTitle">Cooking</h1><p>Only records completed today.</p></div><span class="badge" id="productionRecordsBadge">0 records</span></div>
+        <div class="production-records-grid" id="productionRecordsList"></div>
+        <div class="production-records-empty" id="productionRecordsEmpty" hidden><span>◒</span><h2>No cooking records yet</h2><p>Complete a cooking check and it will appear here.</p></div>
+      </section>
+
+      <section class="page workflow-page production-page cooking-report-page" data-page="production-report">
+        <div class="workflow-header compact"><button class="icon-button" id="productionReportBack">←</button><div><p class="eyebrow">Cooking report</p><h1 id="productionReportProduct">Product</h1></div><span class="badge" id="productionReportStatus">PASS</span></div>
+        <div class="production-report-card">
+          <div class="production-report-hero"><span>Recorded temperature</span><strong id="productionReportTemperature">75.0°C</strong><small id="productionReportRequirement">Minimum 75°C</small></div>
+          <div class="production-report-details">
+            <div><span>Time</span><strong id="productionReportTime">—</strong></div>
+            <div><span>Result</span><strong id="productionReportResult">PASS</strong></div>
+            <div><span>Corrective action</span><strong id="productionReportAction">None required</strong></div>
+            <div><span>Note</span><strong id="productionReportNote">No note</strong></div>
+          </div>
         </div>
       </section>
 

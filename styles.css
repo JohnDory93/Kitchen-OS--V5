@@ -174,3 +174,22 @@
   .production-products{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr))}
   .cooking-no-scroll-card{grid-template-columns:1fr 210px}
 }
+
+/* v5.6.1 cooking wheel + today's records */
+.badge-button{background:transparent;color:var(--muted);cursor:pointer}.badge-button.has-records{color:var(--green);border-color:rgba(169,237,121,.4);background:rgba(169,237,121,.07)}
+.production-wheel{cursor:ns-resize;user-select:none;-webkit-user-select:none;touch-action:pan-x}
+.cooking-records-page,.cooking-report-page{height:calc(100dvh - 92px - 96px - env(safe-area-inset-bottom));min-height:0;overflow:hidden;display:none;flex-direction:column}
+.cooking-records-page.active,.cooking-report-page.active{display:flex}
+.cooking-records-header{flex:0 0 auto;margin-bottom:14px}
+.production-records-grid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(4,minmax(0,1fr));gap:10px;overflow:hidden}
+.production-record-row{min-height:0;display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:12px;padding:13px 15px;border:1px solid var(--line);border-radius:17px;background:#0b1926;color:var(--text);text-align:left}
+.production-record-row.pass{border-color:rgba(169,237,121,.2)}.production-record-row.fail{border-color:rgba(255,111,97,.35)}
+.production-record-mark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-weight:900;background:rgba(169,237,121,.11);color:var(--green)}
+.production-record-row.fail .production-record-mark{background:rgba(255,111,97,.12);color:var(--red)}
+.production-record-row small{display:block;color:var(--muted);margin-top:3px}.production-record-row em{font-style:normal;font-weight:800;color:var(--green)}.production-record-row.fail em{color:var(--red)}.production-record-row b{font-size:24px;color:var(--muted)}
+.production-records-empty{flex:1;display:grid;place-items:center;text-align:center;border:1px dashed var(--line);border-radius:22px;color:var(--muted)}.production-records-empty span{font-size:48px;color:var(--green)}.production-records-empty h2{color:var(--text);margin:8px 0}.production-records-empty p{margin:0}
+.production-report-card{flex:1;min-height:0;display:grid;grid-template-columns:.9fr 1.1fr;gap:16px;padding:18px;border:1px solid var(--line);border-radius:24px;background:#0d1b29;overflow:hidden}
+.production-report-hero{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border:1px solid var(--line);border-radius:20px;background:#0a1722}.production-report-hero span,.production-report-hero small{color:var(--muted)}.production-report-hero strong{font-size:clamp(54px,8vw,92px);margin:18px 0;letter-spacing:-3px}
+.production-report-details{display:grid;grid-template-columns:1fr 1fr;gap:12px}.production-report-details>div{display:flex;flex-direction:column;justify-content:center;padding:18px;border:1px solid var(--line);border-radius:18px;background:#0a1722}.production-report-details span{color:var(--muted);margin-bottom:8px}.production-report-details strong{font-size:20px}.production-report-details .pass{color:var(--green)}.production-report-details .fail{color:var(--red)}
+.report-pass{color:var(--green)!important;border-color:rgba(169,237,121,.4)!important}.report-fail{color:var(--red)!important;border-color:rgba(255,111,97,.4)!important}
+@media(max-height:760px){.cooking-records-page,.cooking-report-page{height:calc(100dvh - 78px - 82px - env(safe-area-inset-bottom))}.production-record-row{padding:9px 12px}.production-record-mark{width:34px;height:34px}.production-report-card{padding:12px;gap:12px}.production-report-details>div{padding:13px}}
