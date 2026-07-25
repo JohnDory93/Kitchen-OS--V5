@@ -1,8 +1,8 @@
-# KitchenOS v5.6.1
+# KitchenOS v5.6.2
 
-Cooking improvements:
+Cooking favourites update.
 
-- Cooking temperature wheel now supports continuous vertical drag on iPad and pointer drag on desktop.
-- The “today” badge opens today’s cooking records.
-- Each record opens a compact audit report.
-- Operational record and report screens are fixed to the iPad viewport with no page scrolling.
+- Managers can mark up to 8 Cooking products as favourites.
+- Favourites appear first in a fixed 4 × 2 no-scroll grid.
+- Search still finds every other configured product.
+- Existing products remain compatible and default to not favourited.
