@@ -1,15 +1,8 @@
-# KitchenOS v5.10.0 — Smart Prep List
+# KitchenOS v5.10.1 — Prep Swipe & iPad Action Fix
 
-Open `index.html` in Safari or another modern browser.
-
-## Added
-- Product-based Prep List with no typing
-- Tap quantity presets and +/- fine adjustment
-- Unit, section and optional staff selection
-- Morning, Service and Evening production groups
-- One-tap completion for long lists
-- All / Open / Completed filters
-- Duplicate Yesterday workflow
-- Per-product remembered quantity, unit and section
-- One daily Prep Report after all items are complete
-- Local-storage persistence
+- Prep items now complete with a deliberate right swipe.
+- Completed items can be reopened with a left swipe.
+- Removed tap-to-complete circles.
+- Bottom navigation is hidden on Prep operational screens.
+- Create Prep and Complete Prep actions are pinned above the iPad safe area.
+- Existing Prep data remains compatible with v5.10.0.
