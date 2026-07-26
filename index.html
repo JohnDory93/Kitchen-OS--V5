@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#07111b" />
-  <title>KitchenOS v5.8.1</title>
+  <title>KitchenOS v5.9.0</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -229,6 +229,19 @@
         <div class="cooling-report-detail"><div><span>Start temperature</span><strong id="coolingReportStart">63.0°C</strong></div><div><span>Final temperature</span><strong id="coolingReportFinal">3.0°C</strong></div><div><span>Duration</span><strong id="coolingReportDuration">90 min</strong></div><div><span>Time</span><strong id="coolingReportTimes">—</strong></div><div><span>Rule</span><strong id="coolingReportRule">≤5°C</strong></div><div><span>Note</span><strong id="coolingReportNote">No note</strong></div></div>
       </section>
 
+      <section class="page workflow-page checklist-page" data-page="checklist-list">
+        <div class="workflow-header compact"><button class="icon-button" id="checklistBack">←</button><div><p class="eyebrow">Kitchen workflow</p><h1 id="checklistTitle">Opening</h1><p id="checklistSubtitle">Complete every check before confirming.</p></div><span class="badge" id="checklistProgress">0 / 0</span></div>
+        <div class="segmented checklist-tabs"><button class="active" data-checklist-mode="opening">Opening</button><button data-checklist-mode="closing">Closing</button></div>
+        <div class="checklist-task-list" id="checklistTaskList"></div>
+        <div class="checklist-pagination" id="checklistPagination" hidden><button class="secondary-button" id="checklistPrev">← Previous</button><span id="checklistPageLabel">1 / 1</span><button class="secondary-button" id="checklistNext">Next →</button></div>
+        <button class="completion-bar checklist-confirm" id="confirmChecklist" disabled>Complete all checks first</button>
+      </section>
+
+      <section class="page workflow-page checklist-report-page" data-page="checklist-report">
+        <div class="workflow-header compact"><button class="icon-button" id="checklistReportBack">←</button><div><p class="eyebrow">Checklist report</p><h1 id="checklistReportTitle">Opening completed</h1></div><span class="badge" id="checklistReportStatus">Complete</span></div>
+        <div class="plain-report" id="checklistReportBody"></div>
+      </section>
+
       <section class="page management-page" data-page="setup">
         <div class="page-heading management-heading"><div><p class="eyebrow">Manager control centre</p><h1>Management</h1><p>Configure the business, departments and operational master lists. Login and handover will be added later.</p></div><button class="secondary-button" id="resetSetup">Restore defaults</button></div>
         <div class="management-card-grid" id="managementCards">
@@ -241,6 +254,7 @@
           <button class="management-card" data-management-section="cleaning"><span>✦</span><strong>Cleaning</strong><small>Tasks, departments, timing and evidence</small></button>
           <button class="management-card" data-management-section="temperature"><span>°</span><strong>Temperature</strong><small>Equipment and safe operating ranges</small></button>
           <button class="management-card" data-management-section="food"><span>◒</span><strong>Food & Production</strong><small>Products used for cooking and cooling records</small></button>
+          <button class="management-card" data-management-section="checklists"><span>✓</span><strong>Opening & Closing</strong><small>Edit, add, reorder or delete checklist tasks</small></button>
           <button class="management-card" data-management-section="workspaces"><span>≡</span><strong>Workspaces</strong><small>Choose modules shown in Kitchen and Service</small></button>
         </div>
 
