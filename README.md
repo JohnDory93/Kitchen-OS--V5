@@ -1,9 +1,9 @@
-# KitchenOS v5.10.4 — Direct Prep List
+# KitchenOS v5.10.5 — Kitchen Workspace Restore
 
-- Prep List opens directly into the live list.
-- Removed the extra Prep landing step from the operational flow.
-- Added **+ Add New** in the upper-right of the live Prep List.
-- Back returns directly to the Kitchen workspace.
-- Saving a new prep item returns directly to the live list.
-- Completing and archiving prep keeps the user on the live list.
-- Open prep remains continuous across days until completed.
+Fixes the Kitchen workspace rendering failure introduced in v5.10.4.
+
+- Restores all Kitchen operational module cards.
+- Keeps Prep List opening directly into the live list.
+- Keeps + Add New in the upper-right corner.
+- Adds a safe module-status fallback so one module cannot blank the whole workspace.
+- Preserves existing browser storage and Prep List data.
