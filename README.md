@@ -1,7 +1,8 @@
-# KitchenOS v5.10.2 — Green Swipe Prep
+# KitchenOS v5.10.3 — Continuous Prep & Wheel Pickers
 
-- Swipe a prep task right to complete it.
-- Completed prep cards turn green with no Done text or badge.
-- Open prep cards keep a small Swipe hint on the right.
-- Swipe a completed green card left to reopen it.
-- Updated the Prep List instruction text.
+- Prep is now a continuous live list: unfinished items remain across days.
+- New prep cards are neutral; only completed cards turn green.
+- Removed completion marks and Done labels from prep cards.
+- Added scroll-wheel pickers for product, quantity, unit, section and staff.
+- Added Management → Prep List setup for editable units, sections and staff.
+- Completing all prep archives one report and clears the live list.

@@ -231,16 +231,16 @@
 
 
       <section class="page workflow-page prep-home-page" data-page="prep-home">
-        <div class="workflow-header compact"><button class="icon-button" id="prepHomeBack">←</button><div><p class="eyebrow">Kitchen production</p><h1>Prep List</h1><p>Build and complete today’s production list without typing.</p></div><span class="badge" id="prepReportBadge">0 items</span></div>
-        <div class="prep-home-actions">
+        <div class="workflow-header compact"><button class="icon-button" id="prepHomeBack">←</button><div><p class="eyebrow">Kitchen production</p><h1>Prep List</h1><p>Build and complete the live production list without typing.</p></div><span class="badge" id="prepReportBadge">0 items</span></div>
+        <div class="prep-home-actions single">
           <button class="prep-action-card primary" id="newPrepButton"><span>＋</span><strong>New Prep</strong><small>Select product, quantity and section</small></button>
-          <button class="prep-action-card" id="duplicatePrepButton"><span>↻</span><strong>Duplicate Yesterday</strong><small>Copy yesterday’s production list</small></button>
+          <button class="prep-action-card" id="duplicatePrepButton" hidden><span>↻</span><strong>Continuous List</strong><small>Open prep never resets</small></button>
         </div>
-        <button class="prep-today-card" id="openPrepBoard"><span><small>Today’s Prep</small><strong id="prepTodayHeadline">Nothing planned</strong><em id="prepTodayMeta">Create the first prep item</em></span><b>→</b></button>
+        <button class="prep-today-card" id="openPrepBoard"><span><small>Prep</small><strong id="prepTodayHeadline">Nothing planned</strong><em id="prepTodayMeta">Create the first prep item</em></span><b>→</b></button>
       </section>
 
       <section class="page workflow-page prep-board-page" data-page="prep-board">
-        <div class="workflow-header compact"><button class="icon-button" id="prepBoardBack">←</button><div><p class="eyebrow">Today’s production</p><h1>Prep List</h1><p>Swipe right when an item is ready.</p></div><span class="badge" id="prepProgressBadge">0 / 0</span></div>
+        <div class="workflow-header compact"><button class="icon-button" id="prepBoardBack">←</button><div><p class="eyebrow">Kitchen production</p><h1>Prep List</h1><p>Swipe right when an item is ready.</p></div><span class="badge" id="prepProgressBadge">0 / 0</span></div>
         <div class="prep-toolbar"><div class="segmented prep-filters"><button class="active" data-prep-filter="all">All</button><button data-prep-filter="open">Open</button><button data-prep-filter="done">Completed</button></div><button class="primary-button compact-button" id="addPrepFromBoard">＋ Add Prep</button></div>
         <div class="prep-board" id="prepBoard"></div>
         <button class="completion-bar prep-complete-bar" id="completePrepDay" disabled>Complete all prep first</button>
@@ -250,7 +250,7 @@
         <div class="workflow-header compact"><button class="icon-button" id="prepCreateBack">←</button><div><p class="eyebrow">Add to today</p><h1>New Prep</h1><p>Everything is tap-based. No keyboard needed.</p></div><span class="badge" id="prepCreateStep">Ready</span></div>
         <div class="prep-create-grid">
           <section class="prep-picker-panel"><div class="prep-picker-head"><span>1</span><div><strong>Product</strong><small>From Food & Production</small></div></div><div class="prep-product-grid" id="prepProductGrid"></div></section>
-          <section class="prep-picker-panel"><div class="prep-picker-head"><span>2</span><div><strong>Quantity</strong><small>Use presets or fine controls</small></div></div><div class="quantity-display"><button data-prep-qty-adjust="-1">−</button><strong id="prepQuantityValue">10</strong><button data-prep-qty-adjust="1">＋</button></div><div class="prep-chip-grid" id="prepQuantityPresets"><button data-prep-qty="1">1</button><button data-prep-qty="2">2</button><button data-prep-qty="5">5</button><button class="active" data-prep-qty="10">10</button><button data-prep-qty="20">20</button><button data-prep-qty="40">40</button><button data-prep-qty="60">60</button></div></section>
+          <section class="prep-picker-panel"><div class="prep-picker-head"><span>2</span><div><strong>Quantity</strong><small>Spin or use fine controls</small></div></div><div class="quantity-display"><button data-prep-qty-adjust="-1">−</button><strong id="prepQuantityValue">10</strong><button data-prep-qty-adjust="1">＋</button></div><div id="prepQuantityPresets"></div></section>
           <section class="prep-picker-panel"><div class="prep-picker-head"><span>3</span><div><strong>Unit</strong><small>Kitchen-friendly measures</small></div></div><div class="prep-chip-grid" id="prepUnitPicker"><button class="active" data-prep-unit="kg">kg</button><button data-prep-unit="L">L</button><button data-prep-unit="Portions">Portions</button><button data-prep-unit="Trays">Trays</button><button data-prep-unit="Balls">Balls</button><button data-prep-unit="Packs">Packs</button><button data-prep-unit="Each">Each</button></div></section>
           <section class="prep-picker-panel"><div class="prep-picker-head"><span>4</span><div><strong>Section</strong><small>Where it belongs in the day</small></div></div><div class="prep-chip-grid" id="prepShiftPicker"><button class="active" data-prep-shift="morning">Morning</button><button data-prep-shift="service">Service</button><button data-prep-shift="evening">Evening</button></div><div class="prep-picker-head staff-head"><span>5</span><div><strong>Assigned</strong><small>Optional</small></div></div><div class="prep-chip-grid staff-chips" id="prepStaffPicker"></div></section>
         </div>
@@ -296,6 +296,7 @@
           <button class="management-card" data-management-section="temperature"><span>°</span><strong>Temperature</strong><small>Equipment and safe operating ranges</small></button>
           <button class="management-card" data-management-section="food"><span>◒</span><strong>Food & Production</strong><small>Products used for cooking and cooling records</small></button>
           <button class="management-card" data-management-section="checklists"><span>✓</span><strong>Opening & Closing</strong><small>Edit, add, reorder or delete checklist tasks</small></button>
+          <button class="management-card" data-management-section="prep"><span>≡</span><strong>Prep List</strong><small>Edit units, sections and staff picker options</small></button>
           <button class="management-card" data-management-section="workspaces"><span>≡</span><strong>Workspaces</strong><small>Choose modules shown in Kitchen and Service</small></button>
         </div>
 

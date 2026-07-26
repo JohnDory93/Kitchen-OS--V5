@@ -351,3 +351,17 @@ body[data-page="prep-create"] .app-shell,body[data-page="prep-board"] .app-shell
 .prep-save-bar,.prep-complete-bar{z-index:40;left:50%;right:auto;width:min(1100px,calc(100vw - 48px));transform:translateX(-50%);bottom:max(18px,env(safe-area-inset-bottom));background:rgba(7,17,27,.96);backdrop-filter:blur(14px)}
 .prep-save-bar:not(:disabled),.prep-complete-bar:not(:disabled){background:rgba(169,237,121,.12);color:var(--green);border-color:rgba(169,237,121,.4)}
 @media(max-width:800px){.prep-swipe-content{grid-template-columns:1fr auto;gap:10px}.prep-swipe-label{grid-column:2;min-width:64px}.prep-amount{grid-column:2;grid-row:1}}
+
+/* v5.10.3 continuous prep + wheel pickers */
+.prep-home-actions.single{grid-template-columns:1fr}
+.prep-item{background:transparent;border-color:var(--line)}
+.prep-item .prep-swipe-underlay{background:rgba(66,145,88,.28)}
+.prep-item.is-done{background:rgba(58,135,82,.52);border-color:rgba(169,237,121,.52)}
+.prep-item.is-done .prep-swipe-content{background:rgba(58,135,82,.52)}
+.prep-item:not(.is-done) .prep-swipe-content{background:var(--panel)}
+.prep-item.is-done .prep-swipe-label{display:none}
+.prep-wheel{height:174px;overflow-y:auto;scroll-snap-type:y mandatory;padding:58px 0;mask-image:linear-gradient(to bottom,transparent,#000 24%,#000 76%,transparent);-webkit-mask-image:linear-gradient(to bottom,transparent,#000 24%,#000 76%,transparent);scrollbar-width:none}
+.prep-wheel::-webkit-scrollbar{display:none}
+.prep-wheel-option{display:block;width:100%;height:58px;border:0!important;border-radius:12px;background:transparent!important;color:var(--muted)!important;font-size:18px;font-weight:700;scroll-snap-align:center;transition:.16s ease}
+.prep-wheel-option.active{color:var(--text)!important;background:rgba(65,132,255,.18)!important;box-shadow:inset 0 0 0 1px rgba(79,140,255,.55)!important;font-size:21px;transform:scale(1.02)}
+.prep-product-grid,.prep-chip-grid,#prepStaffPicker,#prepShiftPicker,#prepUnitPicker,#prepQuantityPresets{display:block}
