@@ -3,169 +3,330 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0d1824" />
-  <title>KitchenOS v5</title>
+  <meta name="theme-color" content="#07111b" />
+  <title>KitchenOS v5.9.2</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="app-shell">
+  <div class="app-shell" id="appShell" data-mode="manager">
     <header class="topbar">
       <div class="brand">
         <div class="brand-mark">K</div>
-        <div>
-          <div class="brand-name">KitchenOS</div>
-          <div class="brand-subtitle">Restaurant operations</div>
-        </div>
+        <div><div class="brand-name">KitchenOS</div><div class="brand-subtitle" id="workspaceSubtitle">Manager control centre</div></div>
       </div>
-      <div class="topbar-meta">
-        <span id="todayLabel"></span>
-        <span class="status-dot"></span>
-        <span>Local mode</span>
+      <div class="topbar-actions">
+        <span id="todayLabel" class="today-label"></span>
+        <button class="mode-chip" id="modeChip"><span class="status-dot"></span><span id="modeChipLabel">Manager preview</span><span>⌄</span></button>
+        <div class="mode-menu" id="modeMenu">
+          <p>Preview access</p>
+          <button data-switch-mode="manager"><strong>Manager</strong><small>Dashboard, departments and Setup</small></button>
+          <button data-switch-mode="kitchen"><strong>Kitchen</strong><small>Kitchen work only</small></button>
+          <button data-switch-mode="service"><strong>Service</strong><small>Service work only</small></button>
+        </div>
       </div>
     </header>
 
     <main class="main-content">
       <section class="page active" data-page="dashboard">
-        <div class="page-heading">
-          <div>
-            <p class="eyebrow">Overview</p>
-            <h1>Dashboard</h1>
-            <p>Everything that needs attention today.</p>
-          </div>
-          <button class="primary-button" data-open-work>Open work</button>
-        </div>
-
+        <div class="page-heading"><div><p class="eyebrow">Manager overview</p><h1>Good morning</h1><p>See what matters and open a department.</p></div><button class="primary-button" data-go-page="kitchen">Open Kitchen</button></div>
         <div class="summary-grid">
-          <article class="summary-card">
-            <span class="summary-label">Today</span>
-            <strong>0</strong>
-            <small>tasks due</small>
-          </article>
-          <article class="summary-card warning">
-            <span class="summary-label">Needs attention</span>
-            <strong>0</strong>
-            <small>late or incomplete</small>
-          </article>
-          <article class="summary-card">
-            <span class="summary-label">Completed</span>
-            <strong>0%</strong>
-            <small>today</small>
-          </article>
-          <article class="summary-card">
-            <span class="summary-label">Last activity</span>
-            <strong>—</strong>
-            <small>nothing recorded yet</small>
-          </article>
+          <article class="summary-card attention"><span>Needs attention</span><strong id="attentionCount">1</strong><small>late or incomplete</small></article>
+          <article class="summary-card"><span>Temperature</span><strong id="temperatureSummary">0 / 5</strong><small>opening completed</small></article>
+          <article class="summary-card"><span>Kitchen</span><strong>11 / 16</strong><small>tasks completed</small></article>
+          <article class="summary-card"><span>Last activity</span><strong id="lastActivityTime">—</strong><small id="lastActivityText">No activity yet</small></article>
         </div>
-
         <div class="dashboard-grid">
-          <article class="panel">
-            <div class="panel-header">
-              <div>
-                <p class="eyebrow">Today</p>
-                <h2>Operational priorities</h2>
+          <article class="panel"><div class="panel-header"><div><p class="eyebrow">Action now</p><h2>Needs attention</h2></div><span class="badge danger">Live</span></div><div class="attention-list" id="managerAttention"></div></article>
+          <article class="panel"><div class="panel-header"><div><p class="eyebrow">Workspaces</p><h2>Departments</h2></div></div><div class="department-buttons"><button data-go-page="kitchen"><span class="department-icon">K</span><span><strong>Kitchen</strong><small>Operational workspace</small></span><em>→</em></button><button data-go-page="service"><span class="department-icon">S</span><span><strong>Service</strong><small>Operational workspace</small></span><em>→</em></button></div></article>
+        </div>
+      </section>
+
+      <section class="page workspace-page" data-page="kitchen">
+        <div class="workspace-heading"><div><p class="eyebrow">Department workspace</p><h1>Kitchen</h1><p>Only today's work. No reports, no history, no setup.</p></div><div class="workspace-progress"><span>Today</span><strong>11 / 16</strong><small>completed</small></div></div>
+        <div class="module-grid" id="kitchenModules"></div>
+      </section>
+
+      <section class="page workspace-page" data-page="service">
+        <div class="workspace-heading"><div><p class="eyebrow">Department workspace</p><h1>Service</h1><p>Only today's work. No reports, no history, no setup.</p></div><div class="workspace-progress"><span>Today</span><strong>7 / 10</strong><small>completed</small></div></div>
+        <div class="module-grid" id="serviceModules"></div>
+      </section>
+
+      <section class="page workflow-page" data-page="temperature-list">
+        <div class="workflow-header"><button class="icon-button" data-temp-back>←</button><div><p class="eyebrow">Kitchen workflow</p><h1>Temperature</h1><p>Same equipment every day. Select a check and move through the list.</p></div><span class="badge" id="temperatureOpenBadge">5 open</span></div>
+        <div class="segmented"><button class="active" data-session="opening">Opening</button><button data-session="closing">Closing</button></div>
+        <div class="temperature-list" id="temperatureAssetList"></div>
+        <button class="completion-bar" id="temperatureCompleteBar" disabled>Complete all checks first</button>
+      </section>
+
+      <section class="page workflow-page" data-page="temperature-entry">
+        <div class="workflow-header compact"><button class="icon-button" data-temp-list>←</button><div><p class="eyebrow" id="entrySessionLabel">Opening check</p><h1 id="entryAssetName">Fridge 1</h1></div><span class="badge" id="entryProgress">1 / 5</span></div>
+        <div class="entry-layout" id="temperatureSwipeArea">
+          <div class="temperature-entry-card refined-entry">
+            <div class="temperature-wheel-wrap" id="temperatureWheel">
+              <button class="wheel-step wheel-up" data-temp-adjust="1" aria-label="Increase temperature">⌃</button>
+              <div class="wheel-values" id="wheelValues"></div>
+              <strong id="temperatureValue">4.0°C</strong>
+              <button class="wheel-step wheel-down" data-temp-adjust="-1" aria-label="Decrease temperature">⌄</button>
+            </div>
+            <div class="entry-side-actions">
+              <button id="addNoteButton" class="round-action" aria-label="Add note">✎</button>
+              <label class="round-action file-action" aria-label="Add photo">▣<input type="file" accept="image/*" id="temperaturePhoto"></label>
+              <div class="compact-status"><span>Status</span><strong class="status-pill ok" id="temperatureStatus">OK</strong></div>
+            </div>
+            <div class="note-preview" id="notePreview" hidden></div>
+          </div>
+          <div class="entry-footer"><button class="secondary-button" id="previousTemperature">← Previous</button><div class="entry-progress-dots" id="entryProgressDots"></div><button class="primary-button soft-primary" id="saveNextTemperature">Save & Next →</button></div>
+          <p class="swipe-hint">Swipe left for next · swipe right for previous</p>
+        </div>
+      </section>
+
+
+      <section class="page workflow-page cleaning-page" data-page="cleaning-list">
+        <div class="workflow-header cleaning-header"><button class="icon-button" data-cleaning-back>←</button><div><p class="eyebrow">Kitchen workflow</p><h1>Cleaning</h1><p>Today first, overdue second. Completed tasks disappear.</p></div><div class="cleaning-progress"><strong id="cleaningProgressText">0 / 5</strong><small>completed</small><span><i id="cleaningProgressFill"></i></span></div></div>
+        <div class="cleaning-board">
+          <section class="cleaning-group"><div class="cleaning-group-head"><div><p class="eyebrow">Priority 1</p><h2>To Do Today</h2></div><span class="badge" id="todayCleaningCount">3 open</span></div><div class="cleaning-task-grid" id="todayCleaningTasks"></div></section>
+          <section class="cleaning-group overdue-group"><div class="cleaning-group-head"><div><p class="eyebrow danger-text">Priority 2</p><h2>Overdue</h2></div><span class="badge danger" id="overdueCleaningCount">2 overdue</span></div><div class="cleaning-task-grid" id="overdueCleaningTasks"></div></section>
+          <div class="cleaning-empty" id="cleaningEmpty" hidden><span>✓</span><h2>Cleaning complete</h2><p>All scheduled tasks are confirmed.</p></div>
+        </div>
+      </section>
+
+      <section class="page workflow-page cleaning-detail-page" data-page="cleaning-detail">
+        <div class="cleaning-detail-shell">
+          <div class="workflow-header compact"><button class="icon-button" data-cleaning-list>←</button><div><p class="eyebrow" id="cleaningDetailPriority">To Do Today</p><h1 id="cleaningDetailTitle">Clean extraction hood</h1></div><span class="badge" id="cleaningDetailDue">Due 14:00</span></div>
+          <div class="cleaning-detail-grid">
+            <section class="cleaning-instruction-card"><span class="cleaning-symbol">✦</span><div><p class="eyebrow">Task instructions</p><h2 id="cleaningDetailArea">Kitchen · Hot line</h2><p id="cleaningDetailInstructions"></p></div><div class="audit-chip"><span>Audit trail</span><strong>Required evidence</strong></div></section>
+            <section class="cleaning-form-card">
+              <label class="field-label">Responsible staff <strong>Required</strong><select id="cleaningStaff"><option value="">Select staff member</option></select></label>
+              <div class="cleaning-evidence-row"><label class="evidence-button">▣<span><strong>Add photo</strong><small id="cleaningPhotoLabel">Optional</small></span><input type="file" accept="image/*" id="cleaningPhoto"></label><label class="evidence-button">✎<span><strong>Add note</strong><small>Optional</small></span><textarea id="cleaningNote" maxlength="220" placeholder="Add a short note"></textarea></label></div>
+              <div class="signature-block"><div><span>Signature</span><strong>Required</strong></div><canvas id="signaturePad" width="720" height="150"></canvas><button class="signature-clear" id="clearSignature">Clear signature</button></div>
+              <button class="primary-button cleaning-confirm" id="confirmCleaning" disabled>Confirm Cleaning</button>
+            </section>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="page workflow-page delivery-page" data-page="delivery-list">
+        <div class="workflow-header"><button class="icon-button" data-delivery-back>←</button><div><p class="eyebrow">Kitchen workflow</p><h1>Deliveries</h1><p>Record only what actually arrives. No expected-delivery setup.</p></div><span class="badge" id="deliveryTodayBadge">0 today</span></div>
+        <div class="delivery-overview">
+          <div class="delivery-count-card"><span>Arrived today</span><strong id="deliveryArrivedCount">0</strong><small>confirmed reports</small></div>
+          <button class="primary-button delivery-start" id="startDelivery">+ Receive Delivery</button>
+        </div>
+        <div class="delivery-list-head"><div><p class="eyebrow">Reports</p><h2>Today's deliveries</h2></div></div>
+        <div class="delivery-record-list" id="deliveryRecordList"></div>
+        <div class="delivery-empty" id="deliveryEmpty"><span>↓</span><h2>No deliveries recorded</h2><p>Tap Receive Delivery when goods arrive.</p></div>
+      </section>
+
+      <section class="page workflow-page delivery-entry-page" data-page="delivery-entry">
+        <div class="workflow-header compact"><button class="icon-button" data-delivery-list>←</button><div><p class="eyebrow">Receive delivery</p><h1 id="deliveryEntryTitle">New delivery</h1></div><span class="badge" id="deliveryStepStatus">Ready</span></div>
+        <div class="delivery-entry-grid">
+          <section class="delivery-section supplier-section"><div class="delivery-section-head"><span>1</span><div><strong>Supplier</strong><small>Who delivered?</small></div></div><div class="delivery-choice-grid compact" id="deliverySupplierChoices"></div></section>
+          <section class="delivery-section category-section"><div class="delivery-section-head"><span>2</span><div><strong>Category</strong><small>What type of goods?</small></div></div><div class="delivery-choice-grid compact categories" id="deliveryCategoryChoices"></div></section>
+          <section class="delivery-section temperature-section" id="deliveryTemperatureSection"><div class="delivery-section-head"><span>3</span><div><strong>Temperature</strong><small id="deliveryTemperatureHelp">Required for chilled and frozen goods</small></div></div><div class="delivery-mini-wheel"><button id="deliveryTempDown">−</button><strong id="deliveryTempValue">4.0°C</strong><button id="deliveryTempUp">+</button></div></section>
+          <section class="delivery-section checks-section"><div class="delivery-check-block"><strong>Packaging</strong><div class="delivery-segmented" id="deliveryPackagingChoices"><button data-delivery-packaging="good">Good</button><button data-delivery-packaging="damaged">Damaged</button><button data-delivery-packaging="dirty">Dirty</button><button data-delivery-packaging="leaking">Leaking</button></div></div><div class="delivery-check-block"><strong>Expiry</strong><div class="delivery-segmented" id="deliveryExpiryChoices"><button data-delivery-expiry="ok">OK</button><button data-delivery-expiry="short-date">Short date</button><button data-delivery-expiry="expired">Expired</button></div></div></section>
+          <section class="delivery-section decision-section"><div class="delivery-section-head"><span>4</span><div><strong>Decision</strong><small>Accept or reject this delivery</small></div></div><div class="delivery-decision"><button data-delivery-decision="accepted">✓ Accept</button><button data-delivery-decision="rejected">× Reject</button></div><div class="delivery-reject-reasons" id="deliveryRejectReasons" hidden><button data-delivery-reason="temperature">Temperature</button><button data-delivery-reason="packaging">Packaging</button><button data-delivery-reason="expiry">Expiry</button><button data-delivery-reason="wrong-product">Wrong product</button><button data-delivery-reason="other">Other</button></div></section>
+          <section class="delivery-section delivery-evidence"><label class="delivery-evidence-button">▣<span><strong>Photo</strong><small>Optional</small></span><input type="file" accept="image/*" id="deliveryPhoto"></label><label class="delivery-note">Optional note<input id="deliveryNote" maxlength="120" placeholder="Only when needed"></label></section>
+        </div>
+        <button class="primary-button delivery-confirm" id="confirmDelivery" disabled>Confirm Delivery</button>
+      </section>
+
+      <section class="page workflow-page delivery-report-page" data-page="delivery-report">
+        <div class="workflow-header compact"><button class="icon-button" data-delivery-report-back>←</button><div><p class="eyebrow">Delivery report</p><h1 id="deliveryReportSupplier">Supplier</h1></div><span class="badge" id="deliveryReportDecision">Accepted</span></div>
+        <div class="delivery-report-card" id="deliveryReportCard"></div>
+      </section>
+
+      <section class="page workflow-page production-page cooking-list-page" data-page="production-list">
+        <div class="workflow-header cooking-header"><button class="icon-button" data-production-back>←</button><div><p class="eyebrow">Kitchen workflow</p><h1 id="productionPageTitle">Cooking</h1><p>Select a product or search by name.</p></div><button class="badge badge-button" id="productionRecordCount" type="button" aria-label="Open today's cooking records">0 today</button></div>
+        <div class="production-search"><input id="productionSearch" inputmode="search" autocomplete="off" placeholder="Search cooking products"><button class="secondary-button" id="clearProductionSearch">Clear</button></div>
+        <div class="production-list-label"><span id="productionListLabel">Recent & products</span><small id="productionListHint">Up to six results · search to find more</small></div>
+        <div class="production-products" id="productionProducts"></div>
+      </section>
+
+      <section class="page workflow-page production-page cooking-entry-page" data-page="production-entry">
+        <div class="workflow-header compact cooking-entry-header"><button class="icon-button" data-production-list>←</button><div><p class="eyebrow" id="productionEntryMode">Cooking check</p><h1 id="productionEntryProduct">Lasagna</h1></div><span class="badge" id="productionRuleBadge">Minimum 75°C</span></div>
+        <div class="production-entry-card cooking-no-scroll-card">
+          <div class="temperature-wheel-wrap production-wheel" id="productionWheel">
+            <button class="wheel-step wheel-up" id="productionTempUp" aria-label="Increase temperature">⌃</button>
+            <div class="wheel-values"><span id="productionPrevValue">75.5°C</span><strong id="productionTempValue">75.0°C</strong><span id="productionNextValue">74.5°C</span></div>
+            <button class="wheel-step wheel-down" id="productionTempDown" aria-label="Decrease temperature">⌄</button>
+          </div>
+          <div class="production-side-panel">
+            <div class="production-rule-card" id="productionRuleCard"></div>
+            <div class="holding-time-fields" id="productionHoldingTimes" hidden>
+              <label><span>Started holding</span><input type="datetime-local" id="productionHoldingStartedAt"></label>
+              <label><span>Temperature checked</span><input type="datetime-local" id="productionRecordedAtInput"></label>
+              <div class="holding-duration-preview"><span>Held for</span><strong id="productionHoldingDuration">1 hr</strong></div>
+            </div>
+            <label class="production-note-compact"><span>Optional note</span><input id="productionNote" maxlength="120" placeholder="Only when needed"></label>
+          </div>
+          <button class="primary-button production-confirm" id="confirmProduction">Confirm Cooking</button>
+        </div>
+      </section>
+
+
+
+      <section class="page workflow-page production-page cooking-records-page" data-page="production-records">
+        <div class="workflow-header compact cooking-records-header"><button class="icon-button" id="productionRecordsBack">←</button><div><p class="eyebrow">Today's records</p><h1 id="productionRecordsTitle">Cooking</h1><p>Only records completed today.</p></div><span class="badge" id="productionRecordsBadge">0 records</span></div>
+        <div class="production-records-grid" id="productionRecordsList"></div>
+        <div class="production-records-empty" id="productionRecordsEmpty" hidden><span>◒</span><h2>No cooking records yet</h2><p>Complete a cooking check and it will appear here.</p></div>
+      </section>
+
+      <section class="page workflow-page production-page cooking-report-page" data-page="production-report">
+        <div class="workflow-header compact"><button class="icon-button" id="productionReportBack">←</button><div><p class="eyebrow">Cooking report</p><h1 id="productionReportProduct">Product</h1></div><span class="badge" id="productionReportStatus">PASS</span></div>
+        <div class="production-report-card">
+          <div class="production-report-hero"><span>Recorded temperature</span><strong id="productionReportTemperature">75.0°C</strong><small id="productionReportRequirement">Minimum 75°C</small></div>
+          <div class="production-report-details">
+            <div><span id="productionReportTimeLabel">Time</span><strong id="productionReportTime">—</strong></div>
+            <div id="productionReportHoldingStartRow" hidden><span>Started holding</span><strong id="productionReportHoldingStart">—</strong></div>
+            <div id="productionReportHoldingDurationRow" hidden><span>Held for</span><strong id="productionReportHoldingDuration">—</strong></div>
+            <div><span>Result</span><strong id="productionReportResult">PASS</strong></div>
+            <div><span>Corrective action</span><strong id="productionReportAction">None required</strong></div>
+            <div><span>Note</span><strong id="productionReportNote">No note</strong></div>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="page workflow-page cooling-dashboard-page" data-page="cooling-dashboard">
+        <div class="workflow-header compact"><button class="icon-button" id="coolingBack">←</button><div><p class="eyebrow">Kitchen workflow</p><h1>Cooling</h1><p>Live cooling and paper reports. No scrolling.</p></div><button class="badge badge-button" id="coolingTodayBadge">0 reports</button></div>
+        <div class="cooling-actions"><button class="primary-button" id="startCoolingButton">Start Live Cooling</button><button class="secondary-button" id="addCoolingReportButton">Add Cooling Report</button></div>
+        <div class="cooling-active-list" id="coolingActiveList"></div>
+        <div class="cooling-empty" id="coolingEmpty"><span>❄</span><h2>No active cooling</h2><p>Start a live cooling process or add a report recorded on paper.</p></div>
+      </section>
+
+      <section class="page workflow-page cooling-products-page" data-page="cooling-products">
+        <div class="workflow-header compact"><button class="icon-button" id="coolingProductsBack">←</button><div><p class="eyebrow">Cooling</p><h1 id="coolingPickerTitle">Choose product</h1><p id="coolingPickerHint"></p></div></div>
+        <div class="production-search"><input id="coolingProductSearch" placeholder="Search cooling products" inputmode="search"></div>
+        <div class="cooling-product-grid" id="coolingProductGrid"></div>
+      </section>
+
+      <section class="page workflow-page cooling-entry-page" data-page="cooling-entry">
+        <div class="workflow-header compact"><button class="icon-button" id="coolingEntryBack">←</button><div><p class="eyebrow" id="coolingEntryEyebrow">Cooling</p><h1 id="coolingEntryTitle">Product</h1><p id="coolingEntryRule"></p></div></div>
+        <div class="cooling-entry-shell">
+          <div class="temperature-wheel-wrap production-wheel" id="coolingWheel"><button class="wheel-step wheel-up" id="coolingWheelUp">⌃</button><div class="wheel-values"><span id="coolingWheelAbove">3.5°C</span><strong id="coolingWheelValue">3.0°C</strong><span id="coolingWheelBelow">2.5°C</span></div><button class="wheel-step wheel-down" id="coolingWheelDown">⌄</button></div>
+          <div class="cooling-entry-side">
+            <div class="cooling-manual-fields" id="coolingStartFields" hidden>
+              <div class="cooling-manual-wheel-tabs" role="group" aria-label="Choose temperature to adjust">
+                <button type="button" id="coolingManualStartTab"><span>Start</span><strong id="coolingManualStartValue">63.0°C</strong></button>
+                <button type="button" id="coolingManualFinalTab"><span>Final</span><strong id="coolingManualFinalValue">3.0°C</strong></button>
               </div>
-              <span class="badge">Foundation</span>
+              <label>Started<input type="datetime-local" id="coolingStartedAt"></label>
+              <label>Completed<input type="datetime-local" id="coolingCompletedAt"></label>
             </div>
-            <div class="empty-state">
-              <div class="empty-icon">✓</div>
-              <h3>No tasks configured yet</h3>
-              <p>We will connect this area to temperatures, cleaning, deliveries and prep as we build each module.</p>
-            </div>
-          </article>
-
-          <article class="panel compact-panel">
-            <div class="panel-header">
-              <div>
-                <p class="eyebrow">System</p>
-                <h2>Foundation status</h2>
-              </div>
-            </div>
-            <div class="status-list">
-              <div><span>Navigation</span><strong>Ready</strong></div>
-              <div><span>Local storage</span><strong>Ready</strong></div>
-              <div><span>Login</span><strong>Not installed</strong></div>
-              <div><span>Cloud</span><strong>Not installed</strong></div>
-            </div>
-          </article>
+            <label class="production-note-compact"><span>Optional note</span><input id="coolingEntryNote" maxlength="120" placeholder="Only when needed"></label>
+          </div>
+          <div class="cooling-entry-actions"><button class="primary-button" id="coolingFinish" hidden>Finish Cooling</button><button class="primary-button cooling-confirm" id="coolingConfirm">Confirm</button></div>
         </div>
       </section>
 
-      <section class="page" data-page="work">
-        <div class="page-heading">
-          <div>
-            <p class="eyebrow">Daily operations</p>
-            <h1>Work</h1>
-            <p>Choose a workflow. These modules are placeholders for the clean rebuild.</p>
-          </div>
-        </div>
-
-        <div class="module-grid">
-          <button class="module-card" data-module="Temperatures"><span class="module-icon">°</span><span><strong>Temperatures</strong><small>Opening, closing and checks</small></span></button>
-          <button class="module-card" data-module="Cleaning"><span class="module-icon">✦</span><span><strong>Cleaning</strong><small>Daily and scheduled tasks</small></span></button>
-          <button class="module-card" data-module="Deliveries"><span class="module-icon">↓</span><span><strong>Deliveries</strong><small>Receive and verify goods</small></span></button>
-          <button class="module-card" data-module="Cooking & Cooling"><span class="module-icon">◒</span><span><strong>Cooking & Cooling</strong><small>Food safety records</small></span></button>
-          <button class="module-card" data-module="Prep List"><span class="module-icon">≡</span><span><strong>Prep List</strong><small>Plan tomorrow's preparation</small></span></button>
-          <button class="module-card" data-module="Maintenance"><span class="module-icon">◇</span><span><strong>Maintenance</strong><small>Report operational issues</small></span></button>
-          <button class="module-card" data-module="Handover"><span class="module-icon">↗</span><span><strong>Handover</strong><small>Only relevant shift information</small></span></button>
-        </div>
+      <section class="page workflow-page cooling-reports-page" data-page="cooling-reports">
+        <div class="workflow-header compact"><button class="icon-button" id="coolingReportsBack">←</button><div><p class="eyebrow">Today's reports</p><h1>Cooling</h1><p>Completed cooling records today.</p></div><span class="badge" id="coolingReportsBadge">0 reports</span></div>
+        <div class="production-records-grid" id="coolingReportsList"></div>
       </section>
 
-      <section class="page" data-page="reports">
-        <div class="page-heading">
-          <div>
-            <p class="eyebrow">History</p>
-            <h1>Reports</h1>
-            <p>Reports will show completed work and exceptions. No operational input will happen here.</p>
-          </div>
-        </div>
-        <article class="panel full-panel">
-          <div class="empty-state">
-            <div class="empty-icon">▤</div>
-            <h3>No reports yet</h3>
-            <p>Daily, weekly and exportable reports will be added after the core work modules are stable.</p>
-          </div>
-        </article>
+      <section class="page workflow-page cooling-report-page" data-page="cooling-report">
+        <div class="workflow-header compact"><button class="icon-button" id="coolingReportBack">←</button><div><p class="eyebrow">Cooling report</p><h1 id="coolingReportProduct">Product</h1></div><span class="badge" id="coolingReportStatus">PASS</span></div>
+        <div class="cooling-report-detail"><div><span>Start temperature</span><strong id="coolingReportStart">63.0°C</strong></div><div><span>Final temperature</span><strong id="coolingReportFinal">3.0°C</strong></div><div><span>Duration</span><strong id="coolingReportDuration">90 min</strong></div><div><span>Time</span><strong id="coolingReportTimes">—</strong></div><div><span>Rule</span><strong id="coolingReportRule">≤5°C</strong></div><div><span>Note</span><strong id="coolingReportNote">No note</strong></div></div>
       </section>
 
-      <section class="page" data-page="setup">
-        <div class="page-heading">
-          <div>
-            <p class="eyebrow">Configuration</p>
-            <h1>Setup</h1>
-            <p>All future modules will be editable here instead of being hardcoded.</p>
-          </div>
-          <button class="secondary-button" id="resetDemo">Reset foundation</button>
+      <section class="page workflow-page checklist-page" data-page="checklist-list">
+        <div class="workflow-header compact"><button class="icon-button" id="checklistBack">←</button><div><p class="eyebrow">Kitchen workflow</p><h1 id="checklistTitle">Checklist</h1><p id="checklistSubtitle">Swipe each task to confirm it.</p></div><span class="badge" id="checklistProgress">0 / 0</span></div>
+        <div class="segmented checklist-tabs"><button class="active" data-checklist-mode="opening">Opening</button><button data-checklist-mode="closing">Closing</button></div>
+        <div class="checklist-swipe-guide"><span>← Issue</span><strong>Swipe tasks</strong><span>Done →</span></div>
+        <div class="checklist-task-list" id="checklistTaskList"></div>
+        <button class="completion-bar checklist-confirm" id="confirmChecklist" disabled>Swipe every task to continue</button>
+      </section>
+
+      <section class="page workflow-page checklist-report-page" data-page="checklist-report">
+        <div class="workflow-header compact"><button class="icon-button" id="checklistReportBack">←</button><div><p class="eyebrow">Checklist report</p><h1 id="checklistReportTitle">Opening completed</h1></div><span class="badge" id="checklistReportStatus">Complete</span></div>
+        <div class="plain-report" id="checklistReportBody"></div>
+      </section>
+
+      <section class="page management-page" data-page="setup">
+        <div class="page-heading management-heading"><div><p class="eyebrow">Manager control centre</p><h1>Management</h1><p>Configure the business, departments and operational master lists. Login and handover will be added later.</p></div><button class="secondary-button" id="resetSetup">Restore defaults</button></div>
+        <div class="management-card-grid" id="managementCards">
+          <button class="management-card" data-management-section="business"><span>◇</span><strong>Business</strong><small>Restaurant name and general information</small></button>
+          <button class="management-card" data-management-section="locations"><span>⌖</span><strong>Locations</strong><small>Create and manage restaurant locations</small></button>
+          <button class="management-card" data-management-section="departments"><span>▦</span><strong>Departments</strong><small>Kitchen, Service, Bar and more</small></button>
+          <button class="management-card" data-management-section="devices"><span>▣</span><strong>Devices</strong><small>Assign shared iPads to departments</small></button>
+          <button class="management-card" data-management-section="staff"><span>●</span><strong>Staff</strong><small>People available for tasks and signatures</small></button>
+          <button class="management-card" data-management-section="suppliers"><span>↓</span><strong>Suppliers</strong><small>Names available when receiving deliveries</small></button>
+          <button class="management-card" data-management-section="cleaning"><span>✦</span><strong>Cleaning</strong><small>Tasks, departments, timing and evidence</small></button>
+          <button class="management-card" data-management-section="temperature"><span>°</span><strong>Temperature</strong><small>Equipment and safe operating ranges</small></button>
+          <button class="management-card" data-management-section="food"><span>◒</span><strong>Food & Production</strong><small>Products used for cooking and cooling records</small></button>
+          <button class="management-card" data-management-section="checklists"><span>✓</span><strong>Opening & Closing</strong><small>Edit, add, reorder or delete checklist tasks</small></button>
+          <button class="management-card" data-management-section="workspaces"><span>≡</span><strong>Workspaces</strong><small>Choose modules shown in Kitchen and Service</small></button>
         </div>
 
-        <div class="setup-grid">
-          <article class="setup-card"><span>01</span><h3>Business</h3><p>Restaurant name, locations and general settings.</p></article>
-          <article class="setup-card"><span>02</span><h3>Departments</h3><p>Kitchen and Service first; more can be added later.</p></article>
-          <article class="setup-card"><span>03</span><h3>Workflows</h3><p>Configure modules, order and visibility.</p></article>
-          <article class="setup-card"><span>04</span><h3>Tasks</h3><p>Create cleaning, temperature and daily operational tasks.</p></article>
-        </div>
+        <section class="management-editor" id="managementEditor" hidden>
+          <div class="management-editor-head"><button class="icon-button" id="closeManagementEditor">←</button><div><p class="eyebrow" id="managementEditorEyebrow">Management</p><h2 id="managementEditorTitle">Section</h2><p id="managementEditorDescription"></p></div><button class="primary-button" id="managementAddButton">+ Add</button></div>
+          <div id="managementEditorBody"></div>
+        </section>
       </section>
     </main>
 
-    <nav class="bottom-nav" aria-label="Primary navigation">
-      <button class="nav-item active" data-target="dashboard"><span>⌂</span><strong>Dashboard</strong></button>
-      <button class="nav-item" data-target="work"><span>□</span><strong>Work</strong></button>
-      <button class="nav-item" data-target="reports"><span>▤</span><strong>Reports</strong></button>
-      <button class="nav-item" data-target="setup"><span>⚙</span><strong>Setup</strong></button>
-    </nav>
+    <nav class="bottom-nav manager-nav"><button class="nav-item active" data-target="dashboard">⌂<strong>Dashboard</strong></button><button class="nav-item" data-target="kitchen">K<strong>Kitchen</strong></button><button class="nav-item" data-target="service">S<strong>Service</strong></button><button class="nav-item" data-target="setup">⚙<strong>Management</strong></button></nav>
+    <nav class="bottom-nav department-nav"><button class="nav-item active" data-department-home>▦<strong>Work</strong></button></nav>
   </div>
 
-  <div class="modal" id="moduleModal" aria-hidden="true">
-    <div class="modal-backdrop" data-close-modal></div>
-    <div class="modal-card">
-      <button class="modal-close" data-close-modal aria-label="Close">×</button>
-      <p class="eyebrow">Next module</p>
-      <h2 id="modalTitle">Module</h2>
-      <p>This clean foundation is working. We will build this workflow next without bringing back the old code.</p>
-      <button class="primary-button" data-close-modal>Close</button>
+  <div class="modal checklist-issue-modal" id="checklistIssueModal"><div class="modal-backdrop" data-close-checklist-issue></div><div class="modal-card checklist-issue-card"><button class="modal-close" data-close-checklist-issue>×</button><p class="eyebrow">Checklist issue</p><h2 id="checklistIssueTask">Task</h2><label class="issue-field"><span>What is the issue?</span><textarea id="checklistIssueNote" maxlength="300" placeholder="Write a clear description"></textarea></label><div class="modal-action-row"><button class="secondary-button" data-close-checklist-issue>Cancel</button><button class="primary-button" id="saveChecklistIssue">Save issue</button></div></div></div>
+  <div class="modal" id="moduleModal"><div class="modal-backdrop" data-close-modal></div><div class="modal-card"><button class="modal-close" data-close-modal>×</button><div class="modal-symbol" id="modalSymbol">°</div><p class="eyebrow" id="modalEyebrow">Kitchen workflow</p><h2 id="modalTitle">Module</h2><p id="modalDescription">This workflow will be built in the next sprint.</p><div class="modal-action-row"><button class="secondary-button" data-close-modal>Back</button></div></div></div>
+  <div class="modal" id="noteModal"><div class="modal-backdrop" data-close-note></div><div class="modal-card note-modal-card"><button class="modal-close" data-close-note>×</button><p class="eyebrow">Optional note</p><h2>Add relevant information</h2><textarea id="temperatureNote" maxlength="250" placeholder="Only write something if action or context is needed."></textarea><div class="modal-action-row"><button class="secondary-button" data-close-note>Cancel</button><button class="primary-button" id="saveNote">Save note</button></div></div></div>
+
+  <div class="modal action-modal" id="actionModal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card action-modal-card">
+      <div class="action-modal-head">
+        <span class="action-alert-icon">!</span>
+        <div>
+          <p class="eyebrow danger-text">Action required</p>
+          <h2>Temperature out of range</h2>
+          <p id="actionTemperatureSummary">Fridge 1 · 9.6°C · target 0 to 5°C</p>
+        </div>
+      </div>
+      <div class="action-grid" id="actionGrid">
+        <button data-action-choice="recheck"><span>↻</span><strong>Recheck in 15 min</strong><small>Create a timed follow-up</small></button>
+        <button data-action-choice="move"><span>▣</span><strong>Move products</strong><small>Transfer food to another unit</small></button>
+        <button data-action-choice="adjust"><span>⚙</span><strong>Adjust equipment</strong><small>Change thermostat or settings</small></button>
+        <button data-action-choice="maintenance"><span>◇</span><strong>Call maintenance</strong><small>Escalate an equipment fault</small></button>
+        <button data-action-choice="discard"><span>×</span><strong>Reject / discard</strong><small>Remove unsafe product</small></button>
+        <button data-action-choice="other"><span>✎</span><strong>Other</strong><small>Add a short explanation</small></button>
+      </div>
+      <textarea id="actionNote" maxlength="180" placeholder="Optional note"></textarea>
+      <div class="action-modal-footer">
+        <button class="secondary-button" id="cancelAction">Back</button>
+        <button class="danger-button" id="saveAction" disabled>Save action</button>
+      </div>
     </div>
   </div>
 
+  <div class="modal cooking-action-modal" id="cookingActionModal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card cooking-action-card">
+      <div class="action-modal-head"><span class="action-alert-icon">!</span><div><p class="eyebrow danger-text">Cooking action required</p><h2 id="cookingActionTitle">Temperature too low</h2><p id="cookingActionSummary"></p></div></div>
+      <div class="cooking-action-grid">
+        <button data-cooking-action="continue-cooking"><span>↻</span><strong>Continue cooking</strong><small>Heat again, then take a new reading</small></button>
+        <button data-cooking-action="discard"><span>×</span><strong>Discard batch</strong><small>Remove the unsafe food</small></button>
+        <button data-cooking-action="manager-informed"><span>!</span><strong>Manager informed</strong><small>Escalate for a decision</small></button>
+        <button data-cooking-action="other"><span>✎</span><strong>Other</strong><small>Add a short explanation</small></button>
+      </div>
+      <input id="cookingActionNote" maxlength="140" placeholder="Optional note">
+      <div class="action-modal-footer"><button class="secondary-button" id="cancelCookingAction">Back</button><button class="danger-button" id="saveCookingAction" disabled>Confirm action</button></div>
+    </div>
+  </div>
+  <div class="cleaning-success" id="cleaningSuccess" aria-live="polite" hidden>
+    <div class="cleaning-success-card"><span>✓</span><p>Cleaning confirmed</p><h2 id="cleaningSuccessTitle">Task completed</h2><small id="cleaningSuccessMeta"></small></div>
+  </div>
+
+  <div class="setup-sheet" id="setupSheet" hidden>
+    <div class="setup-sheet-backdrop" data-close-setup-sheet></div>
+    <section class="setup-sheet-card" role="dialog" aria-modal="true">
+      <header class="setup-sheet-head"><div><p class="eyebrow" id="setupSheetEyebrow">Management</p><h2 id="setupSheetTitle">Add item</h2><p id="setupSheetDescription"></p></div><button class="modal-close" data-close-setup-sheet>×</button></header>
+      <div class="setup-sheet-body" id="setupSheetBody"></div>
+      <footer class="setup-sheet-footer"><button class="secondary-button" data-close-setup-sheet>Cancel</button><button class="primary-button" id="saveSetupSheet">Save</button></footer>
+    </section>
+  </div>
+  <div class="toast" id="toast"></div>
   <script src="app.js"></script>
 </body>
 </html>
