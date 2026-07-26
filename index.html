@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#07111b" />
-  <title>KitchenOS v5.7.6</title>
+  <title>KitchenOS v5.8.0</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -152,7 +152,7 @@
           </div>
           <div class="production-side-panel">
             <div class="production-rule-card" id="productionRuleCard"></div>
-            <label class="production-note-compact"><span>Optional note</span><input id="productionNote" maxlength="120" placeholder="Only when needed"></label>
+            <label class="production-note-compact" id="productionRecordedAt" hidden><span>Recorded time</span><input id="productionRecordedAtInput" type="datetime-local"></label><label class="production-note-compact"><span>Optional note</span><input id="productionNote" maxlength="120" placeholder="Only when needed"></label>
           </div>
           <button class="primary-button production-confirm" id="confirmProduction">Confirm Cooking</button>
         </div>
@@ -167,7 +167,7 @@
       </section>
 
       <section class="page workflow-page production-page cooking-report-page" data-page="production-report">
-        <div class="workflow-header compact"><button class="icon-button" id="productionReportBack">←</button><div><p class="eyebrow">Cooking report</p><h1 id="productionReportProduct">Product</h1></div><span class="badge" id="productionReportStatus">PASS</span></div>
+        <div class="workflow-header compact"><button class="icon-button" id="productionReportBack">←</button><div><p class="eyebrow" id="productionReportEyebrow">Cooking report</p><h1 id="productionReportProduct">Product</h1></div><span class="badge" id="productionReportStatus">PASS</span></div>
         <div class="production-report-card">
           <div class="production-report-hero"><span>Recorded temperature</span><strong id="productionReportTemperature">75.0°C</strong><small id="productionReportRequirement">Minimum 75°C</small></div>
           <div class="production-report-details">
