@@ -1,9 +1,8 @@
-# KitchenOS v5.7.3
+# KitchenOS v5.7.4
 
-Cooling workflow update:
+Cooling workflow refinements:
 
-- Draggable Cooling temperature wheel on iPad touch screens.
-- Starting live cooling uses **Confirm**.
-- Opening an active cooling record shows only **Finish Cooling**.
-- Removed the redundant active-count badge.
-- Manual cooling reports remain available.
+- Start Cooling wheel opens at the product cooling-start temperature, with a safe 63°C minimum default.
+- Finish Cooling wheel opens at 3°C for fast compliant completion.
+- The empty “No active cooling” panel now sits directly below the Cooling actions.
+- No-scroll Cooling layout retained.
