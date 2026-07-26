@@ -365,3 +365,7 @@ body[data-page="prep-create"] .app-shell,body[data-page="prep-board"] .app-shell
 .prep-wheel-option{display:block;width:100%;height:58px;border:0!important;border-radius:12px;background:transparent!important;color:var(--muted)!important;font-size:18px;font-weight:700;scroll-snap-align:center;transition:.16s ease}
 .prep-wheel-option.active{color:var(--text)!important;background:rgba(65,132,255,.18)!important;box-shadow:inset 0 0 0 1px rgba(79,140,255,.55)!important;font-size:21px;transform:scale(1.02)}
 .prep-product-grid,.prep-chip-grid,#prepStaffPicker,#prepShiftPicker,#prepUnitPicker,#prepQuantityPresets{display:block}
+
+/* v5.10.4: Prep opens directly into the live board. */
+.prep-toolbar-direct{margin-top:18px}
+.prep-board-page .workflow-header{padding-right:0}

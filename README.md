@@ -1,8 +1,9 @@
-# KitchenOS v5.10.3 — Continuous Prep & Wheel Pickers
+# KitchenOS v5.10.4 — Direct Prep List
 
-- Prep is now a continuous live list: unfinished items remain across days.
-- New prep cards are neutral; only completed cards turn green.
-- Removed completion marks and Done labels from prep cards.
-- Added scroll-wheel pickers for product, quantity, unit, section and staff.
-- Added Management → Prep List setup for editable units, sections and staff.
-- Completing all prep archives one report and clears the live list.
+- Prep List opens directly into the live list.
+- Removed the extra Prep landing step from the operational flow.
+- Added **+ Add New** in the upper-right of the live Prep List.
+- Back returns directly to the Kitchen workspace.
+- Saving a new prep item returns directly to the live list.
+- Completing and archiving prep keeps the user on the live list.
+- Open prep remains continuous across days until completed.
