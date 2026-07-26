@@ -260,8 +260,8 @@ body[data-page="cooling-entry"] .main-content,body[data-page="production-entry"]
 
 
 /* v5.9.1 unified swipe checklist engine */
-.checklist-page{height:100dvh;overflow:hidden;padding-bottom:calc(88px + env(safe-area-inset-bottom));display:flex;flex-direction:column}
-.checklist-page .workflow-header{flex:0 0 auto}.checklist-tabs{max-width:430px;width:100%;margin:0 auto 10px;flex:0 0 auto}
+.checklist-page{display:none;height:100dvh;overflow:hidden;padding-bottom:calc(88px + env(safe-area-inset-bottom));display:flex;flex-direction:column}
+.checklist-page.active{display:flex}.checklist-page .workflow-header{flex:0 0 auto}.checklist-tabs{max-width:430px;width:100%;margin:0 auto 10px;flex:0 0 auto}
 .checklist-swipe-guide{max-width:780px;width:100%;margin:0 auto 8px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;padding:0 8px}.checklist-swipe-guide strong{color:var(--text)}
 .checklist-task-list{display:flex;flex-direction:column;gap:8px;max-width:780px;width:100%;margin:0 auto;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:2px 4px 92px;min-height:0;flex:1}
 .checklist-task{position:relative;min-height:68px;border-radius:15px;overflow:hidden;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.09);touch-action:pan-y;user-select:none}

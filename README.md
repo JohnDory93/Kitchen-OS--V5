@@ -1,7 +1,8 @@
-# KitchenOS v5.9.2 — iPad Checklist Layout Fix
+# KitchenOS v5.9.3 — Checklist Routing & Persistence Fix
 
-- Hides bottom navigation during checklist and checklist report workflows.
-- Keeps the final checklist action fully visible above the iPad safe area.
-- Gives long checklists their own scroll area without covering tasks.
-- Adds safe bottom spacing on dashboard and management pages so navigation no longer covers content.
-- Tightens the checklist header on shorter iPad viewports.
+- Checklist screen now appears only when the Checklist module is opened.
+- Fixed the CSS rule that caused Checklist to render underneath every page.
+- Opening and Closing keep separate in-progress swipe drafts.
+- Switching between Opening and Closing no longer clears completed swipes.
+- Completed checklists reopen their saved report instead of resetting to an empty checklist.
+- Checklist results continue to persist in local storage.
