@@ -303,3 +303,17 @@ body:not([data-page="checklist-list"]):not([data-page="checklist-report"]) .main
   body[data-page="checklist-list"] .checklist-page .workflow-header{margin-bottom:8px}
   body[data-page="checklist-list"] .checklist-task{min-height:62px}
 }
+
+/* v5.9.4 checklist routing and report summary */
+.checklist-page{display:none}
+.checklist-page.active{display:flex}
+.checklist-home-page{max-width:900px}
+.checklist-home-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:32px}
+.checklist-home-card{min-height:210px;padding:26px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(180deg,rgba(18,35,52,.96),rgba(12,27,40,.96));color:var(--text);text-align:left}
+.checklist-home-card:hover{border-color:rgba(169,237,121,.5)}
+.checklist-home-label{display:block;color:var(--green);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.16em}
+.checklist-home-card strong{display:block;font-size:30px;margin:44px 0 8px}
+.checklist-home-card small{color:var(--muted);font-size:16px}
+body[data-page="checklist-home"] .bottom-nav,body[data-page="checklist-report"] .bottom-nav{display:none!important}
+body[data-page="checklist-home"] .app-shell,body[data-page="checklist-report"] .app-shell{padding-bottom:0}
+@media(max-width:700px){.checklist-home-grid{grid-template-columns:1fr}.checklist-home-card{min-height:150px}.checklist-home-card strong{margin-top:26px}}
