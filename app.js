@@ -201,9 +201,9 @@
     products.sort((a,b)=>{if(!q&&productionMode==='cooking'&&Boolean(a.favourite)!==Boolean(b.favourite))return a.favourite?-1:1;const ai=recentIds.indexOf(a.id),bi=recentIds.indexOf(b.id);return (ai<0?999:ai)-(bi<0?999:bi)||a.name.localeCompare(b.name)});
     const favouriteProducts=products.filter(p=>p.favourite&&productionMode==='cooking');
     const visible=products.slice(0,8);
-    $('#productionListLabel').textContent=q?'Search results':favouriteProducts.length?'Favourites':'Products';
-    $('#productionListHint').textContent=q?(products.length>8?`${products.length} matches · showing 8, refine search`:`${products.length} match${products.length===1?'':'es'}`):(favouriteProducts.length?`${favouriteProducts.length} favourites · search for every other product`:`Search to find a product`);
-    $('#productionProducts').innerHTML=visible.length?visible.map(p=>`<button class="production-product ${p.favourite?'is-favourite':''}" data-product-id="${p.id}"><strong>${escapeHtml(p.name)}</strong><small>${productionMode==='cooking'?`Minimum ${p.cookingMin}°C`:`Target ≤${p.coolingTo}°C within ${p.coolingMinutes} min`}</small></button>`).join(''):'<div class="placeholder-card production-empty">No matching products. Add or edit products in Management → Food & Production.</div>';
+    $('#productionListLabel').textContent=q?'Search results':'Products';
+    $('#productionListHint').textContent=q?(products.length>8?`${products.length} matches · showing 8, refine search`:`${products.length} match${products.length===1?'':'es'}`):'Tap a product to continue';
+    $('#productionProducts').innerHTML=visible.length?visible.map(p=>`<button class="production-product" data-product-id="${p.id}"><strong>${escapeHtml(p.name)}</strong></button>`).join(''):'<div class="placeholder-card production-empty">No matching products. Add or edit products in Management → Food & Production.</div>';
     $('#productionRecordCount').textContent=`${records.length} today`;
     $('#productionRecordCount').classList.toggle('has-records',records.length>0);
     $$('[data-product-id]').forEach(b=>b.onclick=()=>openProductionEntry(b.dataset.productId));
@@ -247,7 +247,7 @@
   let coolingProductId='', coolingTemp=3, coolingWheelMode='start', currentCoolingId='', coolingPointerActive=false, coolingWheelLastY=0, coolingWheelAccumulator=0;
   const coolingToday=()=>{const d=todayKey();state.coolingRecords[d]??=[];return state.coolingRecords[d]};
   const activeCooling=()=>coolingToday().filter(r=>r.status==='active');
-  function openCooling(){ $('#coolingSearch').value=''; renderCoolingDashboard(); showPage('cooling-dashboard') }
+  function openCooling(){ const search=$('#coolingProductSearch'); if(search) search.value=''; renderCoolingDashboard(); showPage('cooling-dashboard') }
   function renderCoolingDashboard(){
     const active=activeCooling().sort((a,b)=>new Date(a.startedAt)-new Date(b.startedAt));
     const completed=coolingToday().filter(r=>r.status==='complete');
