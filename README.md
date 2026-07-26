@@ -1,8 +1,7 @@
-# KitchenOS v5.10.1 — Prep Swipe & iPad Action Fix
+# KitchenOS v5.10.2 — Green Swipe Prep
 
-- Prep items now complete with a deliberate right swipe.
-- Completed items can be reopened with a left swipe.
-- Removed tap-to-complete circles.
-- Bottom navigation is hidden on Prep operational screens.
-- Create Prep and Complete Prep actions are pinned above the iPad safe area.
-- Existing Prep data remains compatible with v5.10.0.
+- Swipe a prep task right to complete it.
+- Completed prep cards turn green with no Done text or badge.
+- Open prep cards keep a small Swipe hint on the right.
+- Swipe a completed green card left to reopen it.
+- Updated the Prep List instruction text.
