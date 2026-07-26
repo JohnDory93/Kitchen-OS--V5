@@ -1,9 +1,15 @@
-# KitchenOS v5.9.4
+# KitchenOS v5.10.0 — Smart Prep List
 
-Checklist routing and report summary fix.
+Open `index.html` in Safari or another modern browser.
 
-- Checklist is now a dedicated page and no longer renders below other pages.
-- Completing Opening or Closing returns to the Checklist overview.
-- Each completed checklist counts as one report, not one report per task.
-- Opening and Closing reports can be opened from the Checklist overview.
-- Today's module tile displays `1 report` or `2 reports`.
+## Added
+- Product-based Prep List with no typing
+- Tap quantity presets and +/- fine adjustment
+- Unit, section and optional staff selection
+- Morning, Service and Evening production groups
+- One-tap completion for long lists
+- All / Open / Completed filters
+- Duplicate Yesterday workflow
+- Per-product remembered quantity, unit and section
+- One daily Prep Report after all items are complete
+- Local-storage persistence

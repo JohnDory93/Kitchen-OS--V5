@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#07111b" />
-  <title>KitchenOS v5.9.3</title>
+  <title>KitchenOS v5.10.0</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -229,6 +229,38 @@
         <div class="cooling-report-detail"><div><span>Start temperature</span><strong id="coolingReportStart">63.0°C</strong></div><div><span>Final temperature</span><strong id="coolingReportFinal">3.0°C</strong></div><div><span>Duration</span><strong id="coolingReportDuration">90 min</strong></div><div><span>Time</span><strong id="coolingReportTimes">—</strong></div><div><span>Rule</span><strong id="coolingReportRule">≤5°C</strong></div><div><span>Note</span><strong id="coolingReportNote">No note</strong></div></div>
       </section>
 
+
+      <section class="page workflow-page prep-home-page" data-page="prep-home">
+        <div class="workflow-header compact"><button class="icon-button" id="prepHomeBack">←</button><div><p class="eyebrow">Kitchen production</p><h1>Prep List</h1><p>Build and complete today’s production list without typing.</p></div><span class="badge" id="prepReportBadge">0 items</span></div>
+        <div class="prep-home-actions">
+          <button class="prep-action-card primary" id="newPrepButton"><span>＋</span><strong>New Prep</strong><small>Select product, quantity and section</small></button>
+          <button class="prep-action-card" id="duplicatePrepButton"><span>↻</span><strong>Duplicate Yesterday</strong><small>Copy yesterday’s production list</small></button>
+        </div>
+        <button class="prep-today-card" id="openPrepBoard"><span><small>Today’s Prep</small><strong id="prepTodayHeadline">Nothing planned</strong><em id="prepTodayMeta">Create the first prep item</em></span><b>→</b></button>
+      </section>
+
+      <section class="page workflow-page prep-board-page" data-page="prep-board">
+        <div class="workflow-header compact"><button class="icon-button" id="prepBoardBack">←</button><div><p class="eyebrow">Today’s production</p><h1>Prep List</h1><p>Tap the circle once when an item is ready.</p></div><span class="badge" id="prepProgressBadge">0 / 0</span></div>
+        <div class="prep-toolbar"><div class="segmented prep-filters"><button class="active" data-prep-filter="all">All</button><button data-prep-filter="open">Open</button><button data-prep-filter="done">Completed</button></div><button class="primary-button compact-button" id="addPrepFromBoard">＋ Add Prep</button></div>
+        <div class="prep-board" id="prepBoard"></div>
+        <button class="completion-bar prep-complete-bar" id="completePrepDay" disabled>Complete all prep first</button>
+      </section>
+
+      <section class="page workflow-page prep-create-page" data-page="prep-create">
+        <div class="workflow-header compact"><button class="icon-button" id="prepCreateBack">←</button><div><p class="eyebrow">Add to today</p><h1>New Prep</h1><p>Everything is tap-based. No keyboard needed.</p></div><span class="badge" id="prepCreateStep">Ready</span></div>
+        <div class="prep-create-grid">
+          <section class="prep-picker-panel"><div class="prep-picker-head"><span>1</span><div><strong>Product</strong><small>From Food & Production</small></div></div><div class="prep-product-grid" id="prepProductGrid"></div></section>
+          <section class="prep-picker-panel"><div class="prep-picker-head"><span>2</span><div><strong>Quantity</strong><small>Use presets or fine controls</small></div></div><div class="quantity-display"><button data-prep-qty-adjust="-1">−</button><strong id="prepQuantityValue">10</strong><button data-prep-qty-adjust="1">＋</button></div><div class="prep-chip-grid" id="prepQuantityPresets"><button data-prep-qty="1">1</button><button data-prep-qty="2">2</button><button data-prep-qty="5">5</button><button class="active" data-prep-qty="10">10</button><button data-prep-qty="20">20</button><button data-prep-qty="40">40</button><button data-prep-qty="60">60</button></div></section>
+          <section class="prep-picker-panel"><div class="prep-picker-head"><span>3</span><div><strong>Unit</strong><small>Kitchen-friendly measures</small></div></div><div class="prep-chip-grid" id="prepUnitPicker"><button class="active" data-prep-unit="kg">kg</button><button data-prep-unit="L">L</button><button data-prep-unit="Portions">Portions</button><button data-prep-unit="Trays">Trays</button><button data-prep-unit="Balls">Balls</button><button data-prep-unit="Packs">Packs</button><button data-prep-unit="Each">Each</button></div></section>
+          <section class="prep-picker-panel"><div class="prep-picker-head"><span>4</span><div><strong>Section</strong><small>Where it belongs in the day</small></div></div><div class="prep-chip-grid" id="prepShiftPicker"><button class="active" data-prep-shift="morning">Morning</button><button data-prep-shift="service">Service</button><button data-prep-shift="evening">Evening</button></div><div class="prep-picker-head staff-head"><span>5</span><div><strong>Assigned</strong><small>Optional</small></div></div><div class="prep-chip-grid staff-chips" id="prepStaffPicker"></div></section>
+        </div>
+        <button class="completion-bar prep-save-bar" id="savePrepItem" disabled>Select a product</button>
+      </section>
+
+      <section class="page workflow-page prep-report-page" data-page="prep-report">
+        <div class="workflow-header compact"><button class="icon-button" id="prepReportBack">←</button><div><p class="eyebrow">Daily prep report</p><h1>Prep completed</h1></div><span class="badge">1 report</span></div>
+        <div class="plain-report" id="prepReportBody"></div>
+      </section>
 
       <section class="page workflow-page checklist-home-page" data-page="checklist-home">
         <div class="workflow-header compact"><button class="icon-button" id="checklistHomeBack">←</button><div><p class="eyebrow">Kitchen workflow</p><h1>Checklist</h1><p>Opening and closing records for today.</p></div><span class="badge" id="checklistReportCount">0 reports</span></div>
