@@ -1,9 +1,8 @@
-# KitchenOS v5.7.5 — Cooling Complete
+# KitchenOS v5.7.6 — Cooling Start Reset Fix
 
-Cooling manual reports now use the shared draggable temperature wheel for both the start and final readings.
+Bug-fix release based on v5.7.5.
 
-- Start reading defaults to the product cooling-start temperature (normally 63°C).
-- Final reading defaults to 3°C.
-- Tap Start or Final to choose which reading the wheel edits.
-- No keyboard temperature entry.
-- Existing live cooling, reports, no-scroll layout, and finish workflow remain intact.
+- The green **Confirm** button is reset and shown every time a new live cooling process is opened.
+- Start-form state, note, wheel accumulator, and selected cooling record are reset between uses.
+- The start wheel still opens at the product cooling-start temperature.
+- A duplicate active cooling record for the same product is prevented; selecting it opens the existing process instead.
