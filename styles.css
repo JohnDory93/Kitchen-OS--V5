@@ -221,3 +221,17 @@
 .production-product small{display:none!important}
 .production-product.is-favourite{background:#0b1926!important;border-color:var(--line)!important}
 @media (orientation:landscape) and (max-height:900px){.production-products,.cooling-product-grid{grid-auto-rows:minmax(68px,1fr)}.production-product{min-height:68px!important}}
+
+
+/* v5.7.2 live cooling completion, plain reports, and operational nav safety */
+.cooling-entry-actions{grid-column:1/-1;display:grid;grid-template-columns:1fr 2fr;gap:10px}
+.cooling-entry-actions .cooling-confirm{grid-column:auto;margin:0}
+.cooling-entry-actions .secondary-button{min-height:52px}
+.cooling-report-detail{width:min(760px,100%);margin:8px auto 0;display:grid;gap:0;border-top:1px solid var(--line)}
+.cooling-report-detail>div{display:grid;grid-template-columns:220px 1fr;align-items:center;gap:24px;padding:18px 6px;border-bottom:1px solid var(--line)}
+.cooling-report-detail span{color:var(--muted)}
+.cooling-report-detail strong{font-size:21px}
+body[data-page="cooling-entry"] .bottom-nav,body[data-page="production-entry"] .bottom-nav,body[data-page="cooling-report"] .bottom-nav,body[data-page="production-report"] .bottom-nav{display:none!important}
+body[data-page="cooling-entry"] .main-content,body[data-page="production-entry"] .main-content,body[data-page="cooling-report"] .main-content,body[data-page="production-report"] .main-content{padding-bottom:18px}
+.cooling-product-grid .production-product small{display:none!important}
+@media(max-width:700px){.cooling-report-detail>div{grid-template-columns:1fr;gap:5px;padding:12px 4px}.cooling-entry-actions{grid-template-columns:1fr 1.4fr}}

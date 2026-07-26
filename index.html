@@ -201,7 +201,7 @@
             <div class="cooling-manual-fields" id="coolingStartFields" hidden><label>Started<input type="datetime-local" id="coolingStartedAt"></label><label>Completed<input type="datetime-local" id="coolingCompletedAt"></label><label>Start temperature<input type="number" step="0.5" id="coolingStartTemp"></label></div>
             <label class="production-note-compact"><span>Optional note</span><input id="coolingEntryNote" maxlength="120" placeholder="Only when needed"></label>
           </div>
-          <button class="primary-button cooling-confirm" id="coolingConfirm">Start Cooling</button>
+          <div class="cooling-entry-actions"><button class="secondary-button" id="coolingFinish" hidden>Finish Cooling</button><button class="primary-button cooling-confirm" id="coolingConfirm">Start Cooling</button></div>
         </div>
       </section>
 
@@ -212,7 +212,7 @@
 
       <section class="page workflow-page cooling-report-page" data-page="cooling-report">
         <div class="workflow-header compact"><button class="icon-button" id="coolingReportBack">←</button><div><p class="eyebrow">Cooling report</p><h1 id="coolingReportProduct">Product</h1></div><span class="badge" id="coolingReportStatus">PASS</span></div>
-        <div class="production-report-card"><div class="cooling-report-grid"><div><span>Start</span><strong id="coolingReportStart">63.0°C</strong></div><div><span>Final</span><strong id="coolingReportFinal">3.0°C</strong></div><div><span>Duration</span><strong id="coolingReportDuration">90 min</strong></div><div><span>Times</span><strong id="coolingReportTimes">—</strong></div><div><span>Rule</span><strong id="coolingReportRule">≤5°C</strong></div><div><span>Note</span><strong id="coolingReportNote">No note</strong></div></div></div>
+        <div class="cooling-report-detail"><div><span>Start temperature</span><strong id="coolingReportStart">63.0°C</strong></div><div><span>Final temperature</span><strong id="coolingReportFinal">3.0°C</strong></div><div><span>Duration</span><strong id="coolingReportDuration">90 min</strong></div><div><span>Time</span><strong id="coolingReportTimes">—</strong></div><div><span>Rule</span><strong id="coolingReportRule">≤5°C</strong></div><div><span>Note</span><strong id="coolingReportNote">No note</strong></div></div>
       </section>
 
       <section class="page management-page" data-page="setup">
