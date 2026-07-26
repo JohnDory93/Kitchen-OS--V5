@@ -249,3 +249,11 @@ body[data-page="cooling-entry"] .main-content,body[data-page="production-entry"]
 .cooling-manual-wheel-tabs button.active{border-color:var(--green);background:rgba(158,235,104,.09);box-shadow:inset 0 0 0 1px rgba(158,235,104,.18)}
 .cooling-manual-wheel-tabs button.active span,.cooling-manual-wheel-tabs button.active strong{color:var(--green)}
 @media(max-height:760px){.cooling-manual-wheel-tabs button{min-height:50px;padding:7px 10px}.cooling-manual-fields{gap:6px}.cooling-manual-fields input{padding:8px 10px}}
+
+/* v5.8.1 hot-holding duration */
+.holding-time-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.holding-time-fields label{display:grid;gap:5px;color:var(--muted);font-size:12px}
+.holding-time-fields input{width:100%;height:42px;border:1px solid var(--line);border-radius:12px;background:#091621;color:var(--text);padding:8px 10px}
+.holding-duration-preview{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:9px 11px;border:1px solid var(--line);border-radius:12px;background:#091621}
+.holding-duration-preview span{color:var(--muted);font-size:12px}.holding-duration-preview strong{font-size:16px}
+@media(max-height:760px){.holding-time-fields{gap:5px}.holding-time-fields input{height:36px;padding:5px 8px}.holding-duration-preview{padding:6px 9px}}
