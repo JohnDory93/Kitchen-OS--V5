@@ -1,8 +1,9 @@
-# KitchenOS v5.7.4
+# KitchenOS v5.7.5 — Cooling Complete
 
-Cooling workflow refinements:
+Cooling manual reports now use the shared draggable temperature wheel for both the start and final readings.
 
-- Start Cooling wheel opens at the product cooling-start temperature, with a safe 63°C minimum default.
-- Finish Cooling wheel opens at 3°C for fast compliant completion.
-- The empty “No active cooling” panel now sits directly below the Cooling actions.
-- No-scroll Cooling layout retained.
+- Start reading defaults to the product cooling-start temperature (normally 63°C).
+- Final reading defaults to 3°C.
+- Tap Start or Final to choose which reading the wheel edits.
+- No keyboard temperature entry.
+- Existing live cooling, reports, no-scroll layout, and finish workflow remain intact.

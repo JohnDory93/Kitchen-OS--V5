@@ -239,3 +239,13 @@ body[data-page="cooling-entry"] .main-content,body[data-page="production-entry"]
 /* v5.7.3: active cooling uses one explicit Finish Cooling action. */
 .cooling-entry-actions:has(#coolingConfirm[hidden]){grid-template-columns:1fr}
 #coolingFinish:not([hidden]){width:100%;min-height:58px}
+
+
+/* v5.7.5: manual cooling uses the shared wheel for both readings. */
+.cooling-manual-wheel-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:2px}
+.cooling-manual-wheel-tabs button{min-height:58px;padding:9px 12px;border:1px solid var(--line);border-radius:13px;background:#091621;color:var(--text);text-align:left}
+.cooling-manual-wheel-tabs button span{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}
+.cooling-manual-wheel-tabs button strong{font-size:18px}
+.cooling-manual-wheel-tabs button.active{border-color:var(--green);background:rgba(158,235,104,.09);box-shadow:inset 0 0 0 1px rgba(158,235,104,.18)}
+.cooling-manual-wheel-tabs button.active span,.cooling-manual-wheel-tabs button.active strong{color:var(--green)}
+@media(max-height:760px){.cooling-manual-wheel-tabs button{min-height:50px;padding:7px 10px}.cooling-manual-fields{gap:6px}.cooling-manual-fields input{padding:8px 10px}}

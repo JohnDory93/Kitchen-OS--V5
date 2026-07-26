@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#07111b" />
-  <title>KitchenOS v5.6.2</title>
+  <title>KitchenOS v5.7.5</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -198,7 +198,14 @@
         <div class="cooling-entry-shell">
           <div class="temperature-wheel-wrap production-wheel" id="coolingWheel"><button class="wheel-step wheel-up" id="coolingWheelUp">⌃</button><div class="wheel-values"><span id="coolingWheelAbove">3.5°C</span><strong id="coolingWheelValue">3.0°C</strong><span id="coolingWheelBelow">2.5°C</span></div><button class="wheel-step wheel-down" id="coolingWheelDown">⌄</button></div>
           <div class="cooling-entry-side">
-            <div class="cooling-manual-fields" id="coolingStartFields" hidden><label>Started<input type="datetime-local" id="coolingStartedAt"></label><label>Completed<input type="datetime-local" id="coolingCompletedAt"></label><label>Start temperature<input type="number" step="0.5" id="coolingStartTemp"></label></div>
+            <div class="cooling-manual-fields" id="coolingStartFields" hidden>
+              <div class="cooling-manual-wheel-tabs" role="group" aria-label="Choose temperature to adjust">
+                <button type="button" id="coolingManualStartTab"><span>Start</span><strong id="coolingManualStartValue">63.0°C</strong></button>
+                <button type="button" id="coolingManualFinalTab"><span>Final</span><strong id="coolingManualFinalValue">3.0°C</strong></button>
+              </div>
+              <label>Started<input type="datetime-local" id="coolingStartedAt"></label>
+              <label>Completed<input type="datetime-local" id="coolingCompletedAt"></label>
+            </div>
             <label class="production-note-compact"><span>Optional note</span><input id="coolingEntryNote" maxlength="120" placeholder="Only when needed"></label>
           </div>
           <div class="cooling-entry-actions"><button class="primary-button" id="coolingFinish" hidden>Finish Cooling</button><button class="primary-button cooling-confirm" id="coolingConfirm">Confirm</button></div>
