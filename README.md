@@ -1,8 +1,9 @@
-# KitchenOS v5.10.6 — Prep Picker & Neutral State Fix
+# KitchenOS v5.10.7 — Prep Wheel & Archive Reports Fix
 
-- Open prep tasks now use a neutral dark card.
-- Cards turn green only after a successful right swipe.
-- Prep wheels lock and snap to the centred value.
-- Section and Assigned Staff now use separate panels.
-- Assigned Staff spans the full width for larger teams.
-- Units, sections and staff remain editable in Management → Prep List.
+- Prep wheels capture vertical gestures so the page does not move while selecting.
+- Every wheel snaps and locks to the centred option.
+- Completed prep can be archived even while other prep remains open.
+- Archiving removes only completed green cards and leaves unfinished prep live.
+- Each archive creates one Prep Report.
+- Archived reports are available in Management → Reports.
+- The operational Completed filter shows only completed cards that have not yet been archived.

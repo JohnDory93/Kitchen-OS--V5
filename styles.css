@@ -386,3 +386,12 @@ body[data-page="prep-create"] .app-shell,body[data-page="prep-board"] .app-shell
 .prep-wheel-option{height:58px;scroll-snap-stop:always}
 .prep-staff-panel .prep-wheel{height:116px;padding:29px 0}
 @media(max-height:760px){.prep-create-grid{gap:10px}.prep-picker-panel{padding:11px}.prep-picker-head{margin-bottom:5px}.prep-wheel{height:104px;padding:23px 0}.prep-staff-panel .prep-wheel{height:94px;padding:18px 0}.prep-wheel-option{height:52px}}
+
+/* v5.10.7: wheel gesture isolation + archived prep reports */
+html,body{overscroll-behavior:none}
+body.prep-wheel-active{overflow:hidden;touch-action:none}
+.prep-wheel{overscroll-behavior:contain;touch-action:none;-webkit-overflow-scrolling:auto;scroll-snap-type:y mandatory}
+.prep-wheel-option{scroll-snap-align:center;scroll-snap-stop:always}
+.reports-management-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+.reports-management-head strong{display:block;font-size:20px}.reports-management-head small{display:block;color:var(--muted);margin-top:4px}
+.prep-report-row{width:100%;text-align:left;color:var(--text)}.report-open-arrow{font-size:24px;color:var(--muted)}
