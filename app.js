@@ -328,7 +328,7 @@
       renderPrepCreate();
     });
     $$('[data-prep-quantity]').forEach(button=>button.onclick=()=>{prepDraft.quantity=Number(button.dataset.prepQuantity);renderPrepCreate()});
-    $('#prepUnitChoice').onclick=()=>openPrepChoice('Select unit','Units are editable in Management → Prep List.',state.prepUnits,prepDraft.unit,x=>x,x=>x,value=>{prepDraft.unit=value;renderPrepCreate()});
+    $('#prepUnitChoice').onclick=()=>openPrepChoice('Select a unit','Choose one kitchen measure. Units are editable in Management → Prep List.',state.prepUnits,prepDraft.unit,x=>x,x=>x,value=>{prepDraft.unit=value;renderPrepCreate()});
     $('#prepSectionChoice').onclick=()=>openPrepChoice('Select section','Sections are editable in Management → Prep List.',state.prepSections,prepDraft.shift,x=>x.name,x=>x.id,value=>{prepDraft.shift=value;renderPrepCreate()});
     $('#prepStaffChoice').onclick=()=>openPrepChoice('Assign prep','Staff are editable in Management → Prep List.',['',...state.staff],prepDraft.staff,x=>x||'Anyone',x=>x,value=>{prepDraft.staff=value;renderPrepCreate()});
   }

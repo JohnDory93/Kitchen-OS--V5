@@ -412,3 +412,6 @@ body.prep-wheel-active{overflow:hidden;touch-action:none}
 .prep-choice-row strong{font-size:12px;color:var(--green);text-transform:uppercase;letter-spacing:.08em}
 body.prep-wheel-active{overflow:auto!important;touch-action:auto!important}
 @media(max-height:760px){.prep-choice-button{min-height:66px}.prep-preset-grid button{min-height:46px}.prep-choice-list{max-height:52vh}}
+
+/* v5.10.9: unit uses the same clean full-sheet selector as product */
+.prep-choice-list .prep-choice-row{touch-action:manipulation}

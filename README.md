@@ -1,7 +1,6 @@
-# KitchenOS v5.10.8 — Stable Prep Selectors
+# KitchenOS v5.10.9 — Unified Prep Selection Sheets
 
-- Replaced the linked scroll wheels with stable tap-to-select sheets.
-- Each field opens independently, so scrolling one selector cannot move another selector or the page.
-- Product, unit, section, and staff choices remain editable through Management.
-- Quantity uses quick preset buttons plus the existing fine controls.
-- Prep archive reports remain available under Management → Reports.
+- Product and Unit now use the same clean tap-to-select sheet.
+- Unit selection remains editable from Management → Prep List.
+- Section and Assigned keep their current selector flow.
+- Prep presets are intentionally left for a future production-planning version.
