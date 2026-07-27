@@ -369,3 +369,20 @@ body[data-page="prep-create"] .app-shell,body[data-page="prep-board"] .app-shell
 /* v5.10.4: Prep opens directly into the live board. */
 .prep-toolbar-direct{margin-top:18px}
 .prep-board-page .workflow-header{padding-right:0}
+
+
+/* v5.10.6: neutral prep state, locked wheels, separate section/staff panels */
+.prep-item,.prep-item.is-open{background:#102231!important;border-color:var(--line)!important}
+.prep-item.is-open .prep-swipe-content{background:#102231!important;color:var(--text)!important}
+.prep-item.is-open .prep-swipe-underlay{background:transparent!important}
+.prep-item.is-open.is-dragging .prep-swipe-underlay{background:rgba(58,135,82,.72)!important}
+.prep-item.is-done{background:rgba(58,135,82,.52)!important;border-color:rgba(169,237,121,.52)!important}
+.prep-item.is-done .prep-swipe-content{background:rgba(58,135,82,.52)!important}
+.prep-item.is-done .prep-swipe-underlay{background:rgba(32,78,52,.66)!important}
+.prep-create-grid{grid-template-columns:1.18fr 1fr;grid-template-rows:repeat(3,minmax(0,1fr));height:calc(100dvh - 205px);overflow:hidden}
+.prep-picker-panel{overflow:hidden;min-height:0}
+.prep-staff-panel{grid-column:1/-1}
+.prep-wheel{height:132px;padding:37px 0;scroll-snap-type:y mandatory;overscroll-behavior:contain;scroll-behavior:smooth;touch-action:pan-y}
+.prep-wheel-option{height:58px;scroll-snap-stop:always}
+.prep-staff-panel .prep-wheel{height:116px;padding:29px 0}
+@media(max-height:760px){.prep-create-grid{gap:10px}.prep-picker-panel{padding:11px}.prep-picker-head{margin-bottom:5px}.prep-wheel{height:104px;padding:23px 0}.prep-staff-panel .prep-wheel{height:94px;padding:18px 0}.prep-wheel-option{height:52px}}

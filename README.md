@@ -1,9 +1,8 @@
-# KitchenOS v5.10.5 — Kitchen Workspace Restore
+# KitchenOS v5.10.6 — Prep Picker & Neutral State Fix
 
-Fixes the Kitchen workspace rendering failure introduced in v5.10.4.
-
-- Restores all Kitchen operational module cards.
-- Keeps Prep List opening directly into the live list.
-- Keeps + Add New in the upper-right corner.
-- Adds a safe module-status fallback so one module cannot blank the whole workspace.
-- Preserves existing browser storage and Prep List data.
+- Open prep tasks now use a neutral dark card.
+- Cards turn green only after a successful right swipe.
+- Prep wheels lock and snap to the centred value.
+- Section and Assigned Staff now use separate panels.
+- Assigned Staff spans the full width for larger teams.
+- Units, sections and staff remain editable in Management → Prep List.
