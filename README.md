@@ -1,9 +1,7 @@
-# KitchenOS v5.10.7 — Prep Wheel & Archive Reports Fix
+# KitchenOS v5.10.8 — Stable Prep Selectors
 
-- Prep wheels capture vertical gestures so the page does not move while selecting.
-- Every wheel snaps and locks to the centred option.
-- Completed prep can be archived even while other prep remains open.
-- Archiving removes only completed green cards and leaves unfinished prep live.
-- Each archive creates one Prep Report.
-- Archived reports are available in Management → Reports.
-- The operational Completed filter shows only completed cards that have not yet been archived.
+- Replaced the linked scroll wheels with stable tap-to-select sheets.
+- Each field opens independently, so scrolling one selector cannot move another selector or the page.
+- Product, unit, section, and staff choices remain editable through Management.
+- Quantity uses quick preset buttons plus the existing fine controls.
+- Prep archive reports remain available under Management → Reports.

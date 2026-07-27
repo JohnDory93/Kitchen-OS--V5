@@ -395,3 +395,20 @@ body.prep-wheel-active{overflow:hidden;touch-action:none}
 .reports-management-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
 .reports-management-head strong{display:block;font-size:20px}.reports-management-head small{display:block;color:var(--muted);margin-top:4px}
 .prep-report-row{width:100%;text-align:left;color:var(--text)}.report-open-arrow{font-size:24px;color:var(--muted)}
+
+
+/* v5.10.8: stable tap-to-select prep pickers replace linked scroll wheels */
+.prep-product-grid,.prep-chip-grid{display:block!important;min-height:0!important}
+.prep-choice-button{width:100%;min-height:82px;border:1px solid var(--line);border-radius:16px;background:#0b1926;color:var(--text);display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:14px;padding:14px 18px;text-align:left}
+.prep-choice-button span:first-child{color:var(--muted);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.prep-choice-button strong{font-size:22px;text-align:right}
+.prep-choice-arrow{font-size:34px;color:var(--muted);line-height:1}
+.prep-preset-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.prep-preset-grid button{min-height:54px;border:1px solid var(--line);border-radius:13px;background:#091621;color:var(--text);font-size:18px;font-weight:800}
+.prep-preset-grid button.active{border-color:#4f8cff;background:rgba(65,132,255,.22)}
+.prep-choice-list{display:grid;gap:8px;max-height:min(58vh,520px);overflow-y:auto;overscroll-behavior:contain;padding-right:3px}
+.prep-choice-row{min-height:58px;width:100%;border:1px solid var(--line);border-radius:14px;background:#0b1926;color:var(--text);display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font-size:18px;font-weight:800;text-align:left}
+.prep-choice-row.selected{border-color:var(--green);background:rgba(169,237,121,.10)}
+.prep-choice-row strong{font-size:12px;color:var(--green);text-transform:uppercase;letter-spacing:.08em}
+body.prep-wheel-active{overflow:auto!important;touch-action:auto!important}
+@media(max-height:760px){.prep-choice-button{min-height:66px}.prep-preset-grid button{min-height:46px}.prep-choice-list{max-height:52vh}}
