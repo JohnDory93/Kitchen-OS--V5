@@ -436,3 +436,8 @@ body.prep-wheel-active{overflow:auto!important;touch-action:auto!important}
 #prepUnitPicker.is-unselected .prep-choice-button strong{color:var(--muted)}
 .prep-choice-button{grid-template-columns:minmax(0,1fr) auto auto}
 .prep-choice-button strong{min-width:0}
+
+/* v5.10.13 — Unit selector rebuilt from the Product selector structure */
+#prepUnitGrid{display:block!important;min-height:0!important}
+#prepUnitGrid .prep-choice-button{width:100%;min-height:82px;border:1px solid var(--line);border-radius:16px;background:#0b1926;color:var(--text);display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:14px;padding:14px 18px;text-align:left;cursor:pointer}
+#prepUnitGrid.is-unselected .prep-choice-button strong{color:var(--muted)}

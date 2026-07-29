@@ -315,8 +315,8 @@
     $('#prepProductGrid').innerHTML=prepChoiceButton('prepProductChoice','Product',selectedProduct?.name,'Select a product');
     $('#prepQuantityValue').textContent=prepDraft.quantity;
     $('#prepQuantityPresets').innerHTML=`<div class="prep-preset-grid">${[1,2,5,10,20,40,60,80,100].map(v=>`<button type="button" class="${Number(prepDraft.quantity)===v?'active':''}" data-prep-quantity="${v}">${v}</button>`).join('')}</div>`;
-    $('#prepUnitPicker').innerHTML=prepChoiceButton('prepUnitChoice','Unit',prepDraft.unit,'Select a unit');
-    $('#prepUnitPicker').classList.toggle('is-unselected',!prepDraft.unit);
+    $('#prepUnitGrid').innerHTML=prepChoiceButton('prepUnitChoice','Unit',prepDraft.unit,'Select a unit');
+    $('#prepUnitGrid').classList.toggle('is-unselected',!prepDraft.unit);
     $('#prepShiftPicker').innerHTML=prepChoiceButton('prepSectionChoice','Section',selectedSection?.name,'Select a section');
     $('#prepStaffPicker').innerHTML=prepChoiceButton('prepStaffChoice','Assigned',prepDraft.staff||'Anyone','Anyone');
     const saveButton=$('#savePrepItem');
@@ -333,8 +333,7 @@
       renderPrepCreate();
     });
     $$('[data-prep-quantity]').forEach(button=>button.onclick=()=>{prepDraft.quantity=Number(button.dataset.prepQuantity);renderPrepCreate()});
-    const openUnitChoice=()=>openPrepChoice('Select unit','Choose one kitchen measure. Units are editable in Management → Prep List.',state.prepUnits,prepDraft.unit,x=>x,x=>x,value=>{prepDraft.unit=value;renderPrepCreate()});
-    $('#prepUnitChoice').onclick=e=>{e.stopPropagation();openUnitChoice()};
+    $('#prepUnitChoice').onclick=()=>openPrepChoice('Select unit','Choose one kitchen measure. Units are editable in Management → Prep List.',state.prepUnits,prepDraft.unit,x=>x,x=>x,value=>{prepDraft.unit=value;renderPrepCreate()});
     $('#prepSectionChoice').onclick=()=>openPrepChoice('Select section','Sections are editable in Management → Prep List.',state.prepSections,prepDraft.shift,x=>x.name,x=>x.id,value=>{prepDraft.shift=value;renderPrepCreate()});
     $('#prepStaffChoice').onclick=()=>openPrepChoice('Assign prep','Staff are editable in Management → Prep List.',['',...state.staff],prepDraft.staff,x=>x||'Anyone',x=>x,value=>{prepDraft.staff=value;renderPrepCreate()});
   }

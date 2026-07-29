@@ -1,5 +1,6 @@
-# KitchenOS v5.10.12 — Unit Picker Event Fix
+# KitchenOS v5.10.13 — Rebuilt Unit Selector
 
-- Fixes the Unit selector opening twice because both the field and its parent handled the same tap.
-- Unit now opens one centred selection sheet, matching Product.
-- Updates the build title to v5.10.12 for deployment verification.
+- Removed the previous Unit control completely.
+- Rebuilt Unit using the exact same container and selector component as Product.
+- Unit now opens the same centred selection sheet with a single click handler.
+- Existing prep data, editable units, and reports remain compatible.
