@@ -203,7 +203,7 @@
     else if(activeManagementSection==='workspaces'){body.innerHTML='<div class="management-workspace-grid"><article class="editor-card"><div class="editor-title"><span class="department-icon">K</span><div><h3>Kitchen</h3><p>Operational screen</p></div></div><div class="module-toggle-list" id="kitchenEditorManagement"></div></article><article class="editor-card"><div class="editor-title"><span class="department-icon">S</span><div><h3>Service</h3><p>Operational screen</p></div></div><div class="module-toggle-list" id="serviceEditorManagement"></div></article></div>';renderWorkspaceManagement()}}
   function bindManagementList(key){$('#managementEditorBody').querySelectorAll('[data-mgmt-edit]').forEach(b=>b.onclick=()=>editManagementItem(key,Number(b.dataset.mgmtEdit)));$('#managementEditorBody').querySelectorAll('[data-mgmt-delete]').forEach(b=>b.onclick=()=>deleteManagementItem(key,Number(b.dataset.mgmtDelete)))}
   function sheet(title,description,html,onSave){$('#setupSheetTitle').textContent=title;$('#setupSheetDescription').textContent=description;$('#setupSheetBody').innerHTML=html;setupSheetSave=onSave;$('#setupSheet').hidden=false}
-  function closeSheet(){$('#setupSheet').hidden=true;setupSheetSave=null}
+  function closeSheet(){$('#setupSheet').hidden=true;$('#setupSheet').classList.remove('prep-selection-sheet');$('#saveSetupSheet').hidden=false;setupSheetSave=null}
   function options(items,selected){return items.map(x=>`<option value="${escapeHtml(x.id||x.name||x)}" ${(x.id||x.name||x)===selected?'selected':''}>${escapeHtml(x.name||x)}</option>`).join('')}
   function editManagementItem(key,i){const item=state[key][i];if(key==='staff'){sheet('Edit staff member','Change the name and save.',`<label class="sheet-field">Name<input id="sheetName" value="${escapeHtml(displayName(item))}"></label>`,()=>{const v=$('#sheetName').value.trim();if(!v)return;state[key][i]=v;finishSheet('Updated')});return}if(key==='foodProducts'){openFoodCustom(item,i);return}if(key==='cleaningTasks'){openCleaningCustom(item,i);return}if(key==='devices'){sheet('Edit device','Assign this shared iPad.',`<label class="sheet-field">Device name<input id="sheetName" value="${escapeHtml(item.name)}"></label><label class="sheet-field">Location<select id="sheetLocation">${options(state.locations,item.locationId)}</select></label><label class="sheet-field">Department<select id="sheetDepartment">${options(state.departments,item.departmentId)}</select></label>`,()=>{item.name=$('#sheetName').value.trim()||item.name;item.locationId=$('#sheetLocation').value;item.departmentId=$('#sheetDepartment').value;finishSheet('Device updated')});return}sheet(`Edit ${key.slice(0,-1)}`,'Update the name.',`<label class="sheet-field">Name<input id="sheetName" value="${escapeHtml(item.name)}"></label>`,()=>{item.name=$('#sheetName').value.trim()||item.name;finishSheet('Updated')})}
   function deleteManagementItem(key,i){if(!confirm('Delete this item?'))return;if(key==='departments'&&state.departments.length<=2)return toast('Keep at least Kitchen and Service');if(key==='locations'&&state.locations.length<=1)return toast('Keep at least one location');state[key].splice(i,1);save();renderManagementSection();renderAll();toast('Deleted')}
@@ -295,11 +295,15 @@
   }
   function openPrepChoice(title,description,items,selected,labelFn,valueFn,onSelect){
     const rows=items.map(item=>{const value=String(valueFn(item));const label=String(labelFn(item));return `<button type="button" class="prep-choice-row ${String(selected)===value?'selected':''}" data-prep-choice="${escapeHtml(value)}"><span>${escapeHtml(label)}</span>${String(selected)===value?'<strong>Selected</strong>':''}</button>`}).join('');
-    sheet(title,description,`<div class="prep-choice-list">${rows||'<div class="placeholder-card">No options available.</div>'}</div>`,()=>{});
+    sheet(title,description,`<div class="prep-choice-sheet-inner"><div class="prep-choice-list">${rows||'<div class="placeholder-card">No options available.</div>'}</div></div>`,()=>{});
+    $('#setupSheet').classList.add('prep-selection-sheet');
     $('#saveSetupSheet').hidden=true;
+    const selectedRow=$('.prep-choice-row.selected');
+    requestAnimationFrame(()=>selectedRow?.scrollIntoView({block:'center',behavior:'auto'}));
     $$('[data-prep-choice]').forEach(button=>button.onclick=()=>{
       const value=button.dataset.prepChoice;
       closeSheet();
+      $('#setupSheet').classList.remove('prep-selection-sheet');
       $('#saveSetupSheet').hidden=false;
       onSelect(value);
     });

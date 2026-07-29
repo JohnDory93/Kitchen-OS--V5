@@ -415,3 +415,17 @@ body.prep-wheel-active{overflow:auto!important;touch-action:auto!important}
 
 /* v5.10.9: unit uses the same clean full-sheet selector as product */
 .prep-choice-list .prep-choice-row{touch-action:manipulation}
+
+
+/* v5.10.10 — unified centred prep selection sheets */
+.prep-selection-sheet .setup-sheet-panel{max-width:780px;margin-inline:auto}
+.prep-selection-sheet .setup-sheet-head{text-align:center;justify-content:center;position:relative}
+.prep-selection-sheet .setup-sheet-head>div{width:100%;max-width:620px;margin-inline:auto}
+.prep-selection-sheet .setup-sheet-head .modal-close{position:absolute;right:18px;top:18px}
+.prep-selection-sheet .setup-sheet-body{display:flex;justify-content:center}
+.prep-choice-sheet-inner{width:min(100%,620px);margin-inline:auto}
+.prep-choice-list{width:100%;margin-inline:auto}
+.prep-choice-row{justify-content:center;text-align:center;position:relative;padding-inline:72px}
+.prep-choice-row strong{position:absolute;right:18px}
+.prep-selection-sheet .setup-sheet-footer{justify-content:center}
+.prep-selection-sheet .setup-sheet-footer .secondary-button{min-width:180px}
