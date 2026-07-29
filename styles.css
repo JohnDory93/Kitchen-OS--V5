@@ -429,3 +429,10 @@ body.prep-wheel-active{overflow:auto!important;touch-action:auto!important}
 .prep-choice-row strong{position:absolute;right:18px}
 .prep-selection-sheet .setup-sheet-footer{justify-content:center}
 .prep-selection-sheet .setup-sheet-footer .secondary-button{min-width:180px}
+
+
+/* v5.10.11 — unit selector parity */
+#prepUnitPicker .prep-choice-button{cursor:pointer}
+#prepUnitPicker.is-unselected .prep-choice-button strong{color:var(--muted)}
+.prep-choice-button{grid-template-columns:minmax(0,1fr) auto auto}
+.prep-choice-button strong{min-width:0}

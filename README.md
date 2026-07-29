@@ -1,7 +1,6 @@
-# KitchenOS v5.10.10 — Centred Unified Prep Selection Sheets
+# KitchenOS v5.10.11 — Unit Selection Parity
 
-- Product, Unit, Section, and Assigned use the same clean selection sheet.
-- Selection sheets are centred on iPad.
-- The current option opens centred in the list.
-- Units remain editable in Management → Prep List.
-- Existing Prep List data and reports are preserved.
+- Unit starts unselected, matching Product.
+- Tapping anywhere in the Unit field opens the same centred selection sheet as Product.
+- Add Prep stays disabled until Product and Unit are selected.
+- Existing Prep items, setup options, and reports remain compatible.
