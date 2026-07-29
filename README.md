@@ -1,3 +1,7 @@
-# KitchenOS v5.10.14 — Rebuilt Prep Product and Unit Selectors
+# KitchenOS v5.10.15
 
-This build removes the dynamic Unit field implementation and rebuilds Product and Unit as permanent, identical controls in the page markup. Both are handled by one delegated picker event path and open the same centered selection sheet.
+Prep selector refactor:
+- Product, Unit, Section, and Assigned now use one shared SelectionField event path.
+- One shared centred selection sheet renders every option list.
+- Removed dynamic Section/Assigned controls and their separate handlers.
+- Quantity remains the only specialised control.
