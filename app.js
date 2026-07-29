@@ -290,9 +290,6 @@
   function prepModuleStatus(){const items=prepItems(),open=items.filter(x=>!x.done).length;if(open)return `${open} open`;const done=items.filter(x=>x.done).length;return done?`${done} ready`:(state.prepReports.length?'1 report':'Ready')}
   function renderPrepHome(){const items=prepItems(),done=items.filter(x=>x.done).length,open=items.length-done;$('#prepReportBadge').textContent=`${items.length} item${items.length===1?'':'s'}`;if(items.length){$('#prepTodayHeadline').textContent=`${open} open · ${done} completed`;$('#prepTodayMeta').textContent='Open items stay here until they are finished';$('#openPrepBoard').dataset.prepDestination='board'}else{$('#prepTodayHeadline').textContent='Nothing waiting';$('#prepTodayMeta').textContent=state.prepReports.length?'View the latest prep report':'Create the first prep item';$('#openPrepBoard').dataset.prepDestination=state.prepReports.length?'report':'board'}}
   function openPrepCreate(){prepDraft={productId:'',quantity:10,unit:'',shift:state.prepSections[0]?.id||'morning',staff:''};renderPrepCreate();showPage('prep-create')}
-  function prepChoiceButton(id,label,value,placeholder='Select'){
-    return `<button class="prep-choice-button" id="${id}" type="button"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value||placeholder)}</strong><span class="prep-choice-arrow">›</span></button>`
-  }
   function openPrepChoice(title,description,items,selected,labelFn,valueFn,onSelect){
     const rows=items.map(item=>{const value=String(valueFn(item));const label=String(labelFn(item));return `<button type="button" class="prep-choice-row ${String(selected)===value?'selected':''}" data-prep-choice="${escapeHtml(value)}"><span>${escapeHtml(label)}</span>${String(selected)===value?'<strong>Selected</strong>':''}</button>`}).join('');
     sheet(title,description,`<div class="prep-choice-sheet-inner"><div class="prep-choice-list">${rows||'<div class="placeholder-card">No options available.</div>'}</div></div>`,()=>{});
@@ -303,8 +300,6 @@
     $$('[data-prep-choice]').forEach(button=>button.onclick=()=>{
       const value=button.dataset.prepChoice;
       closeSheet();
-      $('#setupSheet').classList.remove('prep-selection-sheet');
-      $('#saveSetupSheet').hidden=false;
       onSelect(value);
     });
   }
@@ -312,31 +307,41 @@
     const products=state.foodProducts;
     const selectedProduct=products.find(p=>p.id===prepDraft.productId);
     const selectedSection=state.prepSections.find(x=>x.id===prepDraft.shift);
-    $('#prepProductGrid').innerHTML=prepChoiceButton('prepProductChoice','Product',selectedProduct?.name,'Select a product');
+    $('#prepProductChoiceValue').textContent=selectedProduct?.name||'Select a product';
+    $('#prepProductChoice').classList.toggle('is-unselected',!selectedProduct);
+    $('#prepUnitChoiceValue').textContent=prepDraft.unit||'Select a unit';
+    $('#prepUnitChoice').classList.toggle('is-unselected',!prepDraft.unit);
     $('#prepQuantityValue').textContent=prepDraft.quantity;
     $('#prepQuantityPresets').innerHTML=`<div class="prep-preset-grid">${[1,2,5,10,20,40,60,80,100].map(v=>`<button type="button" class="${Number(prepDraft.quantity)===v?'active':''}" data-prep-quantity="${v}">${v}</button>`).join('')}</div>`;
-    $('#prepUnitGrid').innerHTML=prepChoiceButton('prepUnitChoice','Unit',prepDraft.unit,'Select a unit');
-    $('#prepUnitGrid').classList.toggle('is-unselected',!prepDraft.unit);
-    $('#prepShiftPicker').innerHTML=prepChoiceButton('prepSectionChoice','Section',selectedSection?.name,'Select a section');
-    $('#prepStaffPicker').innerHTML=prepChoiceButton('prepStaffChoice','Assigned',prepDraft.staff||'Anyone','Anyone');
+    $('#prepShiftPicker').innerHTML=`<button class="prep-choice-button" id="prepSectionChoice" type="button"><span>Section</span><strong>${escapeHtml(selectedSection?.name||'Select a section')}</strong><span class="prep-choice-arrow">›</span></button>`;
+    $('#prepStaffPicker').innerHTML=`<button class="prep-choice-button" id="prepStaffChoice" type="button"><span>Assigned</span><strong>${escapeHtml(prepDraft.staff||'Anyone')}</strong><span class="prep-choice-arrow">›</span></button>`;
     const saveButton=$('#savePrepItem');
     saveButton.disabled=!prepDraft.productId||!prepDraft.unit;
     saveButton.textContent=!prepDraft.productId?'Select a product':(!prepDraft.unit?'Select a unit':'Add Prep');
-    $('#prepProductChoice').onclick=()=>openPrepChoice('Select product','Choose one product from Food & Production.',products,prepDraft.productId,p=>p.name,p=>p.id,value=>{
-      prepDraft.productId=value;
-      const remembered=state.prepLast[value];
-      if(remembered){
-        prepDraft.quantity=remembered.quantity;
-        prepDraft.unit=state.prepUnits.includes(remembered.unit)?remembered.unit:prepDraft.unit;
-        prepDraft.shift=state.prepSections.some(x=>x.id===remembered.shift)?remembered.shift:prepDraft.shift;
-      }
-      renderPrepCreate();
-    });
     $$('[data-prep-quantity]').forEach(button=>button.onclick=()=>{prepDraft.quantity=Number(button.dataset.prepQuantity);renderPrepCreate()});
-    $('#prepUnitChoice').onclick=()=>openPrepChoice('Select unit','Choose one kitchen measure. Units are editable in Management → Prep List.',state.prepUnits,prepDraft.unit,x=>x,x=>x,value=>{prepDraft.unit=value;renderPrepCreate()});
     $('#prepSectionChoice').onclick=()=>openPrepChoice('Select section','Sections are editable in Management → Prep List.',state.prepSections,prepDraft.shift,x=>x.name,x=>x.id,value=>{prepDraft.shift=value;renderPrepCreate()});
     $('#prepStaffChoice').onclick=()=>openPrepChoice('Assign prep','Staff are editable in Management → Prep List.',['',...state.staff],prepDraft.staff,x=>x||'Anyone',x=>x,value=>{prepDraft.staff=value;renderPrepCreate()});
   }
+  document.addEventListener('click',event=>{
+    const picker=event.target.closest('[data-prep-picker]');
+    if(!picker)return;
+    event.preventDefault();
+    event.stopPropagation();
+    if(picker.dataset.prepPicker==='product'){
+      openPrepChoice('Select product','Choose one product from Food & Production.',state.foodProducts,prepDraft.productId,p=>p.name,p=>p.id,value=>{
+        prepDraft.productId=value;
+        const remembered=state.prepLast[value];
+        if(remembered){
+          prepDraft.quantity=remembered.quantity;
+          prepDraft.unit=state.prepUnits.includes(remembered.unit)?remembered.unit:prepDraft.unit;
+          prepDraft.shift=state.prepSections.some(x=>x.id===remembered.shift)?remembered.shift:prepDraft.shift;
+        }
+        renderPrepCreate();
+      });
+    }else if(picker.dataset.prepPicker==='unit'){
+      openPrepChoice('Select unit','Choose one kitchen measure. Units are editable in Management → Prep List.',state.prepUnits,prepDraft.unit,x=>x,x=>x,value=>{prepDraft.unit=value;renderPrepCreate()});
+    }
+  });
   function savePrepItem(){const p=state.foodProducts.find(x=>x.id===prepDraft.productId);if(!p||!prepDraft.unit)return;const item={id:`prep-${Date.now()}`,productId:p.id,productName:p.name,quantity:Number(prepDraft.quantity),unit:prepDraft.unit,shift:prepDraft.shift,staff:prepDraft.staff,done:false,createdAt:new Date().toISOString()};prepItems().push(item);state.prepLast[p.id]={quantity:item.quantity,unit:item.unit,shift:item.shift};addAudit('prep','created',item.id,item);save();renderModules('kitchen');renderPrepBoard();showPage('prep-board');toast(`${p.name} added`)}
   function renderPrepBoard(){const items=prepItems(),visible=items.filter(x=>prepFilter==='all'||(prepFilter==='done'?x.done:!x.done)),done=items.filter(x=>x.done).length;$('#prepProgressBadge').textContent=`${done} / ${items.length}`;$$('[data-prep-filter]').forEach(b=>b.classList.toggle('active',b.dataset.prepFilter===prepFilter));$('#prepBoard').innerHTML=items.length?state.prepSections.map(section=>{const rows=visible.filter(x=>x.shift===section.id).sort((a,b)=>Number(a.done)-Number(b.done));if(!rows.length)return'';return `<section class="prep-section"><div class="prep-section-head"><h2>${escapeHtml(section.name)}</h2><span>${rows.filter(x=>!x.done).length} open · ${rows.filter(x=>x.done).length} complete</span></div>${rows.map(x=>`<article class="prep-item swipe-prep ${x.done?'is-done':'is-open'}" data-swipe-prep="${x.id}"><div class="prep-swipe-underlay" aria-hidden="true"></div><div class="prep-swipe-content"><span class="prep-item-main"><strong>${escapeHtml(x.productName)}</strong><small>${x.staff?`Assigned to ${escapeHtml(x.staff)}`:'Unassigned'}</small></span><span class="prep-amount">${x.quantity} ${escapeHtml(x.unit)}</span>${x.done?'':'<span class="prep-swipe-label">Swipe →</span>'}</div></article>`).join('')}</section>`}).join(''):'<div class="prep-empty"><h2>No prep items waiting</h2><p>Add a product and it will remain here until completed.</p></div>';bindPrepSwipes();const complete=$('#completePrepDay');complete.hidden=!items.some(x=>x.done);complete.disabled=!items.some(x=>x.done);complete.textContent=done===1?'Archive 1 Completed Prep':`Archive ${done} Completed Prep`}
   function setPrepDone(id,done){const item=prepItems().find(x=>x.id===id);if(!item||item.done===done)return;item.done=done;item.completedAt=done?new Date().toISOString():null;save();renderPrepBoard();renderModules('kitchen')}
