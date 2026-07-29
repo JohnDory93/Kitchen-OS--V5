@@ -1,6 +1,5 @@
-# KitchenOS v5.10.11 — Unit Selection Parity
+# KitchenOS v5.10.12 — Unit Picker Event Fix
 
-- Unit starts unselected, matching Product.
-- Tapping anywhere in the Unit field opens the same centred selection sheet as Product.
-- Add Prep stays disabled until Product and Unit are selected.
-- Existing Prep items, setup options, and reports remain compatible.
+- Fixes the Unit selector opening twice because both the field and its parent handled the same tap.
+- Unit now opens one centred selection sheet, matching Product.
+- Updates the build title to v5.10.12 for deployment verification.
