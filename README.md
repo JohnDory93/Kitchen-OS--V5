@@ -1,7 +1,3 @@
-# KitchenOS v5.10.15
+# KitchenOS v5.10.16
 
-Prep selector refactor:
-- Product, Unit, Section, and Assigned now use one shared SelectionField event path.
-- One shared centred selection sheet renders every option list.
-- Removed dynamic Section/Assigned controls and their separate handlers.
-- Quantity remains the only specialised control.
+Clean rebuild of the New Prep form selectors. Product, Unit, Section and Assigned now use one dedicated full-screen selection overlay, independent from Management sheets and legacy picker code.

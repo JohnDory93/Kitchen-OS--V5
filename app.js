@@ -290,18 +290,31 @@
   function prepModuleStatus(){const items=prepItems(),open=items.filter(x=>!x.done).length;if(open)return `${open} open`;const done=items.filter(x=>x.done).length;return done?`${done} ready`:(state.prepReports.length?'1 report':'Ready')}
   function renderPrepHome(){const items=prepItems(),done=items.filter(x=>x.done).length,open=items.length-done;$('#prepReportBadge').textContent=`${items.length} item${items.length===1?'':'s'}`;if(items.length){$('#prepTodayHeadline').textContent=`${open} open · ${done} completed`;$('#prepTodayMeta').textContent='Open items stay here until they are finished';$('#openPrepBoard').dataset.prepDestination='board'}else{$('#prepTodayHeadline').textContent='Nothing waiting';$('#prepTodayMeta').textContent=state.prepReports.length?'View the latest prep report':'Create the first prep item';$('#openPrepBoard').dataset.prepDestination=state.prepReports.length?'report':'board'}}
   function openPrepCreate(){prepDraft={productId:'',quantity:10,unit:'',shift:state.prepSections[0]?.id||'morning',staff:''};renderPrepCreate();showPage('prep-create')}
-  function openPrepChoice(title,description,items,selected,labelFn,valueFn,onSelect){
-    const rows=items.map(item=>{const value=String(valueFn(item));const label=String(labelFn(item));return `<button type="button" class="prep-choice-row ${String(selected)===value?'selected':''}" data-prep-choice="${escapeHtml(value)}"><span>${escapeHtml(label)}</span>${String(selected)===value?'<strong>Selected</strong>':''}</button>`}).join('');
-    sheet(title,description,`<div class="prep-choice-sheet-inner"><div class="prep-choice-list">${rows||'<div class="placeholder-card">No options available.</div>'}</div></div>`,()=>{});
-    $('#setupSheet').classList.add('prep-selection-sheet');
-    $('#saveSetupSheet').hidden=true;
-    const selectedRow=$('.prep-choice-row.selected');
-    requestAnimationFrame(()=>selectedRow?.scrollIntoView({block:'center',behavior:'auto'}));
-    $$('[data-prep-choice]').forEach(button=>button.onclick=()=>{
-      const value=button.dataset.prepChoice;
-      closeSheet();
-      onSelect(value);
-    });
+  let activePrepSelector=null;
+  function closePrepSelector(){
+    activePrepSelector=null;
+    const selector=$('#prepSelector');
+    selector.hidden=true;
+    document.body.classList.remove('prep-selector-open');
+    $('#prepSelectorList').innerHTML='';
+  }
+  function openPrepSelector(field){
+    const factory=prepPickerConfigs[field];
+    if(!factory)return;
+    const config=factory();
+    activePrepSelector={field,config};
+    $('#prepSelectorTitle').textContent=config.title;
+    $('#prepSelectorDescription').textContent=config.description||'';
+    const selected=String(config.selected??'');
+    $('#prepSelectorList').innerHTML=config.items.map(item=>{
+      const value=String(config.value(item));
+      const label=String(config.label(item));
+      return `<button type="button" class="prep-selector-option ${selected===value?'selected':''}" data-prep-selector-value="${escapeHtml(value)}">${escapeHtml(label)}</button>`;
+    }).join('')||'<div class="placeholder-card">No options available.</div>';
+    const selector=$('#prepSelector');
+    selector.hidden=false;
+    document.body.classList.add('prep-selector-open');
+    requestAnimationFrame(()=>$('#prepSelectorList .selected')?.scrollIntoView({block:'center',behavior:'auto'}));
   }
   function renderPrepCreate(){
     const products=state.foodProducts;
@@ -327,16 +340,20 @@
     section:()=>({title:'Select section',description:'Sections are editable in Management → Prep List.',items:state.prepSections,selected:prepDraft.shift,label:x=>x.name,value:x=>x.id,apply:value=>{prepDraft.shift=value;}}),
     staff:()=>({title:'Assign prep',description:'Staff are editable in Management → Prep List.',items:['',...state.staff],selected:prepDraft.staff,label:x=>x||'Anyone',value:x=>x,apply:value=>{prepDraft.staff=value;}})
   };
-  document.addEventListener('click',event=>{
-    const picker=event.target.closest('[data-prep-picker]');
-    if(!picker)return;
-    event.preventDefault();
-    event.stopPropagation();
-    const factory=prepPickerConfigs[picker.dataset.prepPicker];
-    if(!factory)return;
-    const config=factory();
-    openPrepChoice(config.title,config.description,config.items,config.selected,config.label,config.value,value=>{config.apply(value);renderPrepCreate();});
+  [['prepProductChoice','product'],['prepUnitChoice','unit'],['prepSectionChoice','section'],['prepStaffChoice','staff']].forEach(([id,field])=>{
+    const el=$('#'+id);
+    el.onclick=event=>{event.preventDefault();event.stopPropagation();openPrepSelector(field)};
   });
+  $$('[data-close-prep-selector]').forEach(el=>el.onclick=closePrepSelector);
+  $('#prepSelectorList').onclick=event=>{
+    const option=event.target.closest('[data-prep-selector-value]');
+    if(!option||!activePrepSelector)return;
+    const {config}=activePrepSelector;
+    const value=option.dataset.prepSelectorValue;
+    config.apply(value);
+    closePrepSelector();
+    renderPrepCreate();
+  };
   function savePrepItem(){const p=state.foodProducts.find(x=>x.id===prepDraft.productId);if(!p||!prepDraft.unit)return;const item={id:`prep-${Date.now()}`,productId:p.id,productName:p.name,quantity:Number(prepDraft.quantity),unit:prepDraft.unit,shift:prepDraft.shift,staff:prepDraft.staff,done:false,createdAt:new Date().toISOString()};prepItems().push(item);state.prepLast[p.id]={quantity:item.quantity,unit:item.unit,shift:item.shift};addAudit('prep','created',item.id,item);save();renderModules('kitchen');renderPrepBoard();showPage('prep-board');toast(`${p.name} added`)}
   function renderPrepBoard(){const items=prepItems(),visible=items.filter(x=>prepFilter==='all'||(prepFilter==='done'?x.done:!x.done)),done=items.filter(x=>x.done).length;$('#prepProgressBadge').textContent=`${done} / ${items.length}`;$$('[data-prep-filter]').forEach(b=>b.classList.toggle('active',b.dataset.prepFilter===prepFilter));$('#prepBoard').innerHTML=items.length?state.prepSections.map(section=>{const rows=visible.filter(x=>x.shift===section.id).sort((a,b)=>Number(a.done)-Number(b.done));if(!rows.length)return'';return `<section class="prep-section"><div class="prep-section-head"><h2>${escapeHtml(section.name)}</h2><span>${rows.filter(x=>!x.done).length} open · ${rows.filter(x=>x.done).length} complete</span></div>${rows.map(x=>`<article class="prep-item swipe-prep ${x.done?'is-done':'is-open'}" data-swipe-prep="${x.id}"><div class="prep-swipe-underlay" aria-hidden="true"></div><div class="prep-swipe-content"><span class="prep-item-main"><strong>${escapeHtml(x.productName)}</strong><small>${x.staff?`Assigned to ${escapeHtml(x.staff)}`:'Unassigned'}</small></span><span class="prep-amount">${x.quantity} ${escapeHtml(x.unit)}</span>${x.done?'':'<span class="prep-swipe-label">Swipe →</span>'}</div></article>`).join('')}</section>`}).join(''):'<div class="prep-empty"><h2>No prep items waiting</h2><p>Add a product and it will remain here until completed.</p></div>';bindPrepSwipes();const complete=$('#completePrepDay');complete.hidden=!items.some(x=>x.done);complete.disabled=!items.some(x=>x.done);complete.textContent=done===1?'Archive 1 Completed Prep':`Archive ${done} Completed Prep`}
   function setPrepDone(id,done){const item=prepItems().find(x=>x.id===id);if(!item||item.done===done)return;item.done=done;item.completedAt=done?new Date().toISOString():null;save();renderPrepBoard();renderModules('kitchen')}

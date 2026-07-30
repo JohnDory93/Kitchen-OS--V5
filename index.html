@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#07111b" />
-  <title>KitchenOS v5.10.15</title>
+  <title>KitchenOS v5.10.16</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -372,6 +372,17 @@
       <header class="setup-sheet-head"><div><p class="eyebrow" id="setupSheetEyebrow">Management</p><h2 id="setupSheetTitle">Add item</h2><p id="setupSheetDescription"></p></div><button class="modal-close" data-close-setup-sheet>×</button></header>
       <div class="setup-sheet-body" id="setupSheetBody"></div>
       <footer class="setup-sheet-footer"><button class="secondary-button" data-close-setup-sheet>Cancel</button><button class="primary-button" id="saveSetupSheet">Save</button></footer>
+    </section>
+  </div>
+
+  <div class="prep-selector" id="prepSelector" hidden>
+    <div class="prep-selector-backdrop" data-close-prep-selector></div>
+    <section class="prep-selector-card" role="dialog" aria-modal="true" aria-labelledby="prepSelectorTitle">
+      <header class="prep-selector-head">
+        <div><p class="eyebrow">New Prep</p><h2 id="prepSelectorTitle">Select option</h2><p id="prepSelectorDescription"></p></div>
+        <button class="modal-close" type="button" data-close-prep-selector>×</button>
+      </header>
+      <div class="prep-selector-list" id="prepSelectorList"></div>
     </section>
   </div>
   <div class="toast" id="toast"></div>
